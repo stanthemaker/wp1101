@@ -1,62 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-body {
-    background-color: black;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-div.gallery {
-  margin: 5px;
-  border: 1px solid #ccc;
-  float: left;
-  width: 180px;
-}
-
-div.desc {
-  padding: 15px;
-  text-align: center;
-}
-.pic {
-  float: left;
-  padding: 5px;
-}
-.pic.side {
-  width: 20%;
-  opacity: 0.5;
-}
-.pic.side:hover {
-  opacity: 1;
-  border: 1px solid rgb(247, 240, 240);
-}
-/* Middle column */
-.pic.middle {
-  width: 70%;
-}
-</style>
+  <title>CSS hw1</title>
+  <link rel="stylesheet" href="hw1_style.css" />
 </head>
 <body >
 
-<div class="gallery pic middle" >
-  <a target="_blank" href="image1.jpg">
+<div class="wrapper"> 
+  <a target="_blank" href="image1.jpg" >
     <img src="image1.jpg" alt="Bo" >
   </a>
   <div class="desc">AAAAAAAAAAAAAAAAAAAAAAAAA</div>
+
 </div>
 
-<div class="gallery pic side">
+<div class="wrapper">
+  <div class=" img-area">
+    <div class="side-img"><img class="side-img size" src="image2.jpg" alt="Bo"></div>
+    <div class="side-img"><img class="side-img size" src="image3.jpg" alt="Bo"></div>
+    <div class="side-img"><img class="side-img size" src="image4.jpg" alt="Bo"></div>
+
+  </div>
+</div>
+
+</div>
+<!-- 
+<div>
   <a target="_blank" href="image2.jpg">
-    <img src="image2.jpg" alt="Bo" >
+    <img class="pic side" src="image2.jpg" alt="Bo" >
   </a>
 </div>
 
-<div class="gallery pic side">
+<div>
   <a target="_blank" href="image3.jpg">
-    <img src="image3.jpg" alt="Bo">
+    <img class="pic side" src="image3.jpg" alt="Bo" >
   </a>
 </div>
 
-
+<div>
+  <a target="_blank" href="image4.jpg">
+    <img class="pic side" src="image4.jpg" alt="Bo" >
+  </a>
+</div> -->
 
 </body>
 </html>
