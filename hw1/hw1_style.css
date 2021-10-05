@@ -1,21 +1,20 @@
 body {
-    background-color: white;
+    background-color: black;
 }
 .title {
-    text-align: right;
-    font-size: 80px;
+    text-align: left;
+    font-size: 120px;
     font-weight: 450;
     font-family: Impact, Haettenschweiler,'Arial Narrow Bold', sans-serif;
-    -webkit-text-stroke: 2px black;
+    -webkit-text-stroke: 4px black;
     /* border: 2px solid green; */
-    color: #19a590;
+    color: white;
     line-height: 300%;
     /* line-height: 280px; */
     background: url("./titile-background.jpg");
     background-size: cover;
     /* background-size: 100% 100%; */
-    border:5px solid black;
-    
+    border:5px solid white;   
 /*
     background-size: contain;
     background-repeat: no-repeat;
@@ -23,6 +22,16 @@ body {
     cursor: pointer;
     /* display: inline; */
     /* animation: text-resize infinite 1s; */
+}
+.title.sub{
+    background: none;
+    /* background-color: black; */
+    border: none;
+    color: white;
+    font-size: 70px;
+    font-weight: 400;
+    font-family: Impact, Haettenschweiler,'Arial Narrow Bold', sans-serif;
+    -webkit-text-stroke: none;
 }
 .desc{
     color: rgb(0, 0, 0);
@@ -45,30 +54,23 @@ body {
     /* padding: 5% 2%; */
 }
 .main-img{
-    border: 5px solid black;
+    width: 70%;
+    border: 2px solid white;
 }
-.sub-title{
-    /* background: url("./main-img-back.jpg"); */
-    /* background-color: black; */
-    color: white;
-    text-align: left;
-    font-size: 80px;
-    font-weight: 450;
-    font-family: Impact, Haettenschweiler,'Arial Narrow Bold', sans-serif;
-}
+
 .side-img {
     padding: 5px 20px 5px;
     /* border: 1px solid transparent; */
     opacity: 0.5;
-    height: 150px;
+    height: 190px;
     width: 280px;
     /* transition: all 100ms; */
 }
 .side-img:hover{
     opacity: 1;
     /* border: 1px solid rgb(105, 101, 101); */
-    height: 160px;
-    width: 295px;
+    height: 200px;
+    width: 300px;
     /* padding: 5px 5px 5px; */
 }
 
@@ -80,65 +82,56 @@ body {
     width: 100%;
     padding: 4% 2%;
     box-sizing: border-box;
-    height: 100vh;
-    /* background-color: black; */
+    height: 80vh;
     text-align: center;
     color: white;
-  }
-.album-img-size{
-    height: 200px;
-    max-width: 400px;
 }
 .box {
 flex: 1;
 overflow: hidden;
 transition: .5s;
 margin: 0 2%;
-box-shadow: 0 20px 30px rgba(0,0,0,.1);
+box-shadow: 0 10px 10px white;
 line-height: 0;
 border:5px solid white;
 }
 
 .box > img {
-width: 200%;
+width: 150%;
 height: calc(100% - 10vh);
 object-fit: cover; 
 transition: .5s;
 }
 
 .box > span {
-font-size: 3.8vh;
+font-size: 3.0vh;
 display: block;
 text-align: center;
-height: 10vh;
-line-height: 2.6;
+height: 2vh;
+line-height: 2.5;
 }
 
 .box:hover { flex: 1 1 50%; }
 .box:hover > img {
-width: 100%;
-height: 100%;
+width: 60%;
+}
+.box:hover > span{
+    font-size: 5vh;
 }
    
 @media (max-width:1300px){
-    .main-img {
-        /* padding: 5px 20px 5px; */
-        /* border: 1px solid transparent; */
-        /* opacity: 0.5; */
-        width: 70%;
-        /* height: 30%; */
-        /* transition: all 100ms; */
+    .title , .title.sub{
+        font-size: 380%;
     }
-    .title{
-        /* background-size:70% ; */
-        font-size: 390%;
-        /* line-height: 250%; */
+    .box > img{
+        width: 100%;
+        height: calc(100% - 15vh);
     }
 }
 @media (max-width:850px){
-    .title{
-        font-size: 280%;
-        line-height: 300%;
+    .title , .title.sub{
+        font-size: 330%;
+        /* line-height: 300%; */
 
     }
     .side-img{
@@ -146,19 +139,32 @@ height: 100%;
         height: 100px;
         width: 180px;
     }
-    
+    .box{
+        height: calc(100% - 20vh);
+    }
+    .box:hover > span{
+        font-size: 4vh;
+    }
 }
 @media (max-width:550px){
-    .title{
+    .title, .title.sub{
         font-size: 200%;
         line-height: 240%;
+        -webkit-text-stroke: 2px black;
+
     }
     .side-img{
         /* width: 60%; */
-        height: 75px;
-        width: 145px;
+        height:75px;
+        width: 110px;
     }
     .desc{
         font-size: 15px;
+    }
+    .box{
+        height: calc(100% - 30vh);
+    }
+    .box > span{
+        font-size: 2.0vh;
     }
 }
