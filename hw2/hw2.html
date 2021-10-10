@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CSS hw1</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1 class="title" id="title"> NBA Stars Album</h1>
+  <div style="text-align: center;"> 
+    <a target="_blank" >
+      <img class="main-img" alt="main img" id="main-img">
+    </a>
+  </div>
+
+  <div class=" img-area" id="sub-images">
+
+    <div onclick="render(0)"><img class="side-img" alt="Bo" id="img-box0"></div>
+    <div onclick="render(1)"><img class="side-img" alt="Bo" id="img-box1"></div>
+    <div onclick="render(2)"><img class="side-img" alt="Bo" id="img-box2"></div>
+    <div onclick="render(3)"><img class="side-img" alt="Bo" id="img-box3"></div>
+  </div>
+
+    <div style="background-color: black;">
+      <h1 class="title sub"> Choose other Albums</h1>
+      <div class="album">
+        <div class="box">
+          <img class="album-img-size" id="Album-img-box0" onclick="change_album(0)">
+          <span>Anthony Davis</span>
+        </div>
+
+        <div class="box">
+          <img class="album-img-size" id="Album-img-box1" onclick="change_album(1)">
+          <span>Luka Doncic</span>
+        </div>
+
+        <div class="box">
+          <img class="album-img-size" id="Album-img-box2" onclick="change_album(2)">
+          <span>Giannis Antetokounmpo</span>
+        </div>
+
+        <div class="box">
+          <img class="album-img-size" id="Album-img-box3" onclick="change_album(3)">
+          <span>Anthony Davis </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script src="./main.js"></script>
+</body>
+</html>
+
+

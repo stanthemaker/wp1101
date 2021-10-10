@@ -11,14 +11,9 @@ body {
     color: white;
     line-height: 300%;
     /* line-height: 280px; */
-    background: url("./titile-background.jpg");
+    background: url("https://d3data.sportico.com/NBAVal/RevisedGraphBanner.jpg");
     background-size: cover;
-    /* background-size: 100% 100%; */
     border:5px solid white;   
-/*
-    background-size: contain;
-    background-repeat: no-repeat;
-*/
     cursor: pointer;
     /* display: inline; */
     /* animation: text-resize infinite 1s; */
@@ -40,18 +35,12 @@ body {
     font-size: 20px;
     text-align: center;
 }
-.wrapper{
-    text-align: center;
-}
 .img-area{
-    /* width: 70%; */
-    /* background-color: rgb(184, 176, 176); */
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    /* padding: 5% 2%; */
 }
 .main-img{
     width: 70%;
@@ -60,19 +49,15 @@ body {
 
 .side-img {
     padding: 5px 20px 5px;
-    /* border: 1px solid transparent; */
     opacity: 0.5;
-    height: 190px;
-    /* height: ; */
-    width: 280px;
-    /* transition: all 100ms; */
+    width: 305px;
+    object-fit: cover;
+    object-position: center;
+    transition: 500ms;
 }
 .side-img:hover{
     opacity: 1;
-    /* border: 1px solid rgb(105, 101, 101); */
-    height: 200px;
-    width: 300px;
-    /* padding: 5px 5px 5px; */
+    transform: scale(1.1);
 }
 
 .album { /* container of the side image*/
@@ -114,7 +99,7 @@ line-height: 2.5;
 
 .box:hover { flex: 1 1 50%; }
 .box:hover > img {
-width: 60%;
+width: 90%;
 }
 .box:hover > span{
     font-size: 5vh;
@@ -168,4 +153,7 @@ width: 60%;
     .box > span{
         font-size: 2.0vh;
     }
+}
+.chosen{
+    border: 0.4vh solid white;
 }
