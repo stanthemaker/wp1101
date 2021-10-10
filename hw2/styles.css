@@ -41,6 +41,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    padding-top: 2vh;
 }
 .main-img{
     width: 70%;
@@ -73,33 +74,34 @@ body {
     color: white;
 }
 .box {
-flex: 1;
-overflow: hidden;
-transition: .5s;
-margin: 0 2%;
-box-shadow: 0 10px 10px white;
-line-height: 0;
-border:5px solid white;
+    flex: 1;
+    overflow: hidden;
+    transition: .5s;
+    margin: 0 2%;
+    box-shadow: 0 10px 10px gray;
+    line-height: 0;
+    border: 0.5em solid gray;
+    opacity: 0.5;
 }
 
 .box > img {
-width: 150%;
-height: calc(100% - 10vh);
-object-fit: cover; 
-transition: .5s;
+    width: 150%;
+    height: calc(100% - 10vh);
+    object-fit: cover; 
+    transition: .5s;
 }
 
 .box > span {
-font-size: 3.0vh;
-display: block;
-text-align: center;
-height: 2vh;
-line-height: 2.5;
+    font-size: 3.0vh;
+    display: block;
+    text-align: center;
+    height: 2vh;
+    line-height: 2.5;
 }
 
 .box:hover { flex: 1 1 50%; }
 .box:hover > img {
-width: 90%;
+    width: 90%;
 }
 .box:hover > span{
     font-size: 5vh;
@@ -156,4 +158,9 @@ width: 90%;
 }
 .chosen{
     border: 0.4vh solid white;
+}
+.chosen_album{
+    box-shadow: 0 10px 10px white;
+    border:0.5em solid white;
+    opacity: 1;
 }

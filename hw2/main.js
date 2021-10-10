@@ -26,30 +26,52 @@ const imgs = [
     ],
 ];
 const background_img = "https://d3data.sportico.com/NBAVal/RevisedGraphBanner.jpg"
-let img_boxes = [
+const img_boxes = [
     document.getElementById("img-box0"),
     document.getElementById("img-box1"),
     document.getElementById("img-box2"),
     document.getElementById("img-box3")
 ];
+const album_boxes = [
+    document.getElementById("Album-img-box0"),
+    document.getElementById("Album-img-box1"),
+    document.getElementById("Album-img-box2"),
+    document.getElementById("Album-img-box3")
+];
+const album_img = [
+    document.getElementById("Album-img0"),
+    document.getElementById("Album-img1"),
+    document.getElementById("Album-img2"),
+    document.getElementById("Album-img3")
+]
 
-let main_img = document.getElementById("main-img");
 
+const main_img = document.getElementById("main-img");
+
+let current_album = 0,
+    prev_album = 0;
 let current = 0,
     prev = 0;
 
-init()
-
-function init(){
-    main_img.src = imgs[0][0];
+function init(index_init){
+    // console.log('return this ==', img_boxes[prev]);
+    main_img.src = imgs[index_init][0];
     for (let i = 0;i < img_boxes.length ;i++){
-        img_boxes[i].src = imgs[0][i];
+        img_boxes[i].src = imgs[index_init][i];
     }
-    img_boxes[0].classList.add("chosen");
+    // 
+    prev = current;
+    current = 0;
+    img_boxes[prev].classList.remove("chosen");
+    img_boxes[current].classList.add("chosen"); /*chosen first img */
 }
 
 function render(index){
-    main_img.src = imgs[0][index];
+    if (current === index){
+        return;
+    }
+
+    main_img.src = imgs[current_album][index];
     prev = current;
     current = index;
     /*current add chosen class*/ 
@@ -59,6 +81,32 @@ function render(index){
 
 }
 
-function change_album(){
-    
+function change_album(index_album){
+    if (current_album === index_album){
+        return;
+    }
+    if (index_album === 3){
+        alert("In the preseasons, unfortunately, AD's midranges sucked . \
+        Therefore, his photos are off the album until his shooting recovers");
+        return;
+    }
+
+    prev_album = current_album;
+    current_album = index_album;
+
+    album_boxes[current_album].classList.add("chosen_album");
+    album_boxes[prev_album].classList.remove("chosen_album");
+    console.log('album after change', album_boxes[current_album]);
+    init(index_album);
 }
+/** execution */
+
+init(0);
+//init album at the bottom 
+for (let i = 0;i < img_boxes.length -1;i++){
+    // console.log('album tie==', album_boxes[i], ' i == ', i);
+    album_img[i].src = imgs[i][0];
+};
+// add effect to albums at the bottom
+album_boxes[0].classList.add("chosen_album");
+
