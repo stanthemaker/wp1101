@@ -50,37 +50,48 @@ const img_boxes = [
 ];
 const main_img = document.getElementById("main-img");
 const album = document.getElementById("album-box");
-album.innerHTML = ""
-for (let i = 0; i < imgs.length; i++){
-    album.innerHTML += `<div class="box" id="Album-img-box${i}"><img class="album-img-size" id="Album-img${i}" onclick="change_album(${i})" /><span>${imgs[i].name}</span></div>`
-}
-
-let album_boxes = imgs.map((_album, index) => {
-    return document.getElementById(`Album-img-box${index}`)
-})
-let album_img = imgs.map((_album, index) => {
-    return document.getElementById(`Album-img${index}`)
-})
-
+let album_boxes = 0, 
+    album_img = 0; 
 let current_album = 0,
     prev_album = 0;
 let current = 0,
     prev = 0;
 
-function init(index_init){
-    // console.log('return this ==', img_boxes[prev]);
-    main_img.src = imgs[index_init].pic[0];
-    for (let i = 0;i < img_boxes.length ;i++){
-        img_boxes[i].src = imgs[index_init].pic[i];
+const init = (init_ind) => {
+    album.innerHTML = "";
+    for (let i = 0; i < imgs.length; i++){
+        album.innerHTML +=
+         `<div class="box" id="Album-img-box${i}">\
+        <img class="album-img-size" id="Album-img${i}" onclick="change_album(${i})" />\
+        <span>${imgs[i].name}</span></div>`
     }
-    // 
+
+    album_boxes = imgs.map((_album, index) => {
+        return document.getElementById(`Album-img-box${index}`)
+    })
+    album_img = imgs.map((_album, index) => {
+        return document.getElementById(`Album-img${index}`)
+    })
+
+    main_img.src = imgs[init_ind].pic[0];
+    //init photos at the top
+    for (let i = 0;i < img_boxes.length ;i++){
+        img_boxes[i].src = imgs[init_ind].pic[i];
+    }
+    // init albums at the bottom
+    for (let i = 0;i < img_boxes.length -1;i++){
+        album_img[i].src = imgs[i].pic[0];
+    };
+
     prev = current;
     current = 0;
     img_boxes[prev].classList.remove("chosen");
-    img_boxes[current].classList.add("chosen"); /*chosen first img */
+    img_boxes[current].classList.add("chosen");
+    album_boxes[current_album].classList.add("chosen_album");
+    // console.log('after init', album_boxes[current_album]);
 }
 
-function render(index){
+const render = (index) => {
     if (current === index){
         return;
     }
@@ -92,43 +103,32 @@ function render(index){
     img_boxes[current].classList.add("chosen");
     /*prev remove chosen class*/ 
     img_boxes[prev].classList.remove("chosen");
-
 }
-
-// const change_album = (index_album) => {
-
-// }
-
-function change_album(index_album){
-    if (current_album === index_album){
+const change_album = (index) => {
+    if (current_album === index){
         return;
     }
-    if (index_album === imgs.length - 1){
-        alert("In the preseasons, unfortunately, AD's midranges sucked . \
-        Therefore, his photos are temporarily off the album until his shooting recovers.");
+    if (index === imgs.length - 1){
+        alert("Album not found.");
         return;
     }
 
     prev_album = current_album;
-    current_album = index_album;
+    current_album = index;
 
     album_boxes[current_album].classList.add("chosen_album");
     album_boxes[prev_album].classList.remove("chosen_album");
-    console.log('album after change', album_boxes[current_album]);
-    init(index_album);
+    // console.log('album after change before init', album_boxes[current_album]);
+    init(index);
 }
 
-/** execution */
-// 
-init(0);
-//init album at the bottom 
-for (let i = 0;i < img_boxes.length -1;i++){
-    // console.log('album tie==', album_boxes[i], ' i == ', i);
-    album_img[i].src = imgs[i].pic[0];
-};
-// add effect to albums at the bottom
-album_boxes[0].classList.add("chosen_album");
 const handleAddAlbum = (albumName) => {
     console.log(albumName);
 
 }
+
+
+/** execution */
+
+init(0);
+
