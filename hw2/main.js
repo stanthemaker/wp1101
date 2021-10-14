@@ -38,14 +38,10 @@ const imgs = [
 ];
 const background_img =
 	"https://d3data.sportico.com/NBAVal/RevisedGraphBanner.jpg";
-const img_boxes = [
-	document.getElementById("img-box0"),
-	document.getElementById("img-box1"),
-	document.getElementById("img-box2"),
-	document.getElementById("img-box3"),
-];
 const main_img = document.getElementById("main-img");
 const album = document.getElementById("album-box");
+const preview_imgs = document.getElementById("sub-images");
+let img_boxes = 0;
 let album_boxes = 0,
 	album_img = 0;
 let current_album = 0,
@@ -55,6 +51,13 @@ let current = 0,
 let num_of_album = 0;
 
 const init = (init_ind) => {
+	preview_imgs.innerHTML = "";
+	for (let i = 0; i < imgs[init_ind].pic.length; i++) {
+		preview_imgs.innerHTML += `<div onclick="render(${i})">\
+		<img class="side-img" alt="Bo" id="img-box${i}">\
+		</div>`;
+	}
+
 	album.innerHTML = "";
 	for (let i = 0; i < imgs.length; i++) {
 		album.innerHTML += `<div class="box" id="Album-img-box${i}">\
@@ -63,9 +66,16 @@ const init = (init_ind) => {
 	}
 	album.innerHTML += `<div class="box" id="Album-img-box${imgs.length}">\
     <img class="album-img-size" id="Album-img${imgs.length}" onclick="change_album(${imgs.length})" />\
-    <input type = "text" id="url" placeholder="url:">\
+	
+    <div class="input">\
+	<input type = "text" id="name" placeholder="name:">\
+    <input type = "text" id="url" placeholder="url:">\ 
     <input type="button" id="btn" value="Add new album" onclick="handleAddAlbum()"/>\
+    </div>\
     </div>`;
+	img_boxes = imgs[init_ind].pic.map((_album, index) => {
+		return document.getElementById(`img-box${index}`);
+	});
 	album_boxes = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img-box${index}`);
 	});
@@ -75,13 +85,14 @@ const init = (init_ind) => {
 
 	main_img.src = imgs[init_ind].pic[0];
 	//init photos at the top
-	for (let i = 0; i < img_boxes.length; i++) {
+	for (let i = 0; i < imgs[init_ind].pic.length; i++) {
 		img_boxes[i].src = imgs[init_ind].pic[i];
+		// console.log("map", img_boxes[i].src);
 	}
 	// init albums at the bottom
 	for (let i = 0; i < imgs.length; i++) {
 		album_img[i].src = imgs[i].pic[0];
-		console.log("for loop init album", imgs[i].pic[0]);
+		// console.log("for loop init album", imgs[i].pic[0]);
 	}
 
 	prev = current;
@@ -89,7 +100,7 @@ const init = (init_ind) => {
 	img_boxes[prev].classList.remove("chosen");
 	img_boxes[current].classList.add("chosen");
 	album_boxes[current_album].classList.add("chosen_album");
-	// console.log("after init url ", album_img[imgs.length - 1].src);
+	// console.log("after init url ", imgs[imgs.length - 1].pic);
 };
 
 const render = (index) => {
@@ -119,17 +130,23 @@ const change_album = (index) => {
 
 	album_boxes[current_album].classList.add("chosen_album");
 	album_boxes[prev_album].classList.remove("chosen_album");
-	// console.log('album after change before init', album_boxes[current_album]);
 	init(index);
 };
 
 const handleAddAlbum = () => {
 	url = document.getElementById("url").value;
+	player = document.getElementById("name").value;
+	if (url === "" || player === "") {
+		alert("Please input both name an url!!!");
+		return;
+	}
+
+	// console.log("url ==", url);
 	imgs.push({
-		name: "",
-		pic: [`"${url}"`],
+		name: player,
+		pic: [`${url}`],
 	});
-	console.log("appedning", imgs[imgs.length - 1].pic[0]);
+	// console.log("appedning", imgs[imgs.length - 1].pic[0]);
 	init(0);
 };
 // https://www.ocregister.com/wp-content/uploads/2021/04/AP21113070352887-3.jpg
