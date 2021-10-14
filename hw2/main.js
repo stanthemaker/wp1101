@@ -41,6 +41,7 @@ const background_img =
 const main_img = document.getElementById("main-img");
 const album = document.getElementById("album-box");
 const preview_imgs = document.getElementById("sub-images");
+const div_number = document.getElementById("handle-num");
 let img_boxes = 0;
 let album_boxes = 0,
 	album_img = 0;
@@ -48,16 +49,19 @@ let current_album = 0,
 	prev_album = 0;
 let current = 0,
 	prev = 0;
-let num_of_album = 0;
+let num_of_current_pics = 0,
+	num_of_total_pics = 0,
+	current_pic = 0;
 
 const init = (init_ind) => {
+	//refresh preview imges
 	preview_imgs.innerHTML = "";
 	for (let i = 0; i < imgs[init_ind].pic.length; i++) {
 		preview_imgs.innerHTML += `<div onclick="render(${i})">\
 		<img class="side-img" alt="Bo" id="img-box${i}">\
 		</div>`;
 	}
-
+	//refresh album imges
 	album.innerHTML = "";
 	for (let i = 0; i < imgs.length; i++) {
 		album.innerHTML += `<div class="box" id="Album-img-box${i}">\
@@ -73,6 +77,8 @@ const init = (init_ind) => {
     <input type="button" id="btn" value="Add new album" onclick="handleAddAlbum()"/>\
     </div>\
     </div>`;
+
+	// connect html and js by id
 	img_boxes = imgs[init_ind].pic.map((_album, index) => {
 		return document.getElementById(`img-box${index}`);
 	});
@@ -82,27 +88,46 @@ const init = (init_ind) => {
 	album_img = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img${index}`);
 	});
-
 	main_img.src = imgs[init_ind].pic[0];
+
 	//init photos at the top
 	for (let i = 0; i < imgs[init_ind].pic.length; i++) {
 		img_boxes[i].src = imgs[init_ind].pic[i];
-		// console.log("map", img_boxes[i].src);
 	}
+
 	// init albums at the bottom
 	for (let i = 0; i < imgs.length; i++) {
 		album_img[i].src = imgs[i].pic[0];
-		// console.log("for loop init album", imgs[i].pic[0]);
 	}
 
 	prev = current;
 	current = 0;
+
+	// add affects to albums
 	img_boxes[prev].classList.remove("chosen");
 	img_boxes[current].classList.add("chosen");
 	album_boxes[current_album].classList.add("chosen_album");
-	// console.log("after init url ", imgs[imgs.length - 1].pic);
+	// update nums
+	nums_cal();
 };
+const nums_cal = () => {
+	(num_of_total_pics = 0), (current_pic = 0);
+	for (let i = 0; i < imgs.length; i++) {
+		num_of_total_pics += imgs[i].pic.length;
+	}
 
+	num_of_current_pics = imgs[current_album].pic.length;
+	console.log("num_of_total_pics = ", num_of_total_pics);
+	console.log("current_pic = ", current + 1);
+	console.log("num_of_current_pics = ", num_of_current_pics);
+
+	div_number.innerHTML = "";
+	div_number.innerHTML = `<span class="nums">\
+	Number: ${current + 1} / ${num_of_current_pics},\
+	Total: ${num_of_total_pics}
+	</span>`;
+	// console.log("current_pic = ", current_pic);
+};
 const render = (index) => {
 	if (current === index) {
 		return;
@@ -115,6 +140,7 @@ const render = (index) => {
 	img_boxes[current].classList.add("chosen");
 	/*prev remove chosen class*/
 	img_boxes[prev].classList.remove("chosen");
+	nums_cal();
 };
 const change_album = (index) => {
 	if (current_album === index) {
@@ -140,8 +166,6 @@ const handleAddAlbum = () => {
 		alert("Please input both name an url!!!");
 		return;
 	}
-
-	// console.log("url ==", url);
 	imgs.push({
 		name: player,
 		pic: [`${url}`],

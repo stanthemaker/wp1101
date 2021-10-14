@@ -129,7 +129,13 @@ input[type="text"] {
 	padding: 0.5vh;
 	/* opacity: 1; */
 }
-
+.nums {
+	color: white;
+	font-size: 2vw;
+	margin: 2vh;
+	align-self: start;
+	/* text-align: left; */
+}
 input[type="button"] {
 	background-color: #4caf50;
 	border: none;
