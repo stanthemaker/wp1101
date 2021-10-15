@@ -50,83 +50,90 @@ let current_album = 0,
 let current = 0,
 	prev = 0;
 let num_of_current_pics = 0,
-	num_of_total_pics = 0,
-	current_pic = 0;
+	num_of_total_pics = 0;
 
-const init = (init_ind) => {
-	//refresh preview imges
-	preview_imgs.innerHTML = "";
-	for (let i = 0; i < imgs[init_ind].pic.length; i++) {
-		preview_imgs.innerHTML += `<div onclick="render(${i})">\
+const refresh_preimg = (album_ind) => {
+	// adding html
+	let inner = `<div style="display: flex">`;
+	for (let i = 0; i < imgs[album_ind].pic.length; i++) {
+		inner += `<div onclick="render(${i})">\
 		<img class="side-img" alt="Bo" id="img-box${i}">\
 		</div>`;
 	}
-	//refresh album imges
+	inner += `<div class="wrapper-col">
+	<input type = "text" id="url_preimg" placeholder="url:">\ 
+	<input type="button" id="btn" value="Add new photo" onclick="handleAddPic()"/>`;
+	inner += "</div>";
+	preview_imgs.innerHTML = inner;
+	// mapping
+	img_boxes = imgs[album_ind].pic.map((_album, index) => {
+		return document.getElementById(`img-box${index}`);
+	});
+	//init photos at the top
+	for (let i = 0; i < imgs[album_ind].pic.length; i++) {
+		img_boxes[i].src = imgs[album_ind].pic[i];
+	}
+};
+const refresh_album = (album_ind) => {
+	// adding html
 	album.innerHTML = "";
 	for (let i = 0; i < imgs.length; i++) {
 		album.innerHTML += `<div class="box" id="Album-img-box${i}">\
-        <img class="album-img-size" id="Album-img${i}" onclick="change_album(${i})" />\
+        <div>x</div>
+		<img class="album-img-size" id="Album-img${i}" onclick="change_album(${i})" />\
         <span>${imgs[i].name}</span></div>`;
 	}
 	album.innerHTML += `<div class="box" id="Album-img-box${imgs.length}">\
     <img class="album-img-size" id="Album-img${imgs.length}" onclick="change_album(${imgs.length})" />\
 	
-    <div class="input">\
+    <div class="wrapper-col">\
 	<input type = "text" id="name" placeholder="name:">\
     <input type = "text" id="url" placeholder="url:">\ 
     <input type="button" id="btn" value="Add new album" onclick="handleAddAlbum()"/>\
     </div>\
     </div>`;
-
-	// connect html and js by id
-	img_boxes = imgs[init_ind].pic.map((_album, index) => {
-		return document.getElementById(`img-box${index}`);
-	});
+	// mapping
 	album_boxes = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img-box${index}`);
 	});
 	album_img = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img${index}`);
 	});
-	main_img.src = imgs[init_ind].pic[0];
-
-	//init photos at the top
-	for (let i = 0; i < imgs[init_ind].pic.length; i++) {
-		img_boxes[i].src = imgs[init_ind].pic[i];
-	}
-
 	// init albums at the bottom
 	for (let i = 0; i < imgs.length; i++) {
 		album_img[i].src = imgs[i].pic[0];
 	}
+};
+const init = (init_ind) => {
+	//refresh preview imges
+	refresh_preimg(init_ind);
+	refresh_album(init_ind);
 
-	prev = current;
-	current = 0;
+	main_img.src = imgs[init_ind].pic[0];
 
 	// add affects to albums
+	prev = current;
+	current = 0;
 	img_boxes[prev].classList.remove("chosen");
 	img_boxes[current].classList.add("chosen");
 	album_boxes[current_album].classList.add("chosen_album");
+
 	// update nums
 	nums_cal();
 };
 const nums_cal = () => {
-	(num_of_total_pics = 0), (current_pic = 0);
+	num_of_total_pics = 0;
 	for (let i = 0; i < imgs.length; i++) {
 		num_of_total_pics += imgs[i].pic.length;
 	}
 
 	num_of_current_pics = imgs[current_album].pic.length;
-	console.log("num_of_total_pics = ", num_of_total_pics);
-	console.log("current_pic = ", current + 1);
-	console.log("num_of_current_pics = ", num_of_current_pics);
 
 	div_number.innerHTML = "";
 	div_number.innerHTML = `<span class="nums">\
 	Number: ${current + 1} / ${num_of_current_pics},\
 	Total: ${num_of_total_pics}
 	</span>`;
-	// console.log("current_pic = ", current_pic);
 };
 const render = (index) => {
 	if (current === index) {
@@ -163,15 +170,24 @@ const handleAddAlbum = () => {
 	url = document.getElementById("url").value;
 	player = document.getElementById("name").value;
 	if (url === "" || player === "") {
-		alert("Please input both name an url!!!");
+		alert("Please input both name and url!!!");
 		return;
 	}
 	imgs.push({
 		name: player,
 		pic: [`${url}`],
 	});
-	// console.log("appedning", imgs[imgs.length - 1].pic[0]);
 	init(0);
+};
+const handleAddPic = () => {
+	url = document.getElementById("url_preimg").value;
+	if (url === "") {
+		alert("Please an url!!!");
+		return;
+	}
+	imgs[current_album].pic.push(`${url}`);
+	refresh_preimg(current_album);
+	render(imgs[current_album].pic.length - 1);
 };
 // https://www.ocregister.com/wp-content/uploads/2021/04/AP21113070352887-3.jpg
 /** execution */
