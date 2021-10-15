@@ -143,11 +143,32 @@ input[type="button"] {
 	margin: 0.5vh;
 	cursor: pointer;
 }
+input[type="button_del"] {
+	background-color: rgba(187, 69, 69, 0.836);
+	/* border: none; */
+	color: black;
+	/* width: 60%/; */
+	font-size: 1.5vw;
+	text-align: center;
+	padding: 0.2vw;
+	text-decoration: none;
+	margin: 0.5vw;
+	cursor: pointer;
+	/* width: 50%; */
+}
 .wrapper-col {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	align-self: center;
+}
+.name {
+	margin: 1vh;
+	font-size: 1.5vw;
+	text-align: center;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	/* overflow-x: hidden; */
 }
 
 @media (max-width: 1300px) {

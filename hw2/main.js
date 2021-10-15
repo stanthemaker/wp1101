@@ -56,8 +56,11 @@ const refresh_preimg = (album_ind) => {
 	// adding html
 	let inner = `<div style="display: flex">`;
 	for (let i = 0; i < imgs[album_ind].pic.length; i++) {
-		inner += `<div onclick="render(${i})">\
-		<img class="side-img" alt="Bo" id="img-box${i}">\
+		inner += `<div class= "wrapper-col">
+		<div onclick="render(${i})">\
+		<img class="side-img" alt="Bo" id="img-box${i}"></div>\
+		<div><input type="button_del" id="btn" value="Delete Pic" onclick="handleDelPic(${i})"/>\
+		</div>
 		</div>`;
 	}
 	inner += `<div class="wrapper-col">
@@ -76,12 +79,15 @@ const refresh_preimg = (album_ind) => {
 };
 const refresh_album = (album_ind) => {
 	// adding html
+	// let inner = `<div style="display: flex">`;
 	album.innerHTML = "";
 	for (let i = 0; i < imgs.length; i++) {
 		album.innerHTML += `<div class="box" id="Album-img-box${i}">\
-        <div>x</div>
 		<img class="album-img-size" id="Album-img${i}" onclick="change_album(${i})" />\
-        <span>${imgs[i].name}</span></div>`;
+		<div class= "wrapper-col"  style="margin: 2.5vh">
+        <span class = "name">${imgs[i].name}</span>\
+		<input type="button_del" id="btn" value="Delete album" onclick="handleDelAlbum(${i})"/>\
+		</div>`;
 	}
 	album.innerHTML += `<div class="box" id="Album-img-box${imgs.length}">\
     <img class="album-img-size" id="Album-img${imgs.length}" onclick="change_album(${imgs.length})" />\
@@ -92,6 +98,7 @@ const refresh_album = (album_ind) => {
     <input type="button" id="btn" value="Add new album" onclick="handleAddAlbum()"/>\
     </div>\
     </div>`;
+	// album.innerHTML = inner;
 	// mapping
 	album_boxes = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img-box${index}`);
@@ -136,17 +143,21 @@ const nums_cal = () => {
 	</span>`;
 };
 const render = (index) => {
-	if (current === index) {
-		return;
+	console.log("index in r= ", index);
+	if (current !== index) {
+		prev = current;
+		current = index;
 	}
-
-	main_img.src = imgs[current_album].pic[index];
-	prev = current;
-	current = index;
+	main_img.src = imgs[current_album].pic[current];
+	// prev = current;
+	// current = index;
+	/*prev remove chosen class*/
+	for (let i = 0; i < imgs[current_album].pic.length; i++)
+		img_boxes[i].classList.remove("chosen");
 	/*current add chosen class*/
 	img_boxes[current].classList.add("chosen");
-	/*prev remove chosen class*/
-	img_boxes[prev].classList.remove("chosen");
+	console.log("after render, curr =  ", current);
+
 	nums_cal();
 };
 const change_album = (index) => {
@@ -173,6 +184,10 @@ const handleAddAlbum = () => {
 		alert("Please input both name and url!!!");
 		return;
 	}
+	if (imgs.length > 4) {
+		alert("Too many albums!!");
+		return;
+	}
 	imgs.push({
 		name: player,
 		pic: [`${url}`],
@@ -188,6 +203,39 @@ const handleAddPic = () => {
 	imgs[current_album].pic.push(`${url}`);
 	refresh_preimg(current_album);
 	render(imgs[current_album].pic.length - 1);
+};
+const handleDelAlbum = (album_ind) => {
+	if (album_ind === 0) {
+		alert("You cannot delete Lebron's album, cuz he's the GOAT!!");
+		return;
+	}
+	// array.splice(index, 1);
+	imgs.splice(album_ind, 1);
+	// current_album
+	console.log("imgs after del:", imgs);
+	init(0);
+	// return;
+};
+const handleDelPic = (index) => {
+	if (imgs[current_album].pic.length === 1) {
+		alert("Cannot delete the last image.");
+		return;
+	}
+	// console.log("before del:", current);
+	imgs[current_album].pic.splice(index, 1);
+	refresh_preimg(current_album);
+	// console.log("after refresh:", current);
+
+	console.log("index == ", index);
+	console.log(
+		"index === imgs[current_album].pic.length - 1?",
+		index === imgs[current_album].pic.length
+	);
+	// if ()
+	render(index === 0 ? 0 : index - 1);
+	console.log("current after render:", current);
+	console.log("end of del pic");
+	return;
 };
 // https://www.ocregister.com/wp-content/uploads/2021/04/AP21113070352887-3.jpg
 /** execution */
