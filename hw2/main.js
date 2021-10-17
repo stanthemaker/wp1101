@@ -26,15 +26,6 @@ const imgs = [
 			"https://img.bleacherreport.net/img/images/photos/003/807/303/hi-res-f13e2c9eb8170ef0757843f85c0919c8_crop_north.jpg?1557366518&w=3072&h=2048",
 		],
 	},
-	// {
-	// 	name: "Anthony Davis",
-	// 	pic: [
-	// 		"https://www.gannett-cdn.com/presto/2019/11/05/USAT/c7396bda-215a-49a1-a06b-17fcf4c1dca8-USP_NBA__Los_Angeles_Lakers_at_Dallas_Mavericks.JPG",
-	// 		"https://img.sportsv.net/img/article/cover/5/78015/fit-KFdeNCSctr-945x495.jpeg",
-	// 		"https://ca-times.brightspotcdn.com/dims4/default/03cac8b/2147483647/strip/true/crop/4000x2667+0+0/resize/840x560!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F10%2F0e%2Fba92227546f7b34db1b9ccd7d71b%2Fhttps-delivery.gettyimages.com%2Fdownloads%2F1180608415.jpg",
-	// 		"https://idsb.tmgrup.com.tr/ly/uploads/images/2020/10/07/63249.jpg",
-	// 	],
-	// },
 ];
 const background_img =
 	"https://d3data.sportico.com/NBAVal/RevisedGraphBanner.jpg";
@@ -59,7 +50,8 @@ const refresh_preimg = (album_ind) => {
 		inner += `<div class= "wrapper-col">
 		<div onclick="render(${i})">\
 		<img class="side-img" alt="Bo" id="img-box${i}"></div>\
-		<div><input type="button_del" id="btn" value="Delete Pic" onclick="handleDelPic(${i})"/>\
+		<div text-align: center ><img src="https://icon-library.com/images/icon-delete/icon-delete-16.jpg" \
+				style="width:2.5vw" onclick="handleDelPic(${i})"/>\
 		</div>
 		</div>`;
 	}
@@ -79,14 +71,15 @@ const refresh_preimg = (album_ind) => {
 };
 const refresh_album = (album_ind) => {
 	// adding html
-	// let inner = `<div style="display: flex">`;
 	album.innerHTML = "";
 	for (let i = 0; i < imgs.length; i++) {
 		album.innerHTML += `<div class="box" id="Album-img-box${i}">\
 		<img class="album-img-size" id="Album-img${i}" onclick="change_album(${i})" />\
 		<div class= "wrapper-col"  style="margin: 2.5vh">
         <span class = "name">${imgs[i].name}</span>\
-		<input type="button_del" id="btn" value="Delete album" onclick="handleDelAlbum(${i})"/>\
+		<div text-align: center style="margin: 1vh"><img src="https://icon-library.com/images/icon-delete/icon-delete-16.jpg" \
+				style="width:2.5vw" onclick="handleDelAlbum(${i})"/>\
+		</div>
 		</div>`;
 	}
 	album.innerHTML += `<div class="box" id="Album-img-box${imgs.length}">\
@@ -95,10 +88,12 @@ const refresh_album = (album_ind) => {
     <div class="wrapper-col">\
 	<input type = "text" id="name" placeholder="name:">\
     <input type = "text" id="url" placeholder="url:">\ 
-    <input type="button" id="btn" value="Add new album" onclick="handleAddAlbum()"/>\
+    <div text-align: center ><img src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-add-icon.png" \
+				style="width:2.5vw" onclick=" handleAddAlbum()"/>\
+		</div>
     </div>\
     </div>`;
-	// album.innerHTML = inner;
+
 	// mapping
 	album_boxes = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img-box${index}`);
@@ -106,6 +101,7 @@ const refresh_album = (album_ind) => {
 	album_img = imgs.map((_album, index) => {
 		return document.getElementById(`Album-img${index}`);
 	});
+
 	// init albums at the bottom
 	for (let i = 0; i < imgs.length; i++) {
 		album_img[i].src = imgs[i].pic[0];
@@ -118,7 +114,7 @@ const init = (init_ind) => {
 
 	main_img.src = imgs[init_ind].pic[0];
 
-	// add affects to albums
+	// add effects to albums
 	prev = current;
 	current = 0;
 	img_boxes[prev].classList.remove("chosen");
@@ -149,15 +145,13 @@ const render = (index) => {
 		current = index;
 	}
 	main_img.src = imgs[current_album].pic[current];
-	// prev = current;
-	// current = index;
+
 	/*prev remove chosen class*/
 	for (let i = 0; i < imgs[current_album].pic.length; i++)
 		img_boxes[i].classList.remove("chosen");
 	/*current add chosen class*/
 	img_boxes[current].classList.add("chosen");
-	console.log("after render, curr =  ", current);
-
+	// console.log("after render, curr =  ", current);
 	nums_cal();
 };
 const change_album = (index) => {
@@ -209,16 +203,12 @@ const handleDelAlbum = (album_ind) => {
 		alert("You cannot delete Lebron's album, cuz he's the GOAT!!");
 		return;
 	}
-	// array.splice(index, 1);
 	imgs.splice(album_ind, 1);
-	// current_album
-	console.log("imgs after del:", imgs);
 	init(0);
-	// return;
 };
 const handleDelPic = (index) => {
 	if (imgs[current_album].pic.length === 1) {
-		alert("Cannot delete the last image.");
+		alert("Cannot delete the last image. You may delete the album instead.");
 		return;
 	}
 	// console.log("before del:", current);
@@ -226,15 +216,15 @@ const handleDelPic = (index) => {
 	refresh_preimg(current_album);
 	// console.log("after refresh:", current);
 
-	console.log("index == ", index);
-	console.log(
-		"index === imgs[current_album].pic.length - 1?",
-		index === imgs[current_album].pic.length
-	);
+	// console.log("index == ", index);
+	// console.log(
+	// 	"index === imgs[current_album].pic.length - 1?",
+	// 	index === imgs[current_album].pic.length
+	// );
 	// if ()
 	render(index === 0 ? 0 : index - 1);
-	console.log("current after render:", current);
-	console.log("end of del pic");
+	// console.log("current after render:", current);
+	// console.log("end of del pic");
 	return;
 };
 // https://www.ocregister.com/wp-content/uploads/2021/04/AP21113070352887-3.jpg
