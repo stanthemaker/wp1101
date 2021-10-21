@@ -7,23 +7,15 @@ let left_count = document.getElementById("left_count");
 let AllButton = document.getElementById("view_0");
 let ActiveButton = document.getElementById("view_1");
 let CompletedButton = document.getElementById("view_2");
+let CleanButton = document.getElementById("clear_completed_button");
 const todo_input = document.getElementById("todo-input");
 const [ALL, ACTIVE, COMPLETED] = [0, 1, 2];
 let State = ALL;
-const checkItem = (_id) => {
-	console.log("check id = ", _id);
-	let checkbox = todoList[_id].firstElementChild.firstElementChild;
-	console.log("before toggle", checkbox.checked);
-	checkbox.checked = !checkbox.checked;
-	todoList[_id].checked = !todoList[_id].checked;
-	let isChecked = checkbox.checked;
-	let label = todoList[_id].firstElementChild.lastChild;
-	console.log("Checkbox is selected", isChecked);
-
-	todoList[_id].style["textDecoration"] = isChecked ? "line-through" : "";
-	todoList[_id].style["opacity"] = isChecked ? 0.5 : 1;
-
-	// label.style.background = isChecked ? "#26ca299b" : "rgba(99, 99, 99, 0.698)";
+const checkItem = (_id, _checked) => {
+	todoList[_id].checked = _checked;
+	todoList[_id].firstElementChild.firstElementChild.checked = _checked;
+	todoList[_id].style["textDecoration"] = _checked ? "line-through" : "";
+	todoList[_id].style["opacity"] = _checked ? 0.5 : 1;
 	refresh();
 };
 const deleteItem = (_id) => {
@@ -38,6 +30,12 @@ const AppendItem = (todo_text) => {
 	// todoLength += 1;
 	refresh();
 };
+const mapping = () => {
+	for (let i = 0; i < todoList.length; i++) {
+		todoList[i].firstElementChild.firstElementChild.id = i;
+		todoList[i].firstElementChild.lastChild.htmlFor = i;
+	}
+};
 const generateToDo = (id, todo_text) => {
 	let liTag = document.createElement("li");
 	liTag.className = "todo-app__item"; //testing
@@ -48,11 +46,13 @@ const generateToDo = (id, todo_text) => {
 	let inputNode = document.createElement("input");
 	inputNode.type = "checkbox";
 	inputNode.id = id;
+	inputNode.addEventListener("click", (event) => {
+		// event.preventDefault();
+		checkItem(event.currentTarget.id, event.currentTarget.checked);
+	});
 
 	let labelNode = document.createElement("label");
 	labelNode.htmlFor = id;
-	labelNode.setAttribute("onclick", `checkItem(${id})`);
-
 	div_node.appendChild(inputNode);
 	div_node.appendChild(labelNode);
 
@@ -63,22 +63,16 @@ const generateToDo = (id, todo_text) => {
 	imgTag.src = "img/x.png";
 	imgTag.className = "todo-app__item-x";
 	imgTag.id = `img${id}`;
-	imgTag.setAttribute("onclick", `deleteItem(${id})`);
+	imgTag.addEventListener("click", (event) => {
+		event.preventDefault();
+		deleteItem(
+			event.currentTarget.parentNode.firstElementChild.firstElementChild.id
+		);
+	});
 	liTag.appendChild(div_node);
 	liTag.appendChild(h1Tag);
 	liTag.appendChild(imgTag);
 	return liTag;
-};
-const mapping = () => {
-	for (let i = 0; i < todoList.length; i++) {
-		todoList[i].firstElementChild.firstElementChild.id = i;
-		todoList[i].firstElementChild.lastChild.htmlFor = i;
-		todoList[i].lastChild.setAttribute("onclick", `deleteItem(${i})`);
-		todoList[i].firstElementChild.lastChild.setAttribute(
-			"onclick",
-			`checkItem(${i})`
-		);
-	}
 };
 const refresh = () => {
 	// clear all
@@ -127,7 +121,6 @@ const init = () => {
 	});
 	AllButton.addEventListener("click", (event) => {
 		State = ALL;
-		// console.log("!!!!!!!!!!");
 		refresh();
 	});
 	ActiveButton.addEventListener("click", (event) => {
@@ -136,6 +129,11 @@ const init = () => {
 	});
 	CompletedButton.addEventListener("click", (event) => {
 		State = COMPLETED;
+		refresh();
+	});
+	CleanButton.addEventListener("click", (event) => {
+		todoList = todoList.filter((todoItem) => !todoItem.checked);
+		mapping();
 		refresh();
 	});
 	refresh();
