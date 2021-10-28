@@ -8,6 +8,20 @@ const Footer = (props) => {
 		// console.log("in footer function");
 		return <></>;
 	}
+	const ClearCompleteButton = () => {
+		if (length - left_count === 0) {
+			return <></>;
+		}
+		return (
+			<button
+				type="button"
+				id="clear_completed_button"
+				onClick={() => ClearComplete()}
+			>
+				Clear completed
+			</button>
+		);
+	};
 	return (
 		<>
 			<footer id="todo-footer" className="todo-app__footer">
@@ -47,16 +61,7 @@ const Footer = (props) => {
 						</button>
 					</li>
 				</ul>
-
-				<div className="todo-app__clean">
-					<button
-						type="button"
-						id="clear_completed_button"
-						onClick={() => ClearComplete()}
-					>
-						Clear completed
-					</button>
-				</div>
+				<div className="todo-app__clean">{ClearCompleteButton()}</div>
 			</footer>
 		</>
 	);

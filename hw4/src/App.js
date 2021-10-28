@@ -59,7 +59,7 @@ const App = () => {
 				/>
 				<ul className="todo-app__list" id="todo-list">
 					{todoList.map((e, index) => {
-						console.log(e);
+						// console.log(e);
 						return (
 							<Item
 								{...e}
