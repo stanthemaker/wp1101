@@ -13,7 +13,7 @@ import { calculate } from "./math";
 
 function App() {
 	const [input, setInput] = useState("");
-	// console.log("type input", typeof input);
+	// console.log("type input", typeof input);123
 	const AddtoInput = (char) => {
 		console.log("Adding char :", char);
 		setInput(input + char);
