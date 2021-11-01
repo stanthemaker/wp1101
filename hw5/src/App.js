@@ -68,7 +68,10 @@ function App() {
 	};
 	const handleMath = () => {
 		let ans = calculate(input);
-		console.log("ans", ans);
+		console.log("ans =", ans);
+		if (typeof ans === "number") {
+			ans = ans.toString();
+		}
 		setInput(ans);
 	};
 	console.log("current input = ", input);

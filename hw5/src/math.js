@@ -14,13 +14,10 @@ const calculate = (s) => {
 		if (s[i] >= "0" && s[i] <= "9") {
 			let buffer = "";
 			// There may be more than one digits in number
-			while (i < s.length) {
-				if ((s[i] >= "0" && s[i] <= "9") || s[i] === ".") {
-					buffer += s[i];
-				}
-				i++;
+			while (i < s.length && ((s[i] >= "0" && s[i] <= "9") || s[i] === ".")) {
+				buffer += s[i++];
 			}
-			console.log("buffer = ", buffer);
+			console.log("buffer = " + buffer);
 			values.push(parseFloat(buffer));
 			i--; // important
 		}
