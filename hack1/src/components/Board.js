@@ -82,6 +82,7 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 
 	const revealCell = (x, y) => {
 		/* -- TODO 4-1 -- */
+		console.log("x , y = ", x, y);
 		let tmp_board = board.slice();
 		// let tmp_num
 
@@ -105,21 +106,11 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 				setGameOver(true);
 				return;
 			}
-			// if (gameOver === true) {
-			// 	for (let j = 0; j < boardSize; j++) {
-			// 		for (let k = 0; k < boardSize; k++) {
-			// 			if (j == mineLocations[i][0] && k == mineLocations[i][1]) {
-			// 				tmp_board[j][k].revealed = true;
-			// 			}
-			// 		}
-			// 	}
-			// 	setBoard(tmp_board);
-			// 	return;
-			// }
 		}
 		//reveal box
-		setNonMineCount(nonMineCount - 1);
-		let tmp = revealed(tmp_board, x, y, nonMineCount);
+		let newnonMineCount = nonMineCount / 1;
+		// newnonMineCount += 1;
+		let tmp = revealed(tmp_board, x, y, newnonMineCount, boardSize);
 		tmp_board = tmp.board;
 		setBoard(tmp_board);
 		{
