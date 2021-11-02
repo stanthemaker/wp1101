@@ -19,7 +19,7 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 	const [nonMineCount, setNonMineCount] = useState(0); // An integer variable to store the number of cells whose value are not '💣'.
 	const [mineLocations, setMineLocations] = useState([]); // An array to store all the coordinate of '💣'.
 	const [gameOver, setGameOver] = useState(false); // A boolean variable. If true, means you lose the game (Game over).
-	const [remainFlagNum, setRemainFlagNum] = useState(0); // An integer variable to store the number of remain flags.
+	const [remainFlagNum, setRemainFlagNum] = useState(mineNum); // An integer variable to store the number of remain flags.
 	const [win, setWin] = useState(false); // A boolean variable. If true, means that you win the game.
 
 	useEffect(() => {
@@ -65,8 +65,8 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 		tmp_board[x][y].flagged = !tmp_board[x][y].flagged;
 		setBoard(tmp_board);
 		tmp_board[x][y].flagged === true
-			? setRemainFlagNum(remainFlagNum + 1)
-			: setRemainFlagNum(remainFlagNum - 1);
+			? setRemainFlagNum(remainFlagNum - 1)
+			: setRemainFlagNum(remainFlagNum + 1);
 		{
 			/* Useful Hint: A cell is going to be flagged. 'x' and 'y' are the xy-coordinate of the cell. */
 		}
