@@ -31,8 +31,7 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 	const freshBoard = () => {
 		{
 			/* -- TODO 3-1 -- */
-			// let tmp_board = createBoard(boardSize, mineNum).board;
-			let tmp = createBoard(10, 5);
+			let tmp = createBoard(boardSize, mineNum);
 			let tmp_board = tmp.board;
 			let tmp_mineLocations = tmp.mineLocations;
 			// let mineLocations = createBoard(10,5)

@@ -43,7 +43,7 @@ const MineSweeper = () => {
 			{!startGame ? (
 				<HomePage startGameOnClick={startGameOnClick} />
 			) : (
-				<Board />
+				<Board boardSize={boardSize} mineNum={mineNum} />
 			)}
 			{/* Reminder: You can refer to the structure file in p.6 of Hack1.pdf. */}
 		</div>
