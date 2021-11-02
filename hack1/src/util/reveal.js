@@ -19,6 +19,7 @@ export const revealed = (board, x, y, newNonMinesCount) => {
 	}
 	if (board[x][y].value !== 0) {
 		board[x][y].revealed = true;
+		console.log("x, y  is revealed", x, y);
 	}
 
 	{

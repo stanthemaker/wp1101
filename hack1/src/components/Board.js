@@ -16,7 +16,9 @@ import "./css/Board.css";
 
 const Board = ({ boardSize, mineNum, backToHome }) => {
 	const [board, setBoard] = useState([]); // An 2-dimentional array. It is used to store the board.
-	const [nonMineCount, setNonMineCount] = useState(0); // An integer variable to store the number of cells whose value are not '💣'.
+	const [nonMineCount, setNonMineCount] = useState(
+		boardSize * boardSize - mineNum
+	); // An integer variable to store the number of cells whose value are not '💣'.
 	const [mineLocations, setMineLocations] = useState([]); // An array to store all the coordinate of '💣'.
 	const [gameOver, setGameOver] = useState(false); // A boolean variable. If true, means you lose the game (Game over).
 	const [remainFlagNum, setRemainFlagNum] = useState(mineNum); // An integer variable to store the number of remain flags.
@@ -81,26 +83,45 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 	const revealCell = (x, y) => {
 		/* -- TODO 4-1 -- */
 		let tmp_board = board.slice();
+		// let tmp_num
 
 		if (win === true || gameOver === true) {
 			return;
 		}
 		for (let i = 0; i < mineNum; i++) {
 			if (x == mineLocations[i][0] && y == mineLocations[i][1]) {
-				setGameOver(true);
-			}
-			if (gameOver === true) {
+				// reveal all bomb
 				for (let j = 0; j < boardSize; j++) {
 					for (let k = 0; k < boardSize; k++) {
-						if (j == mineLocations[i][0] && k == mineLocations[i][1]) {
-							tmp_board[j][k].revealed = true;
+						for (let l = 0; l < mineNum; l++) {
+							if (j == mineLocations[l][0] && k == mineLocations[l][1]) {
+								tmp_board[j][k].revealed = true;
+								console.log("j,k are revealed", j, k);
+							}
 						}
 					}
 				}
+				setBoard(tmp_board);
+				setGameOver(true);
 				return;
 			}
+			// if (gameOver === true) {
+			// 	for (let j = 0; j < boardSize; j++) {
+			// 		for (let k = 0; k < boardSize; k++) {
+			// 			if (j == mineLocations[i][0] && k == mineLocations[i][1]) {
+			// 				tmp_board[j][k].revealed = true;
+			// 			}
+			// 		}
+			// 	}
+			// 	setBoard(tmp_board);
+			// 	return;
+			// }
 		}
-		tmp_board = revealed(tmp_board, x, y);
+		//reveal box
+		setNonMineCount(nonMineCount - 1);
+		let tmp = revealed(tmp_board, x, y, nonMineCount);
+		tmp_board = tmp.board;
+		setBoard(tmp_board);
 		{
 			/* Useful Hint: The function in reveal.js may be useful. You should consider if the cell you want to reveal is a location of mines or not. */
 		}
