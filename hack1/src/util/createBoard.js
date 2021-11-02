@@ -63,23 +63,67 @@ export default (boardSize, mineNum) => {
 				for (let i = 0; i < mineNum; i++) {
 					if (mineLocations[i][0] === x && mineLocations[i][1] === y) {
 						board[x][y].value = "💣";
-						// board[x][y + 1].value += 1;
+						// if (x !== 0) {
+						// 	board[x - 1][y].value += 1;
+						// }
+						// if (x != boardSize - 1) {
+						// 	board[x + 1][y].value += 1;
+						// }
+						// if (y !== 0) {
+						// 	board[x][y - 1].value += 1;
+						// }
+						// if (y !== boardSize - 1) {
+						// 	board[x][y + 1].value += 1;
+						// }
+					}
+				}
+				if (board[x][y].value === "💣") {
+					continue;
+				}
+				if (x !== 0) {
+					// top
+					if (board[x - 1][y].value === "💣") board[x][y].value += 1;
+
+					if (y !== 0) {
+						// left
+						if (board[x][y - 1].value === "💣") board[x][y].value += 1;
+						//top left
+						if (board[x - 1][y - 1].value === "💣") board[x][y].value += 1;
+					}
+					if (y !== boardSize - 1) {
+						//right
+						if (board[x][y + 1].value === "💣") board[x][y].value += 1;
+						//top right
+						if (board[x - 1][y + 1].value === "💣") board[x][y].value += 1;
+					}
+				}
+				if (x !== boardSize - 1) {
+					// bottom
+					if (board[x + 1][y].value === "💣") board[x][y].value += 1;
+					if (y !== 0) {
+						//buttom left
+						if (board[x + 1][y - 1].value === "💣") board[x][y].value += 1;
+					}
+					if (y !== boardSize - 1) {
+						//buttom right
+						if (board[x + 1][y + 1].value === "💣") board[x][y].value += 1;
 					}
 				}
 			}
 		}
-	}
-	{
-		/* Reminder: Some cells in the board do not have "Top" position, some do not have "Top-Right" position .... */
-	}
-	{
-		/* Warning: The value of any cell will not be bigger than 8 logically. */
-	}
-	{
-		/* Testing: printBoard() */
-		printBoard();
-		// console.log(printBoard());
-	}
 
-	return { board, mineLocations };
+		{
+			/* Reminder: Some cells in the board do not have "Top" position, some do not have "Top-Right" position .... */
+		}
+		{
+			/* Warning: The value of any cell will not be bigger than 8 logically. */
+		}
+		{
+			/* Testing: printBoard() */
+			// printBoard();
+			// console.log(printBoard());
+		}
+
+		return { board, mineLocations };
+	}
 };

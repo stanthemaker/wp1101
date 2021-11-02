@@ -31,6 +31,13 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 	const freshBoard = () => {
 		{
 			/* -- TODO 3-1 -- */
+			// let tmp_board = createBoard(boardSize, mineNum).board;
+			let tmp = createBoard(10, 5);
+			let tmp_board = tmp.board;
+			let tmp_mineLocations = tmp.mineLocations;
+			// let mineLocations = createBoard(10,5)
+			setBoard(tmp_board);
+			setMineLocations(tmp_mineLocations);
 		}
 		{
 			/* Useful Hint: createBoard(...) */
@@ -51,9 +58,16 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 		// To not have a dropdown on right click
 		e.preventDefault();
 		// Deep copy of a state
-		{
-			/* -- TODO 3-2 -- */
+		let tmp_board = board.slice();
+		/* -- TODO 3-2 -- */
+		if (tmp_board[x][y].revealed) {
+			return;
 		}
+		tmp_board[x][y].flagged = !tmp_board[x][y].flagged;
+		setBoard(tmp_board);
+		tmp_board[x][y].flagged === true
+			? setRemainFlagNum(remainFlagNum + 1)
+			: setRemainFlagNum(remainFlagNum - 1);
 		{
 			/* Useful Hint: A cell is going to be flagged. 'x' and 'y' are the xy-coordinate of the cell. */
 		}
@@ -66,12 +80,28 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 	};
 
 	const revealCell = (x, y) => {
-		{
-			/* -- TODO 4-1 -- */
+		/* -- TODO 4-1 -- */
+		let tmp_board = board.slice();
+
+		if (win === true || gameOver === true) {
+			return;
 		}
-		{
-			/* Reveal the cell */
+		for (let i = 0; i < mineNum; i++) {
+			if (x == mineLocations[i][0] && y == mineLocations[i][1]) {
+				setGameOver(true);
+			}
+			if (gameOver === true) {
+				for (let j = 0; j < boardSize; j++) {
+					for (let k = 0; k < boardSize; k++) {
+						if (j == mineLocations[i][0] && k == mineLocations[i][1]) {
+							tmp_board[j][k].revealed = true;
+						}
+					}
+				}
+				return;
+			}
 		}
+		tmp_board = revealed(tmp_board, x, y);
 		{
 			/* Useful Hint: The function in reveal.js may be useful. You should consider if the cell you want to reveal is a location of mines or not. */
 		}
@@ -79,7 +109,9 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 			/* Reminder: Also remember to handle the condition that after you reveal this cell then you win the game. */
 		}
 	};
-	createBoard(10, 5);
+	console.log("board = ", board);
+	console.log("minelocation =", mineLocations);
+
 	return (
 		<div className="boardPage">
 			<div className="boardWrapper">
@@ -88,7 +120,22 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
 				{/* -- TODO 3-1 -- */}
 				{/* Useful Hint: The board is composed of BOARDSIZE*BOARDSIZE of Cell (2-dimention). So, nested 'map' is needed to implement the board.  */}
 				{/* Reminder: Remember to use the component <Cell> and <Dashboard>. See Cell.js and Dashboard.js for detailed information. */}
-				<div className="boardContainer"></div>
+				<div className="boardContainer">
+					<Dashboard remainFlagNum={remainFlagNum} />
+					{board.map((r, rowIdx) => (
+						<div id={"row" + rowIdx} style={{ display: "flex" }}>
+							{r.map((e, colIdx) => (
+								<Cell
+									rowIdx={rowIdx}
+									colIdx={colIdx}
+									detail={e}
+									updateFlag={updateFlag}
+									revealCell={revealCell}
+								/>
+							))}
+						</div>
+					))}
+				</div>
 				{/* {createBoard()} */}
 			</div>
 		</div>
