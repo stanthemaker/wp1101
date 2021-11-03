@@ -96,12 +96,16 @@ function App() {
 
 		let ans = calculate(input);
 		console.log("ans =", ans);
-		if (typeof ans === "number") {
-			ans = ans.toString();
+		if (ans === "Syntax error") {
+			setInput("Syntax error");
+			return;
 		}
 		if (ans === "Infinity") {
 			setInput("Divided by Zero");
 			return;
+		}
+		if (typeof ans === "number") {
+			ans = ans.toString();
 		}
 		setInput(ans);
 	};

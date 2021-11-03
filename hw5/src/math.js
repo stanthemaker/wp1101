@@ -85,6 +85,20 @@ const calculate = (expression) => {
 		// Closing brace encountered,
 		// solve entire brace
 		else if (tokens[i] == ")") {
+			//check if there exist correspond (
+			let found = false;
+			let count = 0;
+			while (count < ops.length) {
+				if (ops[count] === "(") {
+					found = true;
+					break;
+				}
+				count++;
+			}
+			if (!found) {
+				return "Syntax error";
+			}
+
 			while (ops[ops.length - 1] != "(") {
 				let result = applyOp(ops.pop(), values.pop(), values.pop());
 				if (result === Infinity) return Infinity;
