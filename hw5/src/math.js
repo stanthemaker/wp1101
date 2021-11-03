@@ -17,21 +17,20 @@ const calculate = (expression) => {
 	function applyOp(op, b, a) {
 		switch (op) {
 			case "+":
-				if (a === undefined) {
-					return b;
-				}
+				if (a === undefined) return b;
+
 				return a + b;
 			case "-":
 				// console.log("a,b = ", a, b);
-				if (a === undefined) {
-					return -b;
-				}
+				if (a === undefined) return -b;
+
 				return a - b;
 			case "*":
 				return a * b;
 			case "/":
 				if (b == 0) {
-					document.write("Cannot divide by zero");
+					return Infinity;
+					throw "Cannot divide by zero";
 				}
 				return parseFloat(a / b, 10);
 		}
@@ -58,21 +57,11 @@ const calculate = (expression) => {
 
 			// There may be more than
 			// one digits in number
-			const validValue = [
-				"0",
-				"1",
-				"2",
-				"3",
-				"4",
-				"5",
-				"6",
-				"7",
-				"8",
-				"9",
-				".",
-			];
-			// while (i < tokens.length && tokens[i] >= "0" && tokens[i] <= "9") {
-			while (i < tokens.length && validValue.includes(tokens[i])) {
+
+			while (
+				i < tokens.length &&
+				((tokens[i] >= "0" && tokens[i] <= "9") || tokens[i] == ".")
+			) {
 				sbuf = sbuf + tokens[i++];
 			}
 			values.push(parseFloat(sbuf, 10));
@@ -97,7 +86,10 @@ const calculate = (expression) => {
 		// solve entire brace
 		else if (tokens[i] == ")") {
 			while (ops[ops.length - 1] != "(") {
-				values.push(applyOp(ops.pop(), values.pop(), values.pop()));
+				let result = applyOp(ops.pop(), values.pop(), values.pop());
+				if (result === Infinity) return Infinity;
+
+				values.push(result);
 			}
 			ops.pop();
 		}

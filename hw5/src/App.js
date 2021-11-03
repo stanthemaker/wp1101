@@ -67,10 +67,41 @@ function App() {
 		}
 	};
 	const handleMath = () => {
+		//check Valid
+		const validInput = [
+			"0",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"(",
+			")",
+			"+",
+			"-",
+			"*",
+			"/",
+			".",
+		];
+		for (let i = 0; i < input.length; i++) {
+			if (!validInput.includes(input[i])) {
+				setInput("Invalid Input");
+				return;
+			}
+		}
+
 		let ans = calculate(input);
 		console.log("ans =", ans);
 		if (typeof ans === "number") {
 			ans = ans.toString();
+		}
+		if (ans === "Infinity") {
+			setInput("Divided by Zero");
+			return;
 		}
 		setInput(ans);
 	};
