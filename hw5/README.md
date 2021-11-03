@@ -1,3 +1,5 @@
+my calculator is refered to ordinary scientific calculators
+
 keyboard input is allowed.
 
 input rules are refered to scientific calculators, which allows user to input a
@@ -8,3 +10,5 @@ backspace => delete a character
 enter => execute calculation
 
 basic arithmetic operations are supported
+
+only achieve basic requirements
