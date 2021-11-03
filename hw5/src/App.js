@@ -9,7 +9,7 @@ import {
 	Row5,
 	Row6,
 } from "./components/Rows";
-import { calculate } from "./math";
+import calculate from "./math";
 
 function App() {
 	const [input, setInput] = useState("");
