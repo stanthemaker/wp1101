@@ -1,4 +1,5 @@
 import "./App.css";
+import axios from "axios";
 import React, { useState } from "react";
 import { guess, startGame, restart } from "./axios";
 
@@ -15,7 +16,6 @@ function App() {
 					() => {
 						startGame();
 						setHasStarted(true);
-						console.log("has started", hasStarted);
 					}
 					// someFunctionToBackend; and setHasStarted
 				}
@@ -29,9 +29,16 @@ function App() {
 		<>
 			<p>Guess a number between 1 to 100</p>
 			<input // Get the value from input
+				onChange={(e) => {
+					const value = e.target.value; // type value = string
+					setNumber(value);
+				}}
 			></input>
 			<button // Send number to backend
-				// onClick={handleGuess}
+				onClick={async () => {
+					let newStatus = await guess(number);
+					newStatus === "Equal" ? setHasWon(true) : setStatus(newStatus);
+				}}
 				disabled={!number}
 			>
 				guess!
@@ -39,11 +46,16 @@ function App() {
 			<p>{status}</p>
 		</>
 	);
-
 	const winningMode = (
 		<>
 			<p>you won! the number was {number}.</p>
 			<button // Handle restart for backend and frontend
+				onClick={async () => {
+					setHasWon(false);
+					setNumber("");
+					setStatus("");
+					restart();
+				}}
 			>
 				restart
 			</button>

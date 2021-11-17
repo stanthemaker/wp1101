@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-
+const lib = require("../core/getNumber");
 router.post("/", (_, res) => {
-	genNumber(); // 用亂數產生一個猜數字的 number
-	res.json({ msg: "The game has started." });
+	let ans = lib.genNumber();
+	res.json({ msg: "The game has started!" ,data: ans });
 });
 
 module.exports = router;
