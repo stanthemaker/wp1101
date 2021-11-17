@@ -52,7 +52,7 @@ function App() {
 
 	const game = <div>{hasWon ? winningMode : gameMode} </div>;
 
-	return <div className="App"> {hasStarted ? game : startMenu}</div>;
+	return <div className="App">{hasStarted ? game : startMenu}</div>;
 }
 
 export default App;
