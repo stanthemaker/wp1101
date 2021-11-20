@@ -16,6 +16,7 @@ function App() {
 					() => {
 						startGame();
 						setHasStarted(true);
+						console.log("Game started");
 					}
 					// someFunctionToBackend; and setHasStarted
 				}
