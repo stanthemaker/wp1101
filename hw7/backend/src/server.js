@@ -3,10 +3,12 @@ const dotenv = require("dotenv-defaults");
 const User = require("./models/user.js");
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+mongoose
+	.connect(process.env.MONGO_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then((res) => console.log("mongo db connection established"));
 
 const saveUser = async (id, name) => {
 	const existing = await User.findOne({ name });

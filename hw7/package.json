@@ -1,14 +1,10 @@
 {
-	"name": "hw7",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "cd frontend && npm start",
-		"server": "cd backend && node serve && node server.js"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+  "name": "hw7",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+	"start": "cd frontend && yarn start",
+	"server": "cd backend && yarn server"
+	}
 }
