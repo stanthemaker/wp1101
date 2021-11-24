@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-const UserSchema = new Schema({
-	id: Number, // Number is shorthand for {type: Number}
-	name: String,
+const ScoreCardSchema = new Schema({
+	Name: String,
+	Subject: String,
+	Score: Number,
 });
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("ScoreCard", ScoreCardSchema);
 
 module.exports = User;
