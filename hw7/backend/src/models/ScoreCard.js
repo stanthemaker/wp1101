@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 const ScoreCardSchema = new Schema({
-	Name: String,
-	Subject: String,
-	Score: Number,
+	name: String,
+	subject: String,
+	score: Number,
 });
 const User = mongoose.model("ScoreCard", ScoreCardSchema);
 
