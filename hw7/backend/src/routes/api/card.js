@@ -14,3 +14,9 @@ exports.createScoreCard = async (req, res) => {
 	// 	}
 	// });
 };
+exports.qeueryScoreCard = async (req, res, next) => {
+	const query_type = req.params.query_type;
+	const queryString = req.params.queryString;
+	// ScoreCard.find
+	console.log("query = " + query);
+};
