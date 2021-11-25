@@ -1,8 +1,7 @@
-const express = require("express");
-const router = express.Router();
+const ScoreCard = require("../../models/ScoreCard.js");
 
-router.get("/", (req, res) => {
-	res.send("GET HTTP method on /api/queryCard");
-});
-
-module.exports = router;
+exports.qeueryScoreCard = async (req, res, next) => {
+	let query = req.params.query;
+	// ScoreCard.find
+	console.log("query = " + query);
+};
