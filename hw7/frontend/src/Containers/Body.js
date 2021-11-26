@@ -68,16 +68,21 @@ const Body = () => {
 
 	const handleQuery = async () => {
 		const {
-			data: { messages, message },
+			data: { messages },
 		} = await axios.get("/api/query-cards", {
 			params: {
 				type: queryType,
 				queryString,
 			},
 		});
-
-		if (!messages) addErrorMessage(message);
-		else addRegularMessage(...messages);
+		console.log("messages :", messages);
+		// if (!messages) addRegularMessage(`${queryType} (${queryString}) not found`);
+		if (!messages.length)
+			addRegularMessage(`${queryType} (${queryString}) not found!`);
+		else {
+			//sending mes with new lines
+			addRegularMessage(...messages);
+		}
 	};
 
 	return (

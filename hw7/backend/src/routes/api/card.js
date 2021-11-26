@@ -49,14 +49,19 @@ exports.qeueryScoreCard = async (req, res) => {
 	let query = {};
 	query[query_type] = queryString;
 	let result = {};
-	const temp = await ScoreCard.find(query).exec((err, r) => {
+	ScoreCard.find(query).exec((err, r) => {
 		if (err) {
-			console.log("find user by id gg");
+			console.log("what is err", err);
 		} else {
-			console.log("r = " + r);
-			result = r;
+			// console.log("r = " + r.name);
+			let message = [];
+			for (let i = 0; i < r.length; i++) {
+				message[
+					i
+				] = `name:${r[i].name}, subject:${r[i].subject}, score:${r[i].score}`;
+			}
+			res.status(200).send({ messages: message });
 		}
 	});
-	console.log("result = " + result);
-	return;
+	// console.log("result = " + result);
 };
