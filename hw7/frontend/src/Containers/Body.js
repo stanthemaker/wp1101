@@ -78,7 +78,7 @@ const Body = () => {
 		console.log("messages :", messages);
 		// if (!messages) addRegularMessage(`${queryType} (${queryString}) not found`);
 		if (!messages.length)
-			addRegularMessage(`${queryType} (${queryString}) not found!`);
+			addErrorMessage(`${queryType} (${queryString}) not found!`);
 		else {
 			//sending mes with new lines
 			addRegularMessage(...messages);

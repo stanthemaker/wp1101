@@ -6,6 +6,6 @@ const ScoreCardSchema = new Schema({
 	subject: String,
 	score: Number,
 });
-const User = mongoose.model("ScoreCard", ScoreCardSchema);
+const ScoreCard = mongoose.model("ScoreCard", ScoreCardSchema);
 
-module.exports = User;
+module.exports = ScoreCard;
