@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, uesEffect } from "react";
 const useChat = () => {
 	const [messages, setMessages] = useState([]);
 	const [status, setStatus] = useState({});
@@ -20,6 +20,14 @@ const useChat = () => {
 				setStatus(payload);
 				break;
 			}
+			case "init": {
+				setMessages(() => payload);
+				break;
+			}
+			case "cleared": {
+				setMessages([]);
+				break;
+			}
 			default:
 				break;
 		}
@@ -28,10 +36,15 @@ const useChat = () => {
 		console.log("playload :", payload);
 		sendData(["input", payload]);
 	};
+	const clearMessages = () => {
+		sendData(["clear"]);
+	};
+
 	return {
 		status,
 		messages,
 		sendMessage,
+		clearMessages,
 	};
 };
 

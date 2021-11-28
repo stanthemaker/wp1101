@@ -6,7 +6,7 @@ const WebSocket = require("ws");
 const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");
-const { sendData, sendStatus } = require("./wssConnect");
+const { sendData, sendStatus, initData } = require("./wssConnect");
 const db = require("./mongo.js");
 const Message = require("./models/messages.js");
 
@@ -18,11 +18,10 @@ const port = process.env.PORT || 4000;
 db.once("open", () => {
 	console.log("db on");
 	wss.on("connection", (ws) => {
+		initData(ws);
 		ws.onmessage = async (byteString) => {
 			const { data } = byteString;
 			const [task, payload] = JSON.parse(data);
-			console.log("data = " + data);
-			console.log("payload = " + payload.name);
 			switch (task) {
 				case "input":
 					{
@@ -36,6 +35,14 @@ db.once("open", () => {
 						sendData(["output", [payload]], ws);
 					}
 					break;
+				case "clear": {
+					Message.deleteMany({}, () => {
+						sendData(["cleared"], ws);
+						sendStatus({ type: "info", msg: "Message cache cleared." }, ws);
+					});
+					break;
+				}
+
 				default:
 					break;
 			}
