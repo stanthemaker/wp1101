@@ -14,4 +14,4 @@ const MessageSchema = new Schema({
 // Creating a table within database with the defined schema
 const Message = mongoose.model("message", MessageSchema);
 // Exporting table for querying and mutating
-export default Message;
+module.exports = Message;
