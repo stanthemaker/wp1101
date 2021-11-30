@@ -18,3 +18,7 @@
 "scripts": {
 "server": "nodemon server.js --ext js --exec babel-node"
 },
+
+# add in ./backend/package.json
+
+"type": "module"
