@@ -29,4 +29,5 @@ const getCompanyFigures = async (company) => {
 	return formula(PE, RoE);
 };
 
-console.log("score :", await getCompanyFigures("AAPL"));
+// console.log("score :", await getCompanyFigures("AAPL"));
+export default getCompanyFigures;
