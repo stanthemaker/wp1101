@@ -1,16 +1,21 @@
 import { useState, uesEffect } from "react";
+const client = new WebSocket("ws://localhost:4000");
+const sendData = async (data) => {
+	await client.send(JSON.stringify(data));
+};
 const useChat = () => {
 	const [messages, setMessages] = useState([]);
 	const [status, setStatus] = useState({});
-	const client = new WebSocket("ws://localhost:4000");
-	const sendData = async (data) => {
-		const message = await JSON.stringify(data);
-		console.log("data sent from client:", message);
-		await client.send(message);
+	const sendMessage = (payload) => {
+		sendData(["input", payload]);
+	};
+	const clearMessages = () => {
+		sendData(["clear"]);
 	};
 	client.onmessage = (byteString) => {
 		const { data } = byteString;
 		const [task, payload] = JSON.parse(data);
+		console.log("client received task :", task, ",  playload :", payload);
 		switch (task) {
 			case "output": {
 				setMessages(() => [...messages, ...payload]);
@@ -31,13 +36,6 @@ const useChat = () => {
 			default:
 				break;
 		}
-	};
-	const sendMessage = (payload) => {
-		console.log("playload :", payload);
-		sendData(["input", payload]);
-	};
-	const clearMessages = () => {
-		sendData(["clear"]);
 	};
 
 	return {

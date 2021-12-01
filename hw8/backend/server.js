@@ -15,13 +15,22 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 const port = process.env.PORT || 4000;
+const broadcastMessage = (data, status) => {
+	wss.clients.forEach((client) => {
+		sendData(data, client);
+		sendStatus(status, client);
+	});
+};
+
 db.once("open", () => {
 	console.log("db on");
 	wss.on("connection", (ws) => {
 		initData(ws);
+		console.log("wss.on triggered");
 		ws.onmessage = async (byteString) => {
 			const { data } = byteString;
 			const [task, payload] = JSON.parse(data);
+			console.log("wss received task :", task, ",  playload :", payload);
 			switch (task) {
 				case "input":
 					{
@@ -32,13 +41,20 @@ db.once("open", () => {
 						} catch (e) {
 							throw new Error("Message DB save failed: " + e);
 						}
-						sendData(["output", [payload]], ws);
+						broadcastMessage(["output", [payload]], {
+							type: "success",
+							msg: "Message sent",
+						});
 					}
 					break;
 				case "clear": {
 					Message.deleteMany({}, () => {
-						sendData(["cleared"], ws);
-						sendStatus({ type: "info", msg: "Message cache cleared." }, ws);
+						broadcastMessage(["cleared", [payload]], {
+							type: "info",
+							msg: "Message cache cleared.",
+						});
+						// sendData(["cleared"], ws);
+						// sendStatus({ type: "info", msg: "Message cache cleared." }, ws);
 					});
 					break;
 				}
