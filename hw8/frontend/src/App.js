@@ -1,9 +1,11 @@
 import "./App.css";
 import { Button, Input, Tag, message } from "antd";
+import { UserOutlined, AudioOutlined } from "@ant-design/icons";
 import useChat from "./useChat";
 import { useState, useEffect, useRef } from "react";
 
 function App() {
+	const [signIn, setSignIn] = useState(false);
 	const { status, messages, sendMessage, clearMessages } = useChat();
 	const [username, setUsername] = useState("");
 	const [body, setBody] = useState(""); // textBody
@@ -27,14 +29,39 @@ function App() {
 			}
 		}
 	};
+	const handleSignIn = (user) => {
+		if (!user) {
+			displayStatus({ type: "error", msg: "please input username" });
+			return;
+		}
+		setSignIn(true);
+	};
 	useEffect(() => {
 		displayStatus(status);
 	}, [status]);
-
-	return (
+	const signInPage = (
 		<div className="App">
 			<div className="App-title">
-				<h1>Simple Chat</h1>
+				<h1>My Chatroom</h1>
+			</div>
+			{
+				<Input.Search
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+					prefix={<UserOutlined />}
+					enterButton="Sign in"
+					placeholder="username:"
+					onSearch={(username) => {
+						handleSignIn(username);
+					}}
+				/>
+			}
+		</div>
+	);
+	const ChatRoom = (
+		<div className="App">
+			<div className="App-title">
+				<h1>{username}'s Chat Room</h1>
 				<Button type="primary" danger onClick={clearMessages}>
 					Clear
 				</Button>
@@ -50,18 +77,6 @@ function App() {
 					))
 				)}
 			</div>
-
-			<Input
-				placeholder="Username"
-				value={username}
-				onChange={(e) => setUsername(e.target.value)}
-				style={{ marginBottom: 10 }}
-				onKeyDown={(e) => {
-					if (e.key === "Enter") {
-						bodyRef.current.focus();
-					}
-				}}
-			></Input>
 			<Input.Search
 				value={body}
 				ref={bodyRef}
@@ -69,20 +84,20 @@ function App() {
 				enterButton="Send"
 				placeholder="Type a message here..."
 				onSearch={(msg) => {
-					if (!msg || !username) {
+					if (!msg) {
 						displayStatus({
 							type: "error",
-							msg: "Please enter a username and a message body.",
+							msg: "Please enter some messages.",
 						});
 						return;
 					}
-
 					sendMessage({ name: username, body: msg });
 					setBody("");
 				}}
 			></Input.Search>
 		</div>
 	);
+	return <>{signIn ? ChatRoom : signInPage}</>;
 }
 
 export default App;

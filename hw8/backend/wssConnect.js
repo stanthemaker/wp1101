@@ -1,4 +1,5 @@
 const Message = require("./models/messages.js");
+const { getUsername, updateUsername } = require("./usernameStorage");
 const sendData = (data, ws) => {
 	ws.send(JSON.stringify(data));
 };
@@ -18,5 +19,9 @@ const initData = (ws) => {
 			sendData(["init", res], ws);
 		});
 };
+// const defaultUsername = (ws) => {
+// 	console.log(" defaultUsername is called");
+// 	sendData(["defaultUsername",])
+// };
 
 export { initData, sendData, sendStatus };
