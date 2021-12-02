@@ -9,6 +9,7 @@ const cors = require("cors");
 const { sendData, sendStatus, initData } = require("./wssConnect");
 const db = require("./mongo.js");
 const Message = require("./models/messages.js");
+const { getDefaultName, updateDefaultName } = require("./usernameStorage");
 
 const app = express();
 const server = http.createServer(app);
@@ -26,7 +27,8 @@ db.once("open", () => {
 	console.log("db on");
 	wss.on("connection", (ws) => {
 		initData(ws);
-		console.log("wss.on triggered");
+		const defaultName = getDefaultName();
+		sendData(["defaultName", { name: defaultName }], ws);
 		ws.onmessage = async (byteString) => {
 			const { data } = byteString;
 			const [task, payload] = JSON.parse(data);
@@ -58,7 +60,15 @@ db.once("open", () => {
 					});
 					break;
 				}
-
+				case "defaultName": {
+					const defaultName = payload.name;
+					// broadcastMessage(["status", [payload]], {
+					// 	type: "success",
+					// 	msg: "default username has been set",
+					// });
+					updateDefaultName(defaultName);
+					break;
+				}
 				default:
 					break;
 			}

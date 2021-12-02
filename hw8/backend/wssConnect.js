@@ -1,14 +1,11 @@
 const Message = require("./models/messages.js");
-const { getUsername, updateUsername } = require("./usernameStorage");
 const sendData = (data, ws) => {
 	ws.send(JSON.stringify(data));
 };
-
 const sendStatus = (payload, ws) => {
 	sendData(["status", payload], ws);
 };
 const initData = (ws) => {
-	console.log(" initData is called");
 	Message.find()
 		.sort({ created_at: -1 })
 		.limit(100)
@@ -18,6 +15,7 @@ const initData = (ws) => {
 			// console.log("sending data:", res);
 			sendData(["init", res], ws);
 		});
+	console.log(" initData finished");
 };
 // const defaultUsername = (ws) => {
 // 	console.log(" defaultUsername is called");

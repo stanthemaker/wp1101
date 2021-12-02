@@ -3,13 +3,26 @@ import { Button, Input, Tag, message } from "antd";
 import { UserOutlined, AudioOutlined } from "@ant-design/icons";
 import useChat from "./useChat";
 import { useState, useEffect, useRef } from "react";
-
+// let defaultUsername = "";
+// const updateUsername = (newUsername) => {
+// 	defaultUsername = newUsername;
+// };
 function App() {
 	const [signIn, setSignIn] = useState(false);
-	const { status, messages, sendMessage, clearMessages } = useChat();
-	const [username, setUsername] = useState("");
+	const {
+		status,
+		messages,
+		defaultName,
+		sendMessage,
+		clearMessages,
+		updateDefaultName,
+	} = useChat();
+	const [username, setUsername] = useState(""); //why....? useState("defaultName");
 	const [body, setBody] = useState(""); // textBody
 	const bodyRef = useRef(null);
+	useEffect(() => {
+		setUsername(defaultName);
+	}, [defaultName]); //note that defaultName will only be changed once for each client
 
 	const displayStatus = (payload) => {
 		if (payload.msg) {
@@ -34,6 +47,7 @@ function App() {
 			displayStatus({ type: "error", msg: "please input username" });
 			return;
 		}
+		updateDefaultName(user);
 		setSignIn(true);
 	};
 	useEffect(() => {
@@ -46,6 +60,7 @@ function App() {
 			</div>
 			{
 				<Input.Search
+					// value={!username ? defaultName : username}
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					prefix={<UserOutlined />}

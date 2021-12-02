@@ -1,8 +1,8 @@
-let username;
+let username = "";
 
-const getUsername = () => username;
-const updateUsername = (newusername) => {
+const getDefaultName = () => username;
+const updateDefaultName = (newusername) => {
 	username = newusername;
 	return;
 };
-module.exports = { getUsername, updateUsername };
+module.exports = { getDefaultName, updateDefaultName };
