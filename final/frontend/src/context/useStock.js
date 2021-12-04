@@ -1,5 +1,7 @@
-import react from 'react'
+import React from 'react';
 
 const useStock = ()=>{
-    console.log(hi)
+    console.log("THIS IS general useContext")
 }
+
+export default useStock;
