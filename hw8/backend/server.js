@@ -1,15 +1,12 @@
 // import http, express, doting, mongoose, WebSocket... etc
 const http = require("http");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv-defaults");
 const WebSocket = require("ws");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const express = require("express");
-const cors = require("cors");
+// const cors = require("cors");
 const { sendData, sendStatus, initData } = require("./wssConnect");
 const db = require("./mongo.js");
 const Message = require("./models/messages.js");
-const { getDefaultName, updateDefaultName } = require("./usernameStorage");
 
 const app = express();
 const server = http.createServer(app);
@@ -26,9 +23,8 @@ const broadcastMessage = (data, status) => {
 db.once("open", () => {
 	console.log("db on");
 	wss.on("connection", (ws) => {
+		console.log("wss connection");
 		initData(ws);
-		const defaultName = getDefaultName();
-		sendData(["defaultName", { name: defaultName }], ws);
 		ws.onmessage = async (byteString) => {
 			const { data } = byteString;
 			const [task, payload] = JSON.parse(data);
@@ -58,15 +54,6 @@ db.once("open", () => {
 						// sendData(["cleared"], ws);
 						// sendStatus({ type: "info", msg: "Message cache cleared." }, ws);
 					});
-					break;
-				}
-				case "defaultName": {
-					const defaultName = payload.name;
-					// broadcastMessage(["status", [payload]], {
-					// 	type: "success",
-					// 	msg: "default username has been set",
-					// });
-					updateDefaultName(defaultName);
 					break;
 				}
 				default:
