@@ -9,4 +9,9 @@
 
 ./frontend:
 
-> yarn add antd styled-components
+> yarn add antd styled-components react-router-dom
+
+./simple-password
+
+> yarn add -D @babel/node @babel/core @babel/preset-env
+> yarn add bcrypt
