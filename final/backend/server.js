@@ -22,6 +22,11 @@ db.once("open", () => {
 	console.log("db on");
 	wss.on("connection", (ws) => {
 		console.log("wss connected!");
+		const { data } = byteString;
+		const [task, payload] = JSON.parse(data);
+		console.log("wss received task :", task, ",  playload :", payload);
+		// switch (task) {
+		// }
 	});
 	server.listen(port, () => {
 		console.log(`Server is up on port ${port}.`);
