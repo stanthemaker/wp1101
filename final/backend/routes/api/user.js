@@ -5,27 +5,38 @@ const User = require("../../models/user.js");
 const saltRounds = 10;
 
 exports.login = async (req, res) => {
-	data = req.body;
-	const name = data.name;
-	const user = await Stock.findOne({ name: name });
-	console.log("find user: ?", user);
-	const password = user.profile.password;
+	console.log("req.query: ", req.query);
+	const name = req.query.name;
+	const user = await User.findOne({ "profile.name": `${name}` });
+	console.log("found doc:", user);
+	if (!user) {
+		console.log("not found");
+		res.status(404).send({ message: "unregistered" });
+		return;
+	}
 	try {
-		const hashPassword = await bcrypt.hash(data.password, saltRounds);
-		const checked = bcrypt.compare(hashPassword, password);
+		const inputPassword = req.query.password;
+		const password = user.profile.password;
+		const checked = await bcrypt.compare(inputPassword, password);
 		checked
-			? res.status(200).redirect("stockalender/home")
-			: res.status(403).send({ message: "password mismatch" });
+			? res.status(200).send({ message: "login success" })
+			: // .redirect("stockalender/home")
+			  res.status(403).send({ message: "wrong password" });
+		return;
 	} catch (e) {
-		throw new Error("login error: " + e);
+		res.status(500).send({ message: "login failed" });
 	}
 };
+// curl -X POST http://localhost:4000/stockalendar/register \ -H 'Content-Type:application/json' \ -d '{"name":"stan", "password":"1234" }'
 exports.register = async (req, res) => {
-	data = req.body;
-	const name = data.name;
-	const password = data.password;
-	const existed = await Stock.findOne({ name: name });
-	if (existing) res.staus(409).send({ message: "Username already used" });
+	console.log("req.body:", req.body);
+	const name = req.body.name;
+	const password = req.body.password;
+	const existed = await User.findOne({ name: name });
+	if (existed) {
+		res.status(409).send({ message: "Username already used" });
+		return;
+	}
 	try {
 		const hashPassword = await bcrypt.hash(password, saltRounds);
 		const user = {
@@ -39,7 +50,11 @@ exports.register = async (req, res) => {
 		console.log("new User: " + newUser);
 		const newUser = new User(user);
 		newUser.save();
-		res.status(200).redirect("stockalender/login");
+		res
+			.status(200)
+			.send({ message: "register success" })
+			.redirect("stockalender/login");
+		return;
 	} catch (e) {
 		throw new Error("register error: " + e);
 	}

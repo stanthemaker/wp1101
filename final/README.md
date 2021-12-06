@@ -2,8 +2,14 @@
 
 ./backend
 
+<!-- > yarn install  -->
+
 > yarn add cors express nodemon mongoose node-fetch bcrypt
 > yarn add -D @babel/cli @babel/core @babel/node @babel/preset-env @babel/plugin-proposal-class-properties @babel/plugin-proposal-object-rest-spread @babel/plugin-transform-arrow-functions dotenv-defaults mongoose
+
+./frontend
+
+<!-- > yarn install  -->
 
 ## 下面的不用做
 
@@ -20,7 +26,3 @@
 "scripts": {
 "server": "nodemon server.js --ext js --exec babel-node"
 },
-
-# add in ./backend/package.json
-
-"type": "module"

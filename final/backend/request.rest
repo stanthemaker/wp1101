@@ -1,0 +1,9 @@
+GET  http://localhost:4000/stockalendar/login?name=stan&password=1234
+
+POST http://localhost:4000/stockalendar/register
+Content-Type: application/json
+
+{
+    "name":"stan",
+    "password":"1234"
+}
