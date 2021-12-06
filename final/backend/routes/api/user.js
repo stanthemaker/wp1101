@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
 	const name = data.name;
 	const password = data.password;
 	const existed = await Stock.findOne({ name: name });
-	if (existing) res.staus(409).send({ message: "Username already used" });
+	if (existed) res.staus(409).send({ message: "Username already used" });
 	try {
 		const hashPassword = await bcrypt.hash(password, saltRounds);
 		const user = {
