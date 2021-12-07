@@ -23,10 +23,21 @@ function Post(props) {
 	};
 
 	// TODO 5-(2): complete delPost function to delete a post from database
+	const delReq = async () => {
+		const {
+			data: { message, post },
+		} = await instance.delete("/post", {
+			params: {
+				pid: pid,
+			},
+		});
+		console.log("message", message);
+	};
 	const delPost = () => {
+		delReq();
 		setTimeout(() => {
 			props.navigate(-1);
-		}, 300);
+		}, 400);
 	};
 
 	// TODO 3-(2): fetch the full information of a post from database
@@ -57,6 +68,7 @@ function Post(props) {
 							className="post-delete"
 							size="small"
 							id="pid-detail-del-btn"
+							onClick={delPost}
 						>
 							<DeleteIcon fontSize="inherit" />
 						</IconButton>

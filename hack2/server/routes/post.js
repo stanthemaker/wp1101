@@ -43,9 +43,19 @@ router.post("/newPost", async (req, res) => {
 		newPost.save(data);
 		res.status(200).send({ message: "success" });
 	} catch (e) {
-		res.status(403).send({ message: "errors", post: null });
+		res.status(403).send({ message: "error", post: null });
 	}
 });
 // TODO 5-(1): create the 4th API (/api/post)
+router.delete("/post", async (req, res) => {
+	const requestPid = req.query.pid;
+	console.log("requestPid", requestPid);
+	try {
+		await Post.deleteOne({ postId: requestPid });
+		res.status(200).send({ message: "success" });
+	} catch (e) {
+		res.status(403).send({ message: "error", post: null });
+	}
+});
 
 export default router;

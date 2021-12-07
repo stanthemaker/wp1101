@@ -36,9 +36,9 @@ const db = mongoose.connection;
 db.on("error", (err) => console.log(err));
 db.once("open", async () => {
 	console.log("mongo db connection established");
+
 	app.use("/api", postRoute);
 	// if (process.env.MODE === "EXAM") {
-	// 	console.log("sample data");
 	// 	dataInit();
 	// }
 
