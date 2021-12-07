@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.env
+
 # dependencies
 /node_modules
 /.pnp
@@ -10,6 +12,13 @@
 
 # production
 /build
+
+# cypress
+/cypress/fixtures
+/cypress/plugins
+/cypress/support
+/cypress/screenshots
+/cypress/videos
 
 # misc
 .DS_Store
