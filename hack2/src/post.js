@@ -11,12 +11,16 @@ function Post(props) {
 	const [data, setData] = useState(null);
 
 	// TODO 3-(2): complete getPostDetail function to get the full information of a post from database
-	const getPostDetail = () => {
-		console.log("getting detail");
+	const getPostDetail = async () => {
 		const {
-			data: { message, data },
-		} = await instance.get("/postDetail");
-		setData(data);
+			data: { message, post },
+		} = await instance.get("/postDetail", {
+			params: {
+				pid: pid,
+			},
+		});
+		console.log(post);
+		setData(post);
 	};
 
 	// TODO 5-(2): complete delPost function to delete a post from database

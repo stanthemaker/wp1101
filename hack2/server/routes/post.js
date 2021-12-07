@@ -20,6 +20,19 @@ router.get("/allPosts", async (req, res) => {
 			}
 		});
 });
+router.get("/postDetail", async (req, res) => {
+	const requestPid = req.query.pid;
+	try {
+		const post = await Post.findOne({ postId: requestPid });
+		if (!post) {
+			res.status(403).send({ message: "error", post: null });
+			return;
+		}
+		res.status(200).send({ message: "success", post: post });
+	} catch (e) {
+		res.status(403).send({ message: "error", post: null });
+	}
+});
 // const initData = (ws) => {
 // 	Message.find()
 // 		.sort({ created_at: -1 })
