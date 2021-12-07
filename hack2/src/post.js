@@ -19,7 +19,6 @@ function Post(props) {
 				pid: pid,
 			},
 		});
-		console.log(post);
 		setData(post);
 	};
 

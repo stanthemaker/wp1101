@@ -20,6 +20,7 @@ router.get("/allPosts", async (req, res) => {
 			}
 		});
 });
+// TODO 3-(1): create the 2nd API (/api/postDetail)
 router.get("/postDetail", async (req, res) => {
 	const requestPid = req.query.pid;
 	try {
@@ -33,22 +34,18 @@ router.get("/postDetail", async (req, res) => {
 		res.status(403).send({ message: "error", post: null });
 	}
 });
-// const initData = (ws) => {
-// 	Message.find()
-// 		.sort({ created_at: -1 })
-// 		.limit(100)
-// 		.exec((err, res) => {
-// 			if (err) throw err;
-// 			// initialize app with existing messages
-// 			// console.log("sending data:", res);
-// 			sendData(["init", res], ws);
-// 		});
-// 	console.log(" initData finished");
-// };
-// TODO 3-(1): create the 2nd API (/api/postDetail)
 
 // TODO 4-(1): create the 3rd API (/api/newPost)
-
+router.post("/newPost", async (req, res) => {
+	const data = req.body;
+	const newPost = new Post(data);
+	try {
+		newPost.save(data);
+		res.status(200).send({ message: "success" });
+	} catch (e) {
+		res.status(403).send({ message: "errors", post: null });
+	}
+});
 // TODO 5-(1): create the 4th API (/api/post)
 
 export default router;
