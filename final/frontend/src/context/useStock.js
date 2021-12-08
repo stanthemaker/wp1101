@@ -1,6 +1,7 @@
 // import React from 'react';
 import { createContext, useContext, useState} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../api/index'
 
 const StockContext = createContext({
     signedIn: "", //感覺後端會動到的state才放到這 eg message
@@ -46,6 +47,7 @@ const StockProvider = (props)=>{
     const login = async ()=>{
         const {data: {message}} = await axios.get('/stockcalender/login', { name, password})
         console.log(message)
+        if (message ==="success") setSignedIn(true)
     }
     const initialize = ()=>{
         //useEffect?
