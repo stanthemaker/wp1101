@@ -8,12 +8,12 @@ exports.login = async (req, res) => {
 	console.log("req.query: ", req.query);
 	const name = req.query.name;
 	const user = await User.findOne({ "profile.name": `${name}` });
-	console.log("found doc:", user);
 	if (!user) {
-		console.log("not found");
+		console.log("login not found");
 		res.status(404).send({ message: "unregistered" });
 		return;
 	}
+	console.log("found doc:", user);
 	try {
 		const inputPassword = req.query.password;
 		const password = user.profile.password;
@@ -27,12 +27,11 @@ exports.login = async (req, res) => {
 		res.status(500).send({ message: "login failed" });
 	}
 };
-// curl -X POST http://localhost:4000/stockalendar/register \ -H 'Content-Type:application/json' \ -d '{"name":"stan", "password":"1234" }'
 exports.register = async (req, res) => {
-	console.log("req.body:", req.body);
 	const name = req.body.name;
 	const password = req.body.password;
-	const existed = await User.findOne({ name: name });
+	// const existed = await User.findOne({ profile: { name: `${name}` } });
+	const existed = await User.findOne({ "profile.name": `${name}` });
 	if (existed) {
 		res.status(409).send({ message: "Username already used" });
 		return;
@@ -44,20 +43,47 @@ exports.register = async (req, res) => {
 				name: name,
 				password: hashPassword,
 			},
-			favorites: [""],
-			models: [""],
+			favorites: [],
+			models: [],
 		};
-		console.log("new User: " + newUser);
 		const newUser = new User(user);
+		console.log("new User: " + newUser);
 		newUser.save();
-		res
-			.status(200)
-			.send({ message: "register success" })
-			.redirect("stockalender/login");
+		res.status(200).send({ message: "register success" });
 		return;
 	} catch (e) {
 		throw new Error("register error: " + e);
 	}
+};
+exports.addtoFavorites = async (req, res) => {
+	const name = req.body.name;
+	const tags = req.body.tags;
+	console.log("tags = ", tags);
+	User.updateOne(
+		{ "profile.name": `${name}` },
+		{ $push: { favorites: { $each: tags } } }
+	).exec((err, r) => {
+		if (err) {
+			res.status(403).send({ message: "addtoFavorite error" });
+			console.log(err);
+		} else {
+			console.log("r = ", r);
+			res.status(200).send({ message: "addtoFavorite success" });
+		}
+	});
+};
+exports.userFavorites = async (req, res) => {
+	const name = req.query.name;
+	User.findOne({ "profile.name": `${name}` }).exec((err, r) => {
+		if (err) {
+			res.status(403).send({ message: "userFavorites error" });
+			console.log(err);
+		} else {
+			res
+				.status(200)
+				.send({ message: "userFavorites success", favorites: r.favorites });
+		}
+	});
 };
 // exports.clearDB = async (req, res) => {
 // 	try {

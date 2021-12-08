@@ -1,9 +1,17 @@
-GET  http://localhost:4000/stockalendar/login?name=stan&password=1234
+# GET  http://localhost:4000/stockalendar/login?name=stan&password=1234
+GET http://localhost:4000/stockalendar/userFavorites?name=stan456789
+# POST http://localhost:4000/stockalendar/register
+# Content-Type: application/json
 
-POST http://localhost:4000/stockalendar/register
-Content-Type: application/json
+# {
+#     "name":"stan456789",
+#     "password":"1234456"
+# }
 
-{
-    "name":"stan",
-    "password":"1234"
-}
+# POST http://localhost:4000/stockalendar/addFavorite
+# Content-Type: application/json
+
+# {
+#     "name":"stan456789",
+#     "tags": ["AAPL" , "TSLA", "QCOM"]
+# }
