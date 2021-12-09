@@ -47,7 +47,13 @@ const StockProvider = (props)=>{
     const login = async ()=>{
         const {data: {message}} = await axios.get('/stockcalender/login', { name, password})
         console.log(message)
-        if (message ==="success") setSignedIn(true)
+        if (message ==="login success"){ 
+            setSignedIn(true);
+            //react router putHistory!! redirect to main page
+        } else if (message ==="wrong password" || message==="unregistered") {
+            console.log("login fail");
+            //material ui snackbar alert顯示登入錯誤
+        }
     }
     const initialize = ()=>{
         //useEffect?
