@@ -7,17 +7,20 @@ const StockContext = createContext({
     signedIn: "", //感覺後端會動到的state才放到這 eg message
     name:"",
     password:"",
-    user: {//or userName
-        name: "",
-        company: [{
-            name: "",
-            price: "",
-            graph: "",
-            performance: "",
-        }],
-        function: [],
-        passedCompany: [],
-    },
+    username:"",
+    function: [],
+    favorite: [],
+    // user: {//or userName
+    //     name: "",
+    //     company: [{
+    //         name: "",
+    //         price: "",
+    //         graph: "",
+    //         performance: "",
+    //     }],
+    //     function: [],
+    //     passedCompany: [],
+    // },
 
     addUser: ()=>{}, //register
     login: ()=>{},
@@ -33,35 +36,44 @@ const StockProvider = (props)=>{
     const [user, setUser]= useState({});
 
     const addUser = async () => { //button
-        const {data: {message}} = await axios.post('/stockcalender/register', {
+        const {data: {message}} = await axios.post('/stockalendar/register', {params:{
             name,
             password,
-        })
+        }})
         console.log(message);
-        if (!message) { 
+        if (message==="register success") { 
             setSignedIn(true);
             setName("");
             setPassword("");
+            //react router putHistory
+        } else if (message==="username already used") {
+            console.log("Please choose another username");
+            setName("");
         }
     }
     const login = async ()=>{
-        const {data: {message}} = await axios.get('/stockcalender/login', { name, password})
+        const {data: {message}} = await axios.get('/stockalendar/login', {params:{ name, password}})
         console.log(message)
         if (message ==="login success"){ 
             setSignedIn(true);
             //react router putHistory!! redirect to main page
-        } else if (message ==="wrong password" || message==="unregistered") {
-            console.log("login fail");
+        } else if (message ==="wrong password" ) {
+            console.log("wrong password");
             //material ui snackbar alert顯示登入錯誤
+        } else if (message ==="unregistered") {
+            console.log("user not found please register")
         }
     }
     const initialize = ()=>{
         //useEffect?
     }
-    const addFavoriteCompany = ()=>{
-
+    const addFavoriteCompany = async (array)=>{
+        const message=await axios.post('/stockalendar/addFavorite', {params:{ user.name , array}})
+        if(message==="success"){
+            console.log("add success");
+        }
     }
-    const addFunction = ()=>{
+    const addFunction = async ()=>{
 
     }
 
