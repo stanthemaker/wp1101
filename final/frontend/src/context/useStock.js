@@ -31,44 +31,57 @@ const StockContext = createContext({
 
 const StockProvider = (props)=>{
     const [signedIn, setSignedIn] = useState(false);
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [user, setUser]= useState({});
+    // const [name, setName] = useState("");
+    // const [password, setPassword] = useState("");
+    //const [user, setUser]= useState({});
+    const [username, setUsername] = useState("");
+    const [favorite, setFavorite] = useState([])
 
-    const addUser = async () => { //button
+    const addUser = async (name, password) => { //button
         const {data: {message}} = await axios.post('/stockalendar/register', {params:{
             name,
             password,
         }})
         console.log(message);
         if (message==="register success") { 
-            setSignedIn(true);
-            setName("");
-            setPassword("");
+            //setSignedIn(true); //wrong
+            // setName("");
+            // setPassword("");
             //react router putHistory
         } else if (message==="username already used") {
             console.log("Please choose another username");
-            setName("");
+            // setName("");
+            // setPassword("")
         }
     }
-    const login = async ()=>{
+    const login = async (name, password)=>{
         const {data: {message}} = await axios.get('/stockalendar/login', {params:{ name, password}})
         console.log(message)
         if (message ==="login success"){ 
             setSignedIn(true);
+            setUsername(name);
+            // setName("")
+            // setPassword("")
             //react router putHistory!! redirect to main page
         } else if (message ==="wrong password" ) {
             console.log("wrong password");
+            // setPassword("")
             //material ui snackbar alert顯示登入錯誤
         } else if (message ==="unregistered") {
             console.log("user not found please register")
+            // setName("")
+            // setPassword("")
         }
     }
-    const initialize = ()=>{
+    const initialize = async()=>{
         //useEffect?
+        const {data:{message,favorites}} = await axios.get('/stockalendar/userFavorites', {params:{username}});
+        if(message==="success"){
+            setFavorite(favorites);
+        }
     }
     const addFavoriteCompany = async (array)=>{
-        const message=await axios.post('/stockalendar/addFavorite', {params:{ user.name , array}})
+        const message=await axios.post('/stockalendar/addFavorite', {params:{ username , array}})
         if(message==="success"){
             console.log("add success");
         }
@@ -80,7 +93,9 @@ const StockProvider = (props)=>{
     return (
         <StockContext.Provider
           value={{
-            user,
+            signedIn,
+            username,
+            favorite,
             addUser,
             login,
             initialize,
@@ -93,7 +108,7 @@ const StockProvider = (props)=>{
 }
 function useStock (){
     // console.log("THIS IS general useContext")
-return useContext(StockContext);
+    return useContext(StockContext);
 }
 
 export { StockProvider, useStock };
