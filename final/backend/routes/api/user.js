@@ -7,25 +7,48 @@ const saltRounds = 10;
 exports.login = async (req, res) => {
 	console.log("req.query: ", req.query);
 	const name = req.query.name;
-	const user = await User.findOne({ "profile.name": `${name}` });
-	if (!user) {
-		console.log("login not found");
-		res.status(404).send({ message: "unregistered" });
-		return;
-	}
-	console.log("found doc:", user);
-	try {
-		const inputPassword = req.query.password;
-		const password = user.profile.password;
-		const checked = await bcrypt.compare(inputPassword, password);
-		checked
-			? res.status(200).send({ message: "login success" })
-			: // .redirect("stockalender/home")
-			  res.status(403).send({ message: "wrong password" });
-		return;
-	} catch (e) {
-		res.status(500).send({ message: "login failed" });
-	}
+	// const user = await User.findOne({ "profile.name": `${name}` });
+	User.findOne({ "profile.name": `${name}` }).exec((err, r) => {
+		if (err) {
+			res.status(500).send({ message: "login failed" });
+			console.log("err:", err);
+		} else {
+			if (!r.length) {
+				res.status(404).send({ message: "unregistered" });
+				return;
+			}
+			const inputPassword = req.query.password;
+			const password = r.profile.password;
+			const checked = bcrypt.compare(inputPassword, password);
+			checked
+				? res.status(200).send({
+						message: "success",
+						favorites: r.favorites,
+						models: r.models,
+				  })
+				: // .redirect("stockalender/home")
+				  res.status(403).send({ message: "wrong password" });
+			return;
+		}
+	});
+	// if (!user) {
+	// 	console.log("login not found");
+	// 	res.status(404).send({ message: "unregistered" });
+	// 	return;
+	// }
+	// console.log("found doc:", user);
+	// try {
+	// 	const inputPassword = req.query.password;
+	// 	const password = user.profile.password;
+	// 	const checked = await bcrypt.compare(inputPassword, password);
+	// 	checked
+	// 		? res.status(200).send({ message: "success" })
+	// 		: // .redirect("stockalender/home")
+	// 		  res.status(403).send({ message: "wrong password" });
+	// 	return;
+	// } catch (e) {
+	// 	res.status(500).send({ message: "login failed" });
+	// }
 };
 exports.register = async (req, res) => {
 	const name = req.body.name;
@@ -49,7 +72,7 @@ exports.register = async (req, res) => {
 		const newUser = new User(user);
 		console.log("new User: " + newUser);
 		newUser.save();
-		res.status(200).send({ message: "register success" });
+		res.status(200).send({ message: "success" });
 		return;
 	} catch (e) {
 		throw new Error("register error: " + e);
@@ -68,7 +91,7 @@ exports.addtoFavorites = async (req, res) => {
 			console.log(err);
 		} else {
 			console.log("r = ", r);
-			res.status(200).send({ message: "addtoFavorite success" });
+			res.status(200).send({ message: "success" });
 		}
 	});
 };
@@ -79,9 +102,7 @@ exports.userFavorites = async (req, res) => {
 			res.status(403).send({ message: "userFavorites error" });
 			console.log(err);
 		} else {
-			res
-				.status(200)
-				.send({ message: "userFavorites success", favorites: r.favorites });
+			res.status(200).send({ message: "success", favorites: r.favorites });
 		}
 	});
 };
