@@ -6,6 +6,7 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import Button from '@material-ui/core/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import ReactDOM from 'react-dom';
 import calendar1 from './img/1.jpg';
 import calendar2 from './img/2.jpg';
@@ -150,18 +151,10 @@ function Header(){
         sx={{
           width: `calc(100vw )`,
           height: 700,
-          backgroundImage: `url(${img[date%7]})`,
+          backgroundImage: `url(${img[date%9]})`,
           backgroundPosition:-50 ,
-          
-          // '&:hover': {
-          //   backgroundColor: 'primary.main',
-          //   opacity: [0.9, 0.8, 0.7],
-          // },
         }}>
-          {/* 標題 */}
           <>
-
-
             <Space_horizontal/>
             <Wrapper_vertical>
               <Wrapper_horizontal>
@@ -176,7 +169,7 @@ function Header(){
             </Wrapper_horizontal>
           </>
 
-          {/* //農民曆本體 */}
+
           <Space_horizontal/>
           <Box
           sx={{
@@ -203,4 +196,5 @@ function Header(){
 }
 
 export default Header;
+
 
