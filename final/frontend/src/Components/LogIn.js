@@ -80,9 +80,10 @@ const Space_horizontal= styled.section`
 const theme = createTheme();
 
 export default function SignInSide() {
-  const [name, setName] = useState('')
-    const [password, setPassword] = useState('');
-    const { login } = useStock()
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('');
+  const { login } = useStock()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -91,6 +92,9 @@ export default function SignInSide() {
       email: data.get('email'),
       password: data.get('password'),
     });
+  };
+  const handleChange = (func) => (event) => {
+    func(event.target.value);
   };
 
   return (
@@ -134,6 +138,8 @@ export default function SignInSide() {
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
+                value={name}
+                onChange={handleChange(setName)}
                 margin="normal"
                 required
                 fullWidth
@@ -144,6 +150,8 @@ export default function SignInSide() {
                 autoFocus
               />
               <TextField
+                value={email}
+                onChange={handleChange(setEmail)}
                 margin="normal"
                 required
                 fullWidth
@@ -154,6 +162,8 @@ export default function SignInSide() {
                 autoFocus
               />
               <TextField
+                value={password}
+                onChange={handleChange(setPassword)}
                 margin="normal"
                 required
                 fullWidth
@@ -164,7 +174,9 @@ export default function SignInSide() {
                 autoComplete="current-password"
               />
               <Button
-                type="submit"
+                onClick={login(name,email,password)}
+                // type="submit"
+                disabled={!name || !email || !password}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}

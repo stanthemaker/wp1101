@@ -15,7 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 const pages = ['My Favorote', 'Model', 'Home'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = ({children}) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,6 +35,7 @@ const ResponsiveAppBar = () => {
   };
 
   return (
+    <div>
     <AppBar position="static" style={{backgroundColor:"#000000"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -105,6 +106,10 @@ const ResponsiveAppBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
+    <div>
+      {children}
+    </div>
+    </div>
   );
 };
 export default ResponsiveAppBar;
