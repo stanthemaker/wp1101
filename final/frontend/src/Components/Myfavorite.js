@@ -54,15 +54,14 @@ const cards = (
             />
         <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h2">
-            Heading
+            performance
         </Typography>
         <Typography>
-            This is a media card. You can use this section to describe the
+            price
         </Typography>
         </CardContent>
         <CardActions>
-            <Button size="small">View</Button>
-            <Button size="small">Edit</Button>
+            <Button size="small">remove</Button>
         </CardActions>
         </Card>
         
@@ -102,7 +101,13 @@ export default function Album() {
         </Box>
         <Container sx={{ py: 8 }} maxWidth="sm">
         <Box sx={{ display: 'flex' }}>
-        <Grow in={true}>{cards}</Grow>
+        <Grow
+          in={true}
+          style={{ transformOrigin: '0 0 0' }}
+          {...(true ? { timeout: 1000 } : {})}
+        >
+          {cards}
+        </Grow>
         <Space_horizontal/>
         <Grow
           in={true}
