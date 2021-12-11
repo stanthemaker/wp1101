@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { keyframes } from 'styled-components'
 import styled from 'styled-components';
+import { useStock } from "../context/useStock";
 
 function Copyright(props) {
   return (
@@ -78,6 +80,9 @@ const Space_horizontal= styled.section`
 const theme = createTheme();
 
 export default function SignInSide() {
+  const [name, setName] = useState('')
+    const [password, setPassword] = useState('');
+    const { login } = useStock()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
