@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import ReactDOM from 'react-dom';
+import {useStock} from '../context/useStock';
 import calendar1 from './img/1.jpg';
 import calendar2 from './img/2.jpg';
 import calendar3 from './img/3.jpg';
@@ -145,6 +146,8 @@ const quote=[
 ]
 
 function Header(){
+  const {favorite} = useStock();
+
   return (
     <>
       <Box

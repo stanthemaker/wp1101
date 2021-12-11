@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,9 +17,15 @@ const pages = ['My Favorote', 'Model', 'Home'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = ({children}) => {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const handleChangePage = (page)=>{
+    // console.log("change page")
+    navigate(page);
+    
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -82,6 +89,9 @@ const ResponsiveAppBar = ({children}) => {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+              {/* <MenuItem key="myfavorite" onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">MY FAVORITE</Typography>
+                </MenuItem> */}
             </Menu>
           </Box>
           <Typography
@@ -93,7 +103,7 @@ const ResponsiveAppBar = ({children}) => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -101,7 +111,28 @@ const ResponsiveAppBar = ({children}) => {
               >
                 {page}
               </Button>
-            ))}
+            ))} */}
+            <Button
+              key="MY FAVORITE"
+              onClick={handleChangePage("/myfavorite")}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              MY FAVORITE
+            </Button>
+            <Button
+              key="MAIN"
+              onClick={handleChangePage("/")}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              MAIN
+            </Button>
+            <Button
+              key="MODEL"
+              onClick={handleChangePage("/model")}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              MODEL
+            </Button>
           </Box>
         </Toolbar>
       </Container>

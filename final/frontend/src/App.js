@@ -8,6 +8,7 @@ import SignInSide from "./Components/LogIn";
 import Header from "./Components/HomePage"; 
 import { useStock } from "./context/useStock";
 import MainRoute from "./routes/mainRoute";
+import Album from "./Components/Myfavorite";
 // import Main from "./Containers/main"
 // import Login from "./Containers/login"
 // import CustomAppBar from "./Containers/customAppBar";
@@ -21,6 +22,8 @@ const RouteS =()=>{
       </Route>
       <Route exact path="/login" element={<SignInSide/>}>
       </Route>
+      <Route exact path="/myfavorite" element={<Album/>}></Route>
+      <Route exact path="/model" element={<Album/>}></Route>
       <Route path="*" element={<SignInSide/>}></Route>
       {/* <Redirect to="/login"/> */}
     </Routes>

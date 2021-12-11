@@ -8,7 +8,7 @@ const StockContext = createContext({
     name:"",
     password:"",
     username:"",
-    function: [],
+    model: [],
     favorite: [],
     // user: {//or userName
     //     name: "",
@@ -30,12 +30,13 @@ const StockContext = createContext({
 })
 
 const StockProvider = (props)=>{
-    const [signedIn, setSignedIn] = useState(false);
+    const [signedIn, setSignedIn] = useState(true);
     // const [name, setName] = useState("");
     // const [password, setPassword] = useState("");
     //const [user, setUser]= useState({});
     const [username, setUsername] = useState("");
     const [favorite, setFavorite] = useState([])
+    const [model, setModel] = useState([]);
 
     const addUser = async (name, password) => { //button
         const {data: {message}} = await axios.post('/stockalendar/register', {params:{
@@ -55,11 +56,13 @@ const StockProvider = (props)=>{
         }
     }
     const login = async (name, password)=>{
-        const {data: {message}} = await axios.get('/stockalendar/login', {params:{ name, password}})
+        const {data: {message, favorites, models}} = await axios.get('/stockalendar/login', {params:{ name, password}})
         console.log(message)
         if (message ==="login success"){ 
             setSignedIn(true);
             setUsername(name);
+            setFavorite(favorites);
+            setModel(models)
             // setName("")
             // setPassword("")
             //react router putHistory!! redirect to main page
@@ -96,6 +99,7 @@ const StockProvider = (props)=>{
             signedIn,
             username,
             favorite,
+            model,
             addUser,
             login,
             initialize,
