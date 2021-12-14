@@ -1,7 +1,7 @@
 const request = require("request");
 const cheerio = require("cheerio");
-const getStockHeadline = () => {
-	request("https://www.cnbc.com/stocks/", (err, res, html) => {
+const getStockHeadline = async () => {
+	await request("https://www.cnbc.com/stocks/", (err, res, html) => {
 		if (!err && res.statusCode === 200) {
 			// console.log(html);
 			const cssSelector =
@@ -17,4 +17,4 @@ const getStockHeadline = () => {
 		}
 	});
 };
-module.exports = new getStockHeadline();
+module.exports = getStockHeadline;
