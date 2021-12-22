@@ -1,29 +1,20 @@
-// import http, express, doting, mongoose, WebSocket... etc
-const http = require("http");
-const WebSocket = require("ws");
-const express = require("express");
-// const { sendData, sendStatus, initData } = require("./wssConnect");
+const bodyParser = require("body-parser");
 const db = require("./mongo.js");
-const Stock = require("./models/stock.js");
-
+const express = require("express");
+const cors = require("cors");
+const routes = require("./routes/index.js");
+// define server
 const app = express();
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
-
+app.use(cors());
+app.use(bodyParser.json());
+// app.use(express.json());
 const port = process.env.PORT || 4000;
-// const broadcastMessage = (data, status) => {
-// 	wss.clients.forEach((client) => {
-// 		sendData(data, client);
-// 		sendStatus(status, client);
-// 	});
-// };
 
-db.once("open", () => {
-	console.log("db on");
-	wss.on("connection", (ws) => {
-		console.log("wss connected!");
-	});
-	server.listen(port, () => {
+db.on("error", (err) => console.log(err));
+db.once("open", async () => {
+	console.log("mongo db connection established");
+	routes(app);
+	app.listen(port, () => {
 		console.log(`Server is up on port ${port}.`);
 	});
 });

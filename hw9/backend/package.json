@@ -4,16 +4,13 @@
 	"main": "index.js",
 	"license": "MIT",
 	"dependencies": {
-		"bcrypt": "^5.0.1",
-		"cheerio": "^1.0.0-rc.10",
-		"cors": "^2.8.5",
 		"express": "^4.17.1",
-		"node-fetch": "^3.1.0",
+		"mogoose": "^0.0.1-security",
 		"nodemon": "^2.0.15",
-		"request": "^2.88.2",
 		"ws": "^8.3.0"
 	},
 	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
 		"server": "nodemon server.js --ext js --exec babel-node"
 	},
 	"devDependencies": {
@@ -24,7 +21,6 @@
 		"@babel/plugin-proposal-object-rest-spread": "^7.16.0",
 		"@babel/plugin-transform-arrow-functions": "^7.16.0",
 		"@babel/preset-env": "^7.16.4",
-		"dotenv-defaults": "^3.0.0",
-		"mongoose": "^6.0.14"
+		"dotenv-defaults": "^3.0.0"
 	}
 }
