@@ -1,5 +1,10 @@
 type Mutation {
 	createChatBox(name1: String, name2: String): ChatBox!
+	createMessage(from: String, to: String, message: String): Message!
+}
+type Query {
+	message(sender: String): [Message!]!
+	chatBox(name1: String, name2: String): ChatBox!
 }
 type ChatBox {
 	id: ID!

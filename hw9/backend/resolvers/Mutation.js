@@ -3,6 +3,8 @@ import {
 	makeName,
 	newUser,
 	newChatBox,
+	newMessage,
+	checkMessage,
 	checkUser,
 	checkChatBox,
 } from "./utils";
@@ -20,7 +22,7 @@ const Mutation = {
 		if (!sender) throw new Error("User not found", from);
 		const chatBoxName = makeName(from, to);
 		const newMsg = await newMessage(db, sender, message);
-		chatBox.message.push(newMsg);
+		chatBox.messages.push(newMsg);
 		await chatBox.save();
 
 		pubsub.publish(`chatBox ${chatBoxName}`, {
