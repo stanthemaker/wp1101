@@ -1,0 +1,17 @@
+type Mutation {
+	createChatBox(name1: String, name2: String): ChatBox!
+}
+type ChatBox {
+	id: ID!
+	name: String!
+	messages: [Message!]
+}
+type Message {
+	id: ID!
+	sender: User!
+	body: String!
+}
+type User {
+	id: ID!
+	name: String!
+}
