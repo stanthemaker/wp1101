@@ -4,9 +4,21 @@ type Mutation {
 	createUser(username: String): User!
 }
 type Query {
-	messages(sender: String): [Message]
+	messages(sender: String): [Message!]
 	chatBox(name1: String, name2: String): ChatBox!
 	users(username: String): User!
+}
+type Subscription {
+	message(name1: String, name2: String): MessageSubscriptionPayload!
+}
+
+type MessageSubscriptionPayload {
+	mutation: MutationType!
+	data: Message!
+}
+
+enum MutationType {
+	CREATED
 }
 type ChatBox {
 	id: ID!

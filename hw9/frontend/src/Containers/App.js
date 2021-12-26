@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import ChatRoom from "../Containers/ChatRoom";
 import SignIn from "../Containers/SignIn";
-import useChat from "../Hooks/useChatbox";
 import { message } from "antd";
 const LOCALSTORAGE_KEY = "save-me";
 
@@ -58,9 +57,8 @@ function App() {
 			) : (
 				<ChatRoom
 					me={me}
-					messages={messages}
 					// clearMessages={clearMessages}
-					// displayStatus={displayStatus}
+					displayStatus={displayStatus}
 					// sendMessage={sendMessage}
 				/>
 			)}

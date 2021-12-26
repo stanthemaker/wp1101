@@ -1,13 +1,14 @@
 //import './App.css'
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_CHATBOX_MUTATION, CREATE_MESSAGE_MUTATION } from "../graphql";
 import { Button, Input, Tabs } from "antd";
 import styled from "styled-components";
 import Title from "../Components/Title";
-import ChatBox from "../Components/ChatBox";
-import ChatModal from "../Components/ChatModal";
+import ChatBox from "../Containers/ChatBox";
+import ChatModal from "../Containers/ChatModal";
 import useChatbox from "../Hooks/useChatbox";
+import Modal from "antd/lib/modal/Modal";
 
 const Wrapper = styled(Tabs)`
 	width:100%;
@@ -26,10 +27,56 @@ const ChatRoom = ({ me, displayStatus }) => {
 	const { chatBoxes, createChatBox, removeChatBox } = useChatbox();
 	const [modalVisible, setModalVisible] = useState(false);
 
+	const [startChat] = useMutation(CREATE_CHATBOX_MUTATION);
+	const [sendMessage] = useMutation(CREATE_MESSAGE_MUTATION);
 	const addChatBox = () => {
 		setModalVisible(true);
 	};
+	const ModalRef = useRef();
 
+	const handleCreate = async () => {
+		const name = ModalRef.current.state.value;
+		if (name === "" || name === undefined) {
+			console.log("name is null");
+			displayStatus({
+				type: "error",
+				msg: "Please enter a valid username.",
+			});
+			return;
+		}
+		ModalRef.current.state.value = "";
+		if (name.trim() === "" || !name) {
+			displayStatus({
+				type: "error",
+				msg: "Please enter a valid username.",
+			});
+			return;
+		}
+		if (chatBoxes.includes(name.trim())) {
+			displayStatus({
+				type: "error",
+				msg: "You have a chatbox already.",
+			});
+			return;
+		}
+		await startChat({
+			variables: {
+				name1: me,
+				name2: name,
+			},
+		});
+
+		setActiveKey(createChatBox(name));
+		setModalVisible(false);
+	};
+
+	//for debug
+	useEffect(() => {
+		console.log("activeKey changed to:", activeKey);
+	}, [activeKey]);
+	useEffect(() => {
+		console.log("chatboxes changed: ", chatBoxes);
+	}, [chatBoxes]);
 	return (
 		<>
 			<Title>
@@ -40,41 +87,35 @@ const ChatRoom = ({ me, displayStatus }) => {
 			</Title>
 			<>
 				<Wrapper
-					tabBarStyle={{ height: "360px" }}
+					tabBarStyle={{ height: "36px" }}
 					type="editable-card"
 					activeKey={activeKey}
 					onChange={(key) => {
-						setactiveKey(key);
+						setActiveKey(key);
 					}}
 					onEdit={(targetKey, action) => {
-						if (action === "add") addChatBox;
+						if (action === "add") addChatBox();
 						else if (action === "remove") {
-							setactiveKey(removeChatBox(targetKey, activeKey));
+							setActiveKey(removeChatBox(targetKey, activeKey));
 						}
 					}}
 				>
 					{chatBoxes.map((friend) => {
-						<Tabs.TabPane tab={friend} closable={true} key={friend}>
-							<ChatBox me={me} friend={friend} key={key} />
-						</Tabs.TabPane>;
+						console.log("mapping");
+						return (
+							<Tabs.TabPane tab={friend} closable={true} key={friend}>
+								<ChatBox me={me} friend={friend} key={friend} />
+							</Tabs.TabPane>
+						);
 					})}
 				</Wrapper>
 				<ChatModal
 					visible={modalVisible}
-					onCreate={async ({ name }) => {
-						await startChat({
-							variables: {
-								name1: me,
-								name2: name,
-							},
-						});
-
-						setActiveKey(createChatBox(name));
+					onCreate={handleCreate}
+					onCancel={() => {
 						setModalVisible(false);
 					}}
-					onChange={() => {
-						setModalVisible(false);
-					}}
+					inputRef={ModalRef}
 				/>
 			</>
 			<Input.Search

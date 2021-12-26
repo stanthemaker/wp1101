@@ -22,7 +22,8 @@ const Message = ({ me, name, body }) => {
 	return (
 		<>
 			<StyledMessage isMe={me === name} />
-			<p>{name}</p> <p>{body}</p>
+			<p>{name}</p>
+			<p>{body}</p>
 		</>
 	);
 };

@@ -3,7 +3,7 @@ import mongoDB from "./mongo";
 import * as db from "./db"; // db.UserModel
 import Query from "./resolvers/Query";
 import Mutation from "./resolvers/Mutation";
-// import Subscription from "./resolvers/Subscription";
+import Subscription from "./resolvers/Subscription";
 // import User from "./resolvers/User";
 import ChatBox from "./resolvers/ChatBox";
 import Message from "./resolvers/Message";
@@ -15,7 +15,7 @@ const server = new GraphQLServer({
 	resolvers: {
 		Query,
 		Mutation,
-		// Subscription,
+		Subscription,
 		Message,
 		ChatBox,
 	},

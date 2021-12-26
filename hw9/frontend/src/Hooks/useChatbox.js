@@ -23,5 +23,10 @@ const useChatBox = () => {
 				: activeKey
 			: targetkey;
 	};
+	return {
+		chatBoxes,
+		createChatBox,
+		removeChatBox,
+	};
 };
 export default useChatBox;
