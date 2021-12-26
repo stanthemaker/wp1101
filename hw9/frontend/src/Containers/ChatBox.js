@@ -14,7 +14,6 @@ const Messages = styled.div`
 const ChatBox = ({ me, friend, ...props }) => {
 	const messageFooter = useRef(null);
 	//unknown
-	// console.log("me and friend from chatbox", me, friend);
 
 	const { data, loading, subscribeToMore } = useQuery(CHATBOX_QUERY, {
 		variables: { name1: me, name2: friend },
@@ -24,7 +23,6 @@ const ChatBox = ({ me, friend, ...props }) => {
 		messageFooter.current?.scrollToBottom({ behavior: "smooth" });
 	};
 	useEffect(() => {
-		console.log("what is data?", data);
 		scrollToBottom();
 	}, [data]);
 	useEffect(() => {
@@ -40,7 +38,7 @@ const ChatBox = ({ me, friend, ...props }) => {
 					//this is refered to subscription.js
 					const newMessage = subscriptionData.data.message.message;
 
-					console.log(prev);
+					console.log("prev = ", prev);
 
 					return {
 						...prev,
@@ -62,7 +60,7 @@ const ChatBox = ({ me, friend, ...props }) => {
 		<Messages>
 			{data.chatBox.messages.map(({ sender: { name }, body }, i) => (
 				// <Message me={me} name={name} key={name + body + i} />
-				<Message me={me} name={name} body={body} />
+				<Message me={me} name={name} body={body} key={i} />
 			))}
 		</Messages>
 	);

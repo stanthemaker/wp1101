@@ -45,7 +45,6 @@ const Mutation = {
 		return chatBox;
 	},
 	async createUser(parent, { username }, { db }, info) {
-		console.log(username);
 		const existed = await db.UserModel.findOne({ name: username });
 		if (existed) {
 			throw new Error("username existed");

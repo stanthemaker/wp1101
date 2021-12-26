@@ -37,7 +37,6 @@ const ChatRoom = ({ me, displayStatus }) => {
 	const handleCreate = async () => {
 		const name = ModalRef.current.state.value;
 		if (name === "" || name === undefined) {
-			console.log("name is null");
 			displayStatus({
 				type: "error",
 				msg: "Please enter a valid username.",
@@ -74,9 +73,6 @@ const ChatRoom = ({ me, displayStatus }) => {
 	useEffect(() => {
 		console.log("activeKey changed to:", activeKey);
 	}, [activeKey]);
-	useEffect(() => {
-		console.log("chatboxes changed: ", chatBoxes);
-	}, [chatBoxes]);
 	return (
 		<>
 			<Title>
@@ -101,7 +97,6 @@ const ChatRoom = ({ me, displayStatus }) => {
 					}}
 				>
 					{chatBoxes.map((friend) => {
-						console.log("mapping");
 						return (
 							<Tabs.TabPane tab={friend} closable={true} key={friend}>
 								<ChatBox me={me} friend={friend} key={friend} />
