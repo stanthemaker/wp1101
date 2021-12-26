@@ -1,6 +1,6 @@
 //import './App.css'
 import { useState, useEffect, useRef } from "react";
-import { useMutation } from "@apollo/client";
+import { from, useMutation } from "@apollo/client";
 import { CREATE_CHATBOX_MUTATION, CREATE_MESSAGE_MUTATION } from "../graphql";
 import { Button, Input, Tabs } from "antd";
 import styled from "styled-components";
@@ -126,7 +126,13 @@ const ChatRoom = ({ me, displayStatus }) => {
 						});
 						return;
 					}
-					sendMessage({ name: me, body: msg });
+					sendMessage({
+						variables: {
+							from: me,
+							to: activeKey,
+							message: msg,
+						},
+					});
 					setMessageInput("");
 				}}
 			/>

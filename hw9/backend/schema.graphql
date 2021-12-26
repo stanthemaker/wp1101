@@ -9,12 +9,12 @@ type Query {
 	users(username: String): User!
 }
 type Subscription {
-	message(name1: String, name2: String): MessageSubscriptionPayload!
+	message(name1: String!, name2: String!): MessageSubscriptionPayload!
 }
 
 type MessageSubscriptionPayload {
 	mutation: MutationType!
-	data: Message!
+	message: Message!
 }
 
 enum MutationType {

@@ -15,7 +15,7 @@ export const CREATE_CHATBOX_MUTATION = gql`
 `;
 
 export const CREATE_MESSAGE_MUTATION = gql`
-	mutation createMessage($from: String, $to: String, $message: String) {
+	mutation createMessage($from: String!, $to: String!, $message: String!) {
 		createMessage(from: $from, to: $to, message: $message) {
 			sender {
 				name

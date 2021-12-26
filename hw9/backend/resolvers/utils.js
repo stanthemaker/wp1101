@@ -12,6 +12,7 @@ const checkChatBox = (db, chatBoxName, errFunc) => {
 };
 const checkMessage = async (db, from, to, message, errFunc) => {
 	const checkBoxName = makeName(from, to);
+
 	return {
 		chatBox: await checkChatBox(db, checkBoxName, errFunc),
 		sender: await checkUser(db, from, errFunc),
