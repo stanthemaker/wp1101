@@ -21,7 +21,7 @@ const Subscription = {
 	// TODO 6.2 Add taskDeleted resolver
 	taskDeleted: {
 		subscribe: (parent, args, { pubSub }) => {
-			return pubSub.asyncIterator("TASK_DELETED ");
+			return pubSub.asyncIterator("TASK_DELETED");
 		},
 	},
 };
