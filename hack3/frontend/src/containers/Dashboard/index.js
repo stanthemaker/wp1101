@@ -59,7 +59,6 @@ export default function Dashboard() {
 			document: TASK_UPDATED_SUBSCRIPTION,
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev;
-				console.log("subscription", subscriptionData.data);
 				const {
 					data: { taskUpdated },
 				} = subscriptionData;
