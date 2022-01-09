@@ -17,6 +17,7 @@ function main(app) {
 		"/stockalendar/myFavorites/addFavorite",
 		wrap(userRouter.addtoFavorites)
 	);
+	// app.post()
 	// app.delete("/api/clear-db", wrap(scoreCardRouter.clearDB));
 	// app.post("/api/create-card", wrap(scoreCardRouter.createScoreCard));
 	// app.get("/api/query-cards", wrap(scoreCardRouter.qeueryScoreCard));
