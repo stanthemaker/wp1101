@@ -7,11 +7,12 @@ const wrap =
 
 function main(app) {
 	app.get("/stockalendar/login", wrap(userRouter.login));
-	app.get("/stockalendar/Home/headline", wrap(utilRouter.stockHeadline));
+	app.get("/stockalendar/Home/headline", wrap(utilRouter.marketHeadline));
 	app.get(
 		"/stockalendar/myFavorites/userFavorites",
-		wrap(utilRouter.userRouter.userFavorites)
+		wrap(userRouter.userFavorites)
 	);
+	app.get("/stockalendar/myFavorites/stockInfo", wrap(utilRouter.stockInfo));
 	app.post("/stockalendar/register", wrap(userRouter.register));
 	app.post(
 		"/stockalendar/myFavorites/addFavorite",
