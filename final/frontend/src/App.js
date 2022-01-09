@@ -1,6 +1,6 @@
-import React from "react"
-import { Routes, BrowserRouter as Router, Route} from "react-router-dom";
-import { Redirect } from "react-router-dom";
+import React, { useEffect } from "react"
+import { Switch, BrowserRouter as Router, Route, Navigate, useNavigate} from "react-router-dom";
+import { Redirect, useHistory } from "react-router";
 
 import './App.css';
 import ButtonAppBar from "./Components/AppBar";
@@ -8,25 +8,49 @@ import SignInSide from "./Components/LogIn";
 import Header from "./Components/HomePage"; 
 import { useStock } from "./context/useStock";
 import MainRoute from "./routes/mainRoute";
+import LoginRoute from "./routes/loginRoute";
 import Album from "./Components/Myfavorite";
 // import Main from "./Containers/main"
 // import Login from "./Containers/login"
 // import CustomAppBar from "./Containers/customAppBar";
 
 
-const RouteS =()=>{
+const Routes =()=>{
+  // let navigate = useNavigate();
+  // const navigation = useRef(useNavigate());
   const {SignedIn} = useStock()
+  const history = useHistory()
+  useEffect(() => {
+    SignedIn?
+      history.push("/"):
+      history.push("/login");
+  }, [SignedIn]);
+  
   return (
-    <Routes>
-      <Route exact path="/" element={<MainRoute/>}>
+    // SignedIn? <Route exact path="/login" element={<SignInSide/>}>
+    // </Route>:
+    <Switch>
+      <MainRoute exact path="/">
+        <Header/>
+      </MainRoute>
+      <LoginRoute exact path="/login">
+        <SignInSide/>
+      </LoginRoute>
+      <MainRoute exact path="/myfavorite">
+        <Album/>
+      </MainRoute>
+      <MainRoute exact path="/model">
+        <Album/>
+      </MainRoute>
+      {/* <Route exact path="/" element={<MainRoute/>}>
       </Route>
       <Route exact path="/login" element={<SignInSide/>}>
       </Route>
       <Route exact path="/myfavorite" element={<Album/>}></Route>
-      <Route exact path="/model" element={<Album/>}></Route>
-      <Route path="*" element={<SignInSide/>}></Route>
-      {/* <Redirect to="/login"/> */}
-    </Routes>
+      <Route exact path="/model" element={<Album/>}></Route> */}
+      {/* <Route path="*" element={<Navigate replace to="/login"/>}></Route> */}
+      <Redirect to="/login"/>
+    </Switch>
   );
 }
 
@@ -34,8 +58,8 @@ export default function App() {
   return (
     <div>
       <Router>
-        <ButtonAppBar>
-          <RouteS/>
+        <ButtonAppBar >
+          <Routes/>
         </ButtonAppBar>
       </Router>
     </div>

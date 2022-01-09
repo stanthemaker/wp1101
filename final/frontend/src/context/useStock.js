@@ -55,9 +55,10 @@ const StockProvider = (props)=>{
             // setPassword("")
         }
     }
-    const login = async (name, password)=>{
+    const login = async (name, email, password)=>{
         const {data: {message, favorites, models}} = await axios.get('/stockalendar/login', {params:{ name, password}})
-        console.log(message)
+        // console.log(message)
+        // const {message, favorites, models} = {message:"",favorites:[],models:[]}
         if (message ==="login success"){ 
             setSignedIn(true);
             setUsername(name);

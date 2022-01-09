@@ -1,14 +1,20 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import { useStock } from "../context/useStock";
-import Header from "../Components/HomePage";
+import { Route } from "react-router-dom";
+// import { useStock } from "../context/useStock";
+// import Header from "../Components/HomePage";
 
-export default function MainRoute(){
-    const {signedIn} = useStock()
+
+export default function MainRoute({path, children}){
+    // const {signedIn} = useStock()
 
     return(
-        signedIn?
-        <Header/> : <Navigate to="/login" />
+        <Route exact path={path}
+            render={()=>{
+                return children
+            }}
+        />
+        // signedIn?
+        // <Header/> : <Navigate to="/login" />
         
     );
 }
