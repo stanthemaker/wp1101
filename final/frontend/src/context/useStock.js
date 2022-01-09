@@ -30,7 +30,7 @@ const StockContext = createContext({
 })
 
 const StockProvider = (props)=>{
-    const [signedIn, setSignedIn] = useState(true);
+    const [signedIn, setSignedIn] = useState(false);
     // const [name, setName] = useState("");
     // const [password, setPassword] = useState("");
     //const [user, setUser]= useState({});
