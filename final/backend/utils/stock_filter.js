@@ -19,7 +19,7 @@ const formula = (x, y) => {
 const getCompanyFigures = async (company) => {
 	// console.log(typeof company);
 	const url =
-		await `https://statementdog.com/api/v2/fundamentals/${company}/2016/2021/cf?qbu=true&qf=analysis`;
+		await `https://statementdog.com/api/v2/fundamentals/${company}/2017/2022/cf?qbu=true&qf=analysis`;
 	const response = await fetch(url);
 	const body = await response.json();
 	const PE = await body["common"]["LatestValuation"]["data"]["PE"];
@@ -28,6 +28,6 @@ const getCompanyFigures = async (company) => {
 	console.log(`${company} : RoE ${RoE},  PE ${PE}`);
 	return formula(PE, RoE);
 };
-
+//statementdog.com/api/v2/fundamentals/AAPL/2016/2021/cf?qbu=true&qf=analysis
 // console.log("score :", await getCompanyFigures("AAPL"));
-export default getCompanyFigures;
+https: export default getCompanyFigures;
