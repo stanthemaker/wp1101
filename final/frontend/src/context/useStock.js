@@ -62,6 +62,11 @@ const StockProvider = (props) => {
 		}
 	};
 	const login = async (name, email, password) => {
+		if (name === "" || email === "" || password === "") {
+			console.log("mssing some input");
+			return;
+		}
+		name = name.trim();
 		const {
 			data: { message, favorites, models },
 		} = await axios.get("/stockalendar/login", { params: { name, password } });
@@ -86,6 +91,7 @@ const StockProvider = (props) => {
 			// setName("")
 			// setPassword("")
 		}
+		return message;
 	};
 	const initialize = async () => {
 		//useEffect?
