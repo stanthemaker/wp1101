@@ -10,7 +10,7 @@ function main(app) {
 	app.get("/stockalendar/Home/headline", wrap(utilRouter.stockHeadline));
 	app.get(
 		"/stockalendar/myFavorites/userFavorites",
-		wrap(utilRouter.userRouter.userFavorites)
+		wrap(utilRouter.userFavorites)
 	);
 	app.post("/stockalendar/register", wrap(userRouter.register));
 	app.post(
