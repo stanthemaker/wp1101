@@ -48,7 +48,7 @@ const ResponsiveAppBar = ({children}) => {
 
   return (
     <div>
-    <AppBar position="fixed" style={{backgroundColor:"#000000", display: signedIn? "":"none" }}>
+    <AppBar position="static" style={{backgroundColor:"#000000", display: signedIn? "":"none" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

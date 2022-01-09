@@ -1,22 +1,29 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from 'react'
+import { useState } from 'react'
+import { useHistory } from 'react-router'
+import SignUp from './Register'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { keyframes } from 'styled-components'
-import styled from 'styled-components';
-import { useStock } from "../context/useStock";
+import styled from 'styled-components'
+import { useStock } from '../context/useStock'
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -24,7 +31,7 @@ function Copyright(props) {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
 const fly_in_left = keyframes`
@@ -44,58 +51,62 @@ const fly_in_down = keyframes`
 
 `
 
-const SmallCaption_up= styled.section`
-  font-size:2.3em;
-  font-family:"Times New Roman";
-  color:white;
-  opacity:0.8;
+const SmallCaption_up = styled.section`
+  font-size: 2.3em;
+  font-family: 'Times New Roman';
+  color: white;
+  opacity: 0.8;
   animation-name: ${fly_in_down};
   animation-duration: 3s;
   animation-iteration-count: 1;
-`;
+`
 
-const BigCaption= styled.section`
-  font-size:8em;
-  color:white;
-  font-family:"Times New Roman";
-  opacity:1;
+const BigCaption = styled.section`
+  font-size: 8em;
+  color: white;
+  font-family: 'Times New Roman';
+  opacity: 1;
   // &:hover{color:blue;}
   animation-name: ${appear};
   animation-duration: 2s;
   animation-iteration-count: 1;
-`;
+`
 
 const Wrapper_horizontal = styled.section`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-`;
+`
 
-const Space_horizontal= styled.section`
-  width:50px;
-  height:100px;
-`;
+const Space_horizontal = styled.section`
+  width: 50px;
+  height: 100px;
+`
 
-const theme = createTheme();
+const theme = createTheme()
 
 export default function SignInSide() {
-  const [name, setName] = useState('');
+  const history = useHistory()
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('')
   const { login } = useStock()
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     // eslint-disable-next-line no-console
     console.log({
       email: data.get('email'),
       password: data.get('password'),
-    });
-  };
+    })
+  }
+  const handleRegisterOpen = ()=>{
+    history.push("/signup")
+  }
   const handleChange = (func) => (event) => {
-    func(event.target.value);
-  };
+    func(event.target.value)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,18 +121,20 @@ export default function SignInSide() {
             backgroundImage: 'url(https://source.unsplash.com/random)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+              t.palette.mode === 'light'
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-            <Space_horizontal/>
-            <Wrapper_horizontal>
-                <BigCaption>StocKalendar</BigCaption>
-            </Wrapper_horizontal>
-            <Wrapper_horizontal>
-                <SmallCaption_up>ritualize your daily</SmallCaption_up>
-            </Wrapper_horizontal>
+          <Space_horizontal />
+          <Wrapper_horizontal>
+            <BigCaption>StocKalendar</BigCaption>
+          </Wrapper_horizontal>
+          <Wrapper_horizontal>
+            <SmallCaption_up>ritualize your daily</SmallCaption_up>
+          </Wrapper_horizontal>
         </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
@@ -136,7 +149,12 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
               <TextField
                 value={name}
                 onChange={handleChange(setName)}
@@ -174,7 +192,7 @@ export default function SignInSide() {
                 autoComplete="current-password"
               />
               <Button
-                onClick={login(name,email,password)}
+                onClick={login(name, email, password)}
                 // type="submit"
                 disabled={!name || !email || !password}
                 fullWidth
@@ -183,10 +201,17 @@ export default function SignInSide() {
               >
                 Sign In
               </Button>
+              <Grid container>
+                <Grid item>
+                  <Link onClick={()=> history.push("/signup")} variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
             </Box>
           </Box>
         </Grid>
       </Grid>
     </ThemeProvider>
-  );
+  )
 }

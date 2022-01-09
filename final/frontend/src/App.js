@@ -10,6 +10,7 @@ import { useStock } from "./context/useStock";
 import MainRoute from "./routes/mainRoute";
 import LoginRoute from "./routes/loginRoute";
 import Album from "./Components/Myfavorite";
+import SignUp from "./Components/Register";
 // import Main from "./Containers/main"
 // import Login from "./Containers/login"
 // import CustomAppBar from "./Containers/customAppBar";
@@ -42,6 +43,9 @@ const Routes =()=>{
       <MainRoute exact path="/model">
         <Album/>
       </MainRoute>
+      <LoginRoute exact path="/signup">
+        <SignUp/>
+      </LoginRoute>
       {/* <Route exact path="/" element={<MainRoute/>}>
       </Route>
       <Route exact path="/login" element={<SignInSide/>}>
