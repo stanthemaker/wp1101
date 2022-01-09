@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { StockProvider } from './context/useStock';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StockProvider>
+      <App />
+    </StockProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
