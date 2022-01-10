@@ -1,6 +1,6 @@
-# GET http://localhost:4000/stockalendar/Home/headline
-GET  http://localhost:5000/stockalendar/login?name=stan&password=1234
-# GET http://localhost:4000/stockalendar/userFavorites?name=stan456789
+# GET http://localhost:5000/stockalendar/Home/headline
+GET  http://localhost:5000/stockalendar/myFavorites/stockInfo
+# 
 # POST http://localhost:4000/stockalendar/register
 # Content-Type: application/json
 
