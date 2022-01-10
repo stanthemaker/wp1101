@@ -1,5 +1,7 @@
 const userRouter = require("./api/user");
 const utilRouter = require("./api/utils");
+const modelRouter = require("./api/model");
+const favoriteRouter = require("./api/favorite");
 const wrap =
 	(fn) =>
 	(...args) =>
@@ -12,18 +14,20 @@ function main(app) {
 	//userFavorites
 	app.get(
 		"/stockalendar/myFavorites/userFavorites",
-		wrap(userRouter.userFavorites)
+		wrap(favoriteRouter.userFavorites)
 	);
 	app.post(
 		"/stockalendar/myFavorites/delFavorite",
-		wrap(userRouter.delFavorite)
+		wrap(favoriteRouter.delFavorite)
 	);
 	app.post(
-		"/stockalendar/myFavorites/addFavorite",
-		wrap(userRouter.addtoFavorites)
+		"/stockalendar/myFavorites/addFavorites",
+		wrap(favoriteRouter.addFavorites)
 	);
 	//userModels
-
+	app.get("/stockalendar/myModels/userModels", wrap(modelRouter.userModels));
+	app.post("/stockalendar/myModels/addModel", wrap(modelRouter.addModel));
+	app.post("/stockalendar/myModels/delModel", wrap(modelRouter.delModel));
 	//other utils
 	app.get("/stockalendar/myFavorites/stockInfo", wrap(utilRouter.stockInfo));
 }
