@@ -9,6 +9,7 @@ exports.userFavorites = async (req, res) => {
 	res.status(200).send({ message: "success", favorites: user.favorites });
 };
 exports.addFavorites = async (req, res) => {
+	console.log("addFavorite request");
 	const name = req.body.name;
 	const tags = req.body.tags;
 	try {

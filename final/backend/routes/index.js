@@ -11,7 +11,7 @@ function main(app) {
 	app.post("/stockalendar/register", wrap(userRouter.register));
 	app.get("/stockalendar/login", wrap(userRouter.login));
 	app.get("/stockalendar/Home/headline", wrap(utilRouter.marketHeadline));
-	//userFavorites
+	//Favorites
 	app.get(
 		"/stockalendar/myFavorites/userFavorites",
 		wrap(favoriteRouter.userFavorites)
@@ -24,7 +24,7 @@ function main(app) {
 		"/stockalendar/myFavorites/addFavorites",
 		wrap(favoriteRouter.addFavorites)
 	);
-	//userModels
+	//Models
 	app.get("/stockalendar/myModels/userModels", wrap(modelRouter.userModels));
 	app.post("/stockalendar/myModels/addModel", wrap(modelRouter.addModel));
 	app.post("/stockalendar/myModels/delModel", wrap(modelRouter.delModel));
