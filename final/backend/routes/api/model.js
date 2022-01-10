@@ -9,6 +9,7 @@ exports.userModels = async (req, res) => {
 	res.status(200).send({ message: "success", models: user.models });
 };
 exports.addModel = async (req, res) => {
+	//check model is valid
 	const name = req.body.name;
 	const model = req.body.model; //a string
 	try {

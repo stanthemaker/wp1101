@@ -1,6 +1,7 @@
-const request = require("request");
+const request = require("request-promise");
 const cheerio = require("cheerio");
 const axios = require("axios").default;
+const Parser = require("expr-eval").Parser;
 
 exports.marketHeadline = async (req, res) => {
 	await request("https://www.cnbc.com/stocks/", (err, response, html) => {
@@ -48,4 +49,47 @@ exports.stockInfo = async (req, res) => {
 			});
 	}
 	res.status(200).send({ message: "success", companies: companies });
+};
+exports.runModel = async (req, res) => {
+	//there should be limit on the ineq
+	const tag = "AAPL";
+	let model = "P + R > 2";
+	let PE = 0;
+	let ROET4Q = 0;
+	let currentRatio = 0;
+	let GrossMargin = 0;
+
+	await request(
+		`https://statementdog.com/api/v2/fundamentals/${tag}/2017/2022/cf?qbu=true&qf=analysis`,
+		(err, response, body) => {
+			const content = JSON.parse(body);
+			// console.log(content);
+			//features below is last quarter
+			PE = content["common"]["LatestValuation"]["data"]["PE"]; //current price
+			ROET4Q = content["quarterly"]["ROET4Q"]["data"].slice(-1)[0][1] / 100;
+			currentRatio =
+				content["quarterly"]["CurrentRatio"]["data"].slice(-1)[0][1] / 100;
+			GrossMargin = content["quarterly"]["GrossMargin"]["data"].slice(-1)[0][1];
+		}
+	);
+	const index = model.indexOf(">");
+	const LHS = Parser.parse(model.slice(0, index - 1).trim());
+	const RHS = Parser.parse(model.slice(index + 1).trim());
+	const LHSvalue = LHS.evaluate({
+		P: PE,
+		R: ROET4Q,
+		G: GrossMargin,
+		C: currentRatio,
+	});
+	const RHSvalue = RHS.evaluate({
+		P: PE,
+		R: ROET4Q,
+		G: GrossMargin,
+		C: currentRatio,
+	});
+	if (LHSvalue > RHSvalue) {
+		console.log("pass!!");
+	} else {
+		console.log("fail");
+	}
 };
