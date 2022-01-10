@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import {useStock} from "../context/useStock"
+import { useStock } from '../context/useStock'
 
 function Copyright(props) {
   return (
@@ -36,17 +36,19 @@ function Copyright(props) {
 const theme = createTheme()
 
 export default function SignUp() {
-  const {addUser} = useStock()
+  const { addUser } = useStock()
   const history = useHistory()
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     // eslint-disable-next-line no-console
-    const message = await addUser(data.get('name'), data.get('email'), data.get('password'));
-    if (message ==='username already used')
-      console.log(message)
-    else 
-      history.push("/login")
+    const message = await addUser(
+      data.get('name'),
+      data.get('email'),
+      data.get('password'),
+    )
+    if (message === 'username already used') console.log(message)
+    else history.push('/login')
     // console.log({
     //   email: data.get('email'),
     //   password: data.get('password'),
@@ -84,7 +86,7 @@ export default function SignUp() {
                   name="Name"
                   required
                   fullWidth
-                  id="Name"
+                  id="name"
                   label="Name"
                   autoFocus
                 />
