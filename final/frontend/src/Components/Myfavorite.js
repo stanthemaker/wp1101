@@ -101,12 +101,16 @@ export default function Album() {
             bgcolor: 'background.paper',
             pt: 8,
             pb: 6,
+            backgroundPosition: 'center',
             backgroundImage:
               'url(https://images.unsplash.com/photo-1640340435016-1964cf4e723b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY0MTg3NDc4OA&ixlib=rb-1.2.1&q=80&w=1080',
+            backgroundSize: 'cover',
+
+            backgroundRepeat: 'no-repeat',
           }}
         >
           <Container maxWidth="sm" align="center">
-            <SmallCaption_up>My favorite Stock</SmallCaption_up>
+            <SmallCaption_up>My Favorite Stock</SmallCaption_up>
           </Container>
         </Box>
         <Container sx={{ py: 8 }}>
