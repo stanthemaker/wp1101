@@ -1,4 +1,3 @@
-const request = require("request-promise");
 const cheerio = require("cheerio");
 const axios = require("axios").default;
 const Parser = require("expr-eval").Parser;
@@ -21,7 +20,8 @@ exports.marketHeadline = async (req, res) => {
 	});
 };
 exports.stockInfo = async (req, res) => {
-	const tags = req.query.tags;
+	// const tags = req.query.tags;
+	const tags = ["AAPL"];
 	let companies = [""];
 	for (let i in tags) {
 		let options = {
@@ -41,10 +41,12 @@ exports.stockInfo = async (req, res) => {
 				const lastMonthavgPrice =
 					response.data["monthly"]["Price"]["data"].slice(-1)[0][1];
 
-				const changePercentage =
+				const changePercentage = (
 					(parseFloat(currentprice) - parseFloat(lastMonthavgPrice)) /
-					parseFloat(lastMonthavgPrice);
-
+					parseFloat(lastMonthavgPrice)
+				)
+					.toFixed(4)
+					.toString();
 				companies.push({
 					tag: tags[i],
 					lastPrice: currentprice,
