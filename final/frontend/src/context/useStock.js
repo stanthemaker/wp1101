@@ -10,6 +10,7 @@ const StockContext = createContext({
 	username: "",
 	model: [],
 	favorite: [],
+	passedcompany: [],
 	// user: {//or userName
 	//     name: "",
 	//     company: [{
@@ -31,6 +32,7 @@ const StockContext = createContext({
 	userModels: ()=>{},
 	addModels: () => {},
 	delModel: ()=> {},
+	runModel: ()=>{},
 	marketHeadline: ()=>{},
 	stockInfo: ()=>{},
 });
@@ -43,6 +45,7 @@ const StockProvider = (props) => {
 	const [username, setUsername] = useState("");
 	const [favorite, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
+	const [passedcompany, setPassedCompany] = useState([])
 
 	const addUser = async (name, email, password) => {
 		//button
@@ -174,6 +177,24 @@ const StockProvider = (props) => {
 			return "delete model fail."
 		}
 	}
+	const runModel = async(models, tags)=>{
+		const {
+			data:{
+				message,
+				passedCompany
+			}
+		} = await axios.get("/stockalendar/myModels/runModel",{
+			params:{tags, model}
+		})
+		if(message==="success" ){
+			setPassedCompany(passedCompany)
+			console.log(`company${passedcompany}`)
+			return message;
+		} else {
+			console.log("Model test fail.")
+			return message;
+		}
+	}
 	const marketHeadline = async()=>{
 		const {
 			data:{message, headline}
@@ -206,6 +227,7 @@ const StockProvider = (props) => {
 				username,
 				favorite,
 				model,
+				passedcompany,
 				addUser,
 				login,
 				initialize,
@@ -215,6 +237,7 @@ const StockProvider = (props) => {
 				userModels,
 				addModels,
 				delModel,
+				runModel,
 				marketHeadline,
 				stockInfo,
 				

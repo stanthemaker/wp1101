@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
@@ -11,6 +12,7 @@ import Card from "@mui/material/Card";
 import Grow from "@mui/material/Grow";
 import Slide from "@mui/material/Slide";
 import styled from "styled-components";
+import { useStock } from "../../context/useStock"
 
 const Space = styled.section`
 height=0.5px;
@@ -42,6 +44,15 @@ const cards = (
 );
 
 export default function Model_Card() {
+	const {passedcompany} = useStock()
+	const [card, setCards] = useState([]) //card.map(()=><Cards>)?
+	useEffect(()=>{
+		if(!passedcompany){
+			console.log("There's no passed company.")
+		} else {
+			setCards(passedcompany)
+		}
+	},[passedcompany])
 	return (
 		<Stack spacing={2}>
 			<Typography component="p" variant="h7" color="primary">
