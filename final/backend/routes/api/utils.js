@@ -20,8 +20,7 @@ exports.marketHeadline = async (req, res) => {
 	});
 };
 exports.stockInfo = async (req, res) => {
-	// const tags = req.query.tags;
-	const tags = ["AAPL"];
+	const tags = req.query.tags;
 	let companies = [""];
 	for (let i in tags) {
 		let options = {
