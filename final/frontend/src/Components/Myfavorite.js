@@ -81,7 +81,7 @@ const SmallCaption_up = styled.section`
   font-size: 3em;
   font-family: 'Times New Roman';
   color: white;
-  opacity: 0.8;
+  opacity: 0.9;
 `
 
 export default function Album() {
