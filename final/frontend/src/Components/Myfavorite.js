@@ -13,7 +13,7 @@ import Link from '@mui/material/Link'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import styled from 'styled-components'
 import Grow from '@mui/material/Grow'
-
+import { keyframes } from 'styled-components'
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -33,6 +33,12 @@ const Space_horizontal = styled.section`
 `
 const Space = styled.section`
   width: 50px;
+`
+
+const fly_in_down = keyframes`
+ 0% {transform: translateY(-10%); opacity:0;}
+ 100% {transform: translateY(0%); opacity:0.8;}
+
 `
 
 const cards = (
@@ -82,6 +88,8 @@ const SmallCaption_up = styled.section`
   font-family: 'Times New Roman';
   color: white;
   opacity: 0.9;
+  animation-name: ${fly_in_down};
+  animation-duration: 3s;
 `
 
 export default function Album() {
