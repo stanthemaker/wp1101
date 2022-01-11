@@ -12,12 +12,15 @@ const SmallCaption_up = styled.section`
   opacity: 0.8;
 `
 const example = '*if your model is PE+RoE>5,please enter P+R>5 instead'
+let submit = false
 
-export default function ModelList() {
+export default function ModelFunction() {
   const [funct, setFunct] = useState('')
   const addFunct = (e) => {
     if (e.key === 'Enter') {
       setFunct(e.target.value)
+      submit = true
+      e.preventDefault()
       // e.target.value = ''
     }
   }
@@ -40,7 +43,7 @@ export default function ModelList() {
             Submit
           </Button> */}
         </Stack>
-        <SmallCaption_up>your model :</SmallCaption_up>
+        {submit ? <SmallCaption_up>your model :</SmallCaption_up> : <></>}
         <SmallCaption_up>{funct}</SmallCaption_up>
       </Stack>
     </Box>

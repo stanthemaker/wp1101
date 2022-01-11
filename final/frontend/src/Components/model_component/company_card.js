@@ -20,7 +20,7 @@ const cards = (
   <Card sx={10}>
     <Stack
       spacing={1.5}
-      justifyContent="center"
+      justifycontent="center"
       direction="column"
       align="center"
     >
@@ -30,7 +30,7 @@ const cards = (
         <Typography color="primary" variant="h7">
           company name
         </Typography>
-        <Stack justifyContent="flex-end">
+        <Stack justifycontent="flex-end">
           <FavoriteBorderIcon color="primary" />
         </Stack>
       </Stack>
@@ -53,7 +53,7 @@ export default function Model_Card() {
         in={true}
         style={{ transformOrigin: '0 0 0' }}
         {...(true ? { timeout: 1000 } : {})}
-        justifyContent="center"
+        justifycontent="center"
       >
         {cards}
       </Slide>

@@ -15,15 +15,16 @@ const SmallCaption_up = styled.section`
 let last = 0
 
 const example = '*please seperate each company name with space key'
-
+let submit = false
 export default function Analysis() {
   const [company, setCompany] = useState([])
-  const submit = true
+
   const addCompany = (e) => {
     if (e.key === 'Enter') {
       setCompany([...company, { id: last, content: e.target.value }])
       // e.target.value = ''
       submit = true
+      e.preventDefault()
     }
   }
   return (
@@ -52,9 +53,17 @@ export default function Analysis() {
         </Stack>
         <>
           {submit ? (
-            <Button variant="contained" disableElevation>
-              Start
-            </Button>
+            <>
+              <SmallCaption_up>company to be analysized :</SmallCaption_up>
+              <Stack spacing={1}>
+                {company.map((c) => (
+                  <SmallCaption_up id={c.id}>{c.content}</SmallCaption_up>
+                ))}
+              </Stack>
+              <Button variant="contained" disableElevation>
+                Start
+              </Button>
+            </>
           ) : (
             <></>
           )}
