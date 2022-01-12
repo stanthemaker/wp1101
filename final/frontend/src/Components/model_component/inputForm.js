@@ -20,16 +20,15 @@ let last = 0;
 export default function InputForm() {
 	const [funct, setFunct] = useState("");
 	const [company, setCompany] = useState([]);
-	const { addModels, runModel, displayStatus } = useStock();
+	const { runModel, displayStatus } = useStock();
 
 	const addFunct = (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
 			if (!e.target.value) {
-				console.log("!!");
 				displayStatus({
 					type: "error",
-					msg: "Please enter an inequation.",
+					msg: "Missing an inequation.",
 				});
 				return;
 			} //todo: check validity of inequation
@@ -41,8 +40,11 @@ export default function InputForm() {
 	const addCompany = (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
-			if (e.target.value === "") {
-				console.log("ticker is undefined");
+			if (!e.target.value) {
+				displayStatus({
+					type: "error",
+					msg: "Missing ticker.",
+				});
 				return;
 			}
 			setCompany([...company, e.target.value]);
@@ -52,14 +54,19 @@ export default function InputForm() {
 	};
 	const handleModelSubmit = async (e) => {
 		e.preventDefault();
-		console.log(company);
 		const message = await runModel(funct, company);
-
 		if (message === "success") {
-			console.log("run model success");
+			displayStatus({
+				type: "success",
+				msg: "run model success",
+			});
 		} else {
-			console.log(message);
+			displayStatus({
+				type: "error",
+				msg: message,
+			});
 		}
+		return;
 	};
 
 	return (
