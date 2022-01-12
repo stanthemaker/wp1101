@@ -2,7 +2,7 @@
 import { createContext, useContext, useState } from "react";
 // import axios from 'axios';
 import axios from "../api/index";
-
+import { message } from "antd";
 const StockContext = createContext({
 	signedIn: "", //感覺後端會動到的state才放到這 eg message
 	name: "",
@@ -46,7 +46,25 @@ const StockProvider = (props) => {
 	const [favorite, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
-
+	const displayStatus = (payload) => {
+		console.log(payload);
+		if (payload.msg) {
+			const { type, msg } = payload;
+			const content = {
+				content: msg,
+				duration: 0.5,
+			};
+			switch (type) {
+				case "success":
+					message.success(content);
+					break;
+				case "error":
+				default:
+					message.error(content);
+					break;
+			}
+		}
+	};
 	const addUser = async (name, email, password) => {
 		//button
 		const {
@@ -227,6 +245,7 @@ const StockProvider = (props) => {
 				favorite,
 				model,
 				passedcompany,
+				displayStatus,
 				addUser,
 				login,
 				initialize,

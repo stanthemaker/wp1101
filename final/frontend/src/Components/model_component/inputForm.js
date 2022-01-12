@@ -13,29 +13,41 @@ const SmallCaption_up = styled.section`
 	color: black;
 	opacity: 0.8;
 `;
-const example = "*if your model is PE+RoE>5,please enter P+R>5 instead";
+const example = "Please remember to press Enter once you finish any input.";
 let submit = false;
 let last = 0;
 
 export default function InputForm() {
 	const [funct, setFunct] = useState("");
 	const [company, setCompany] = useState([]);
-	const { addModels, runModel } = useStock();
+	const { addModels, runModel, displayStatus } = useStock();
 
 	const addFunct = (e) => {
 		if (e.key === "Enter") {
+			e.preventDefault();
+			if (!e.target.value) {
+				console.log("!!");
+				displayStatus({
+					type: "error",
+					msg: "Please enter an inequation.",
+				});
+				return;
+			} //todo: check validity of inequation
 			setFunct(e.target.value);
 			submit = true;
-			e.preventDefault();
 			e.target.value = "";
 		}
 	};
 	const addCompany = (e) => {
 		if (e.key === "Enter") {
+			e.preventDefault();
+			if (e.target.value === "") {
+				console.log("ticker is undefined");
+				return;
+			}
 			setCompany([...company, e.target.value]);
 			e.target.value = "";
 			submit = true;
-			e.preventDefault();
 		}
 	};
 	const handleModelSubmit = async (e) => {
@@ -61,7 +73,7 @@ export default function InputForm() {
 							fullWidth
 							id="function"
 							label="My function"
-							placeholder="enter your model"
+							placeholder="Your model (ex: PE+RoE>5, enter P+R>5)"
 							autoComplete="function"
 							autoFocus
 							onKeyPress={addFunct}
@@ -82,7 +94,7 @@ export default function InputForm() {
 							fullWidth
 							id="function"
 							label="My function"
-							placeholder="enter company tickers"
+							placeholder="Company tickers (ex: AAPL)"
 							autoComplete="function"
 							autoFocus
 							onKeyPress={addCompany}
