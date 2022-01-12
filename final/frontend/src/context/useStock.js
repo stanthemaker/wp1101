@@ -34,6 +34,7 @@ const StockContext = createContext({
 	delModel: () => {},
 	runModel: () => {},
 	marketHeadline: () => {},
+	displayStatus: ()=>{},
 	stockInfo: () => {},
 });
 
