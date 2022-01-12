@@ -1,10 +1,12 @@
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { keyframes } from 'styled-components'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import Button from '@material-ui/core/Button';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import ReactDOM from 'react-dom';
@@ -146,8 +148,17 @@ const quote=[
 ]
 
 function Header(){
-  const {favorite} = useStock();
-
+  const {favorite, marketHeadline} = useStock();
+  const [headlines, setHeadline] = useState("")
+  useEffect(()=>{
+    const fetchData = async ()=>{
+      const headline = await marketHeadline();
+      if (headline)
+        setHeadline(headline)
+      else console.log("Can't fetch headline.")
+    }
+    fetchData();
+  },[])
   return (
     <>
       <Box
@@ -185,8 +196,19 @@ function Header(){
               <SmallCaption_down>{quote[date%5]}</SmallCaption_down>
             </Wrapper_horizontal>
           </Box>
+          <Box
+            sx={{
+              width: `calc(80vw)`,
+              margin: 'auto',
+              backgroundPosition:-50,
+              }}
+          >
+            <Typography variant='h3' componant='h2'>
+              headline news: {headlines}
+            </Typography>
+          </Box>
       </Box>
-     我的最愛
+     
       <Box
       sx={{
       width: `calc(100vw )`,
