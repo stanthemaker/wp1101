@@ -215,10 +215,22 @@ function Header() {
             sx={{
               backgroundColor: "rgba(255,255,255, .3)",
               padding: "5% 5% 5% 5%",
-              elevation: "24"
+              elevation: "24",
+              fontFamily: "Times New Roman",
+              '&:hover': {
+                // textDecoration: 'underline',
+                backgroundColor: "rgba(0,0,0, .6)",
+                boxShadow: 10,
+                color: "black", 
+                // borderColor: 'primary',
+              }
             }}
+            hover
+
           >
-            <Typography color="white" variant="h4" componant="h3">
+            <Typography 
+              fontFamily="Times New Roman"           
+              color="white" variant="h4" componant="h3">
               headline news: {headlines}
             </Typography>
           </Paper>
