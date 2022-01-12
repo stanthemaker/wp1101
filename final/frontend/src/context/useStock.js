@@ -10,7 +10,7 @@ const StockContext = createContext({
 	password: "",
 	username: "",
 	model: [],
-	favorite: [],
+	favorites: [],
 	passedcompany: [],
 	displayStatus: () => {},
 	addUser: () => {}, //register
@@ -24,14 +24,14 @@ const StockContext = createContext({
 	delModel: () => {},
 	runModel: () => {},
 	marketHeadline: () => {},
-	displayStatus: ()=>{},
+	displayStatus: () => {},
 	stockInfo: () => {},
 });
 
 const StockProvider = (props) => {
 	const [signedIn, setSignedIn] = useState(false);
 	const [username, setUsername] = useState("");
-	const [favorite, setFavorite] = useState([]);
+	const [favorites, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
 	const displayStatus = (payload) => {
@@ -177,7 +177,7 @@ const StockProvider = (props) => {
 			value={{
 				signedIn,
 				username,
-				favorite,
+				favorites,
 				model,
 				passedcompany,
 				displayStatus,

@@ -19,6 +19,8 @@ import styled from "styled-components";
 import Grow from "@mui/material/Grow";
 import { keyframes } from "styled-components";
 import Input from "@mui/material/Input";
+import { useStock } from "../context/useStock";
+import { FavoriteTwoTone } from "@mui/icons-material";
 
 function Copyright() {
 	return (
@@ -47,45 +49,9 @@ const fly_in_down = keyframes`
 
 `;
 
-const cards = (
-	<Card
-		sx={{
-			height: "50%",
-			display: "flex",
-			flexDirection: "column",
-			width: `calc(100vw )`,
-		}}
-		// points="0,50 50,50 100,50"
-	>
-		<CardContent sx={{ flexGrow: 1 }} justifycontent="center">
-			<Stack direction="row">
-				<CardMedia
-					component="img"
-					sx={{
-						// 16:9
+// const cards = (
 
-						width: "50px",
-						height: "50px",
-					}}
-					image="http://t1.gstatic.com/images?q=tbn:ANd9GcSjoU2lZ2eJX3aCMfiFDt39uRNcDu9W7pTKcyZymE2iKa7IOVaI"
-				/>
-				<Space />
-				<Stack>
-					<Typography>company name</Typography>
-					<Typography gutterBottom variant="h5" component="h2">
-						performance
-					</Typography>
-					<Typography>price</Typography>
-				</Stack>
-			</Stack>
-		</CardContent>
-		<Stack direction="row" justifycontent="center">
-			<CardActions>
-				<Button size="small">remove</Button>
-			</CardActions>
-		</Stack>
-	</Card>
-);
+// );
 
 const theme = createTheme();
 
@@ -99,6 +65,7 @@ const SmallCaption_up = styled.section`
 `;
 
 export default function Album() {
+	const { displayStatus, favorites } = useStock();
 	const [checked, setChecked] = React.useState(false);
 
 	const handleChange = () => {
@@ -141,7 +108,53 @@ export default function Album() {
 				</Container>
 				<Container sx={{ py: 8 }}>
 					<Box sx={{ display: "flex" }}>
-						<Grow
+						{favorites.map((favorite, i) => (
+							<>
+								<Grow
+									in={true}
+									style={{ transformOrigin: "0 0 0" }}
+									{...(true ? { timeout: 1000 } : {})}
+								>
+									<Card
+										sx={{
+											height: "50%",
+											display: "flex",
+											flexDirection: "column",
+											width: `calc(100vw )`,
+										}}
+										// points="0,50 50,50 100,50"
+									>
+										<CardContent sx={{ flexGrow: 1 }} justifycontent="center">
+											<Stack direction="row">
+												<CardMedia
+													component="img"
+													sx={{
+														width: "50px",
+														height: "50px",
+													}}
+													image="http://t1.gstatic.com/images?q=tbn:ANd9GcSjoU2lZ2eJX3aCMfiFDt39uRNcDu9W7pTKcyZymE2iKa7IOVaI"
+												/>
+												<Space />
+												<Stack>
+													<Typography>{favorite.tag}</Typography>
+													<Typography gutterBottom variant="h5" component="h2">
+														{favorite.changePercentage}
+													</Typography>
+													<Typography>favorite.price</Typography>
+												</Stack>
+											</Stack>
+										</CardContent>
+										<Stack direction="row" justifycontent="center">
+											<CardActions>
+												<Button size="small">remove</Button>
+											</CardActions>
+										</Stack>
+									</Card>
+								</Grow>
+								<Space_horizontal />
+							</>
+						))}
+						{/* <Grow
 							in={true}
 							style={{ transformOrigin: "0 0 0" }}
 							{...(true ? { timeout: 1000 } : {})}
@@ -163,7 +176,7 @@ export default function Album() {
 							{...(true ? { timeout: 1000 } : {})}
 						>
 							{cards}
-						</Grow>
+						</Grow> */}
 					</Box>
 				</Container>
 			</main>
