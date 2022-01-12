@@ -5,7 +5,9 @@ import moment from "moment";
 import { keyframes } from "styled-components";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper"
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card"
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
@@ -23,6 +25,7 @@ import calendar9 from "./img/9.jpg";
 import calendar0 from "./img/0.jpg";
 import { ContentCutOutlined } from "@mui/icons-material";
 import AppBar from "./AppBar";
+import { CardMedia } from "@mui/material";
 
 const number1 = Math.floor(Math.random() * 10);
 const number2 = Math.floor(Math.random() * 10);
@@ -156,7 +159,9 @@ function Header() {
 			<Box
 				sx={{
 					width: `calc(100vw )`,
-					height: 700,
+					// height: 700,
+          backgroundAttachment: 'fixed',
+          // backgroundRepeat: 'repeat',
 					backgroundImage: `url(${img[date % 9]})`,
 					backgroundPosition: -50,
 				}}
@@ -193,23 +198,41 @@ function Header() {
 				</Box>
 				<Box
 					sx={{
-						width: `calc(80vw)`,
+            // backgroundColor: "rgba(0,0,0, .8)",
+						width: `calc(60vw)`,
 						margin: "auto",
+            marginTop: "10%",
 						backgroundPosition: -50,
+            paddingTop: "1%",
+            paddingLeft:"5%",
+            paddingRight: "5%",
+            paddingBottom: "10%",
+            borderRadius: '5px'
 					}}
-				>
-					<Typography variant="h3" componant="h2">
-						headline news: {headlines}
-					</Typography>
+				> 
+        
+          <Paper
+            sx={{
+              backgroundColor: "rgba(255,255,255, .3)",
+              padding: "5% 5% 5% 5%",
+              elevation: "24"
+            }}
+          >
+            <Typography color="white" variant="h4" componant="h3">
+              headline news: {headlines}
+            </Typography>
+          </Paper>
+				
 				</Box>
 			</Box>
 
-			<Box
+			{/* <Box
 				sx={{
 					width: `calc(100vw )`,
 					backgroundPosition: -50,
+
 				}}
-			></Box>
+			></Box> */}
 		</>
 	);
 }
