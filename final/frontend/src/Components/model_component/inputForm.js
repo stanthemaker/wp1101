@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
@@ -14,14 +14,18 @@ const SmallCaption_up = styled.section`
 	opacity: 0.8;
 `;
 const example = "Please remember to press Enter once you finish any input.";
-let submit = false;
 let last = 0;
 
 export default function InputForm() {
 	const [funct, setFunct] = useState("");
 	const [company, setCompany] = useState([]);
 	const { runModel, displayStatus } = useStock();
-
+	const [canSubmit, setcanSubmit] = useState(false);
+	useEffect(() => {
+		if (funct && company.length) {
+			setcanSubmit(true);
+		}
+	}, [funct, company]);
 	const addFunct = (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
@@ -33,7 +37,6 @@ export default function InputForm() {
 				return;
 			} //todo: check validity of inequation
 			setFunct(e.target.value);
-			submit = true;
 			e.target.value = "";
 		}
 	};
@@ -49,7 +52,6 @@ export default function InputForm() {
 			}
 			setCompany([...company, e.target.value]);
 			e.target.value = "";
-			submit = true;
 		}
 	};
 	const handleModelSubmit = async (e) => {
@@ -89,7 +91,7 @@ export default function InputForm() {
                 Submit
               </Button> */}
 					</Stack>
-					{submit ? <SmallCaption_up>your model :</SmallCaption_up> : <></>}
+					<SmallCaption_up>your model :</SmallCaption_up>
 					<SmallCaption_up>{funct}</SmallCaption_up>
 				</Stack>
 			</Box>
@@ -110,29 +112,20 @@ export default function InputForm() {
               Submit
             </Button> */}
 					</Stack>
+					<SmallCaption_up>company to be analysized :</SmallCaption_up>
+					<Stack spacing={1}>
+						{company.map((c, index) => (
+							<SmallCaption_up key={index}>{c}</SmallCaption_up>
+						))}
+					</Stack>
 
-					<>
-						{submit ? (
-							<>
-								<SmallCaption_up>company to be analysized :</SmallCaption_up>
-								<Stack spacing={1}>
-									{company.map((c, index) => (
-										<SmallCaption_up key={index}>{c}</SmallCaption_up>
-									))}
-								</Stack>
-
-								<Button
-									variant="contained"
-									disableElevation
-									onClick={handleModelSubmit}
-								>
-									Start
-								</Button>
-							</>
-						) : (
-							<></>
-						)}
-					</>
+					<Button
+						variant="contained"
+						disabled={!canSubmit}
+						onClick={handleModelSubmit}
+					>
+						Start
+					</Button>
 				</Stack>
 			</Box>
 		</>

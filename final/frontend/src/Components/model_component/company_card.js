@@ -39,7 +39,7 @@ export default function Model_Card() {
 			{cards.map((card, index) => (
 				<Slide
 					direction="up"
-					in={true}
+					key={index}
 					in={true}
 					style={{ transformOrigin: "0 0 0" }}
 					{...(true ? { timeout: 1000 } : {})}
