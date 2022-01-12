@@ -142,10 +142,12 @@ function Header() {
 	const [headlines, setHeadline] = useState("");
 	useEffect(() => {
 		const fetchData = async () => {
-			const headline = await marketHeadline();
-			console.log("headline", headline);
-			if (headline) setHeadline(headline);
-			else console.log("Can't fetch headline.");
+			const { message, headline } = await marketHeadline();
+			if (message === "success") {
+				setHeadline(headline);
+			} else {
+				console.log(message);
+			}
 		};
 		fetchData();
 	}, []);

@@ -91,25 +91,37 @@ export default function SignInSide() {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const { login } = useStock();
+	const { login, displayStatus } = useStock();
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
 		// eslint-disable-next-line no-console
+		if (name === "" || email === "" || password === "") {
+			displayStatus({
+				type: "error",
+				msg: "All information is required",
+			});
+			return;
+		}
 		const message = await login(
 			data.get("name"),
 			data.get("email"),
 			data.get("password")
 		);
-		if (message === "login success") history.push("/");
-		else console.log("login fail");
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		});
-	};
-	const handleRegisterOpen = () => {
-		history.push("/signup");
+		if (message === "success") {
+			displayStatus({
+				type: "success",
+				msg: "login success",
+			});
+			history.push("/");
+			return;
+		} else {
+			displayStatus({
+				type: "error",
+				msg: message,
+			});
+			return;
+		}
 	};
 	const handleChange = (func) => (event) => {
 		func(event.target.value);

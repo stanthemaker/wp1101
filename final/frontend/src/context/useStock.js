@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 // import axios from 'axios';
 import axios from "../api/index";
 import { message } from "antd";
+
 const StockContext = createContext({
 	signedIn: "", //感覺後端會動到的state才放到這 eg message
 	name: "",
@@ -11,18 +12,7 @@ const StockContext = createContext({
 	model: [],
 	favorite: [],
 	passedcompany: [],
-	// user: {//or userName
-	//     name: "",
-	//     company: [{
-	//         name: "",
-	//         price: "",
-	//         graph: "",
-	//         performance: "",
-	//     }],
-	//     function: [],
-	//     passedCompany: [],
-	// },
-
+	displayStatus: () => {},
 	addUser: () => {}, //register
 	login: () => {},
 	initialize: () => {}, //after login
@@ -39,15 +29,11 @@ const StockContext = createContext({
 
 const StockProvider = (props) => {
 	const [signedIn, setSignedIn] = useState(false);
-	// const [name, setName] = useState("");
-	// const [password, setPassword] = useState("");
-	//const [user, setUser]= useState({});
 	const [username, setUsername] = useState("");
 	const [favorite, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
 	const displayStatus = (payload) => {
-		console.log(payload);
 		if (payload.msg) {
 			const { type, msg } = payload;
 			const content = {
@@ -59,14 +45,14 @@ const StockProvider = (props) => {
 					message.success(content);
 					break;
 				case "error":
-				default:
 					message.error(content);
+					break;
+				default:
 					break;
 			}
 		}
 	};
 	const addUser = async (name, email, password) => {
-		//button
 		const {
 			data: { message },
 		} = await axios.post("/stockalendar/register", {
@@ -74,54 +60,22 @@ const StockProvider = (props) => {
 			email: email,
 			password: password,
 		});
-		console.log(message);
-		if (message === "register success") {
-			setUsername(name);
-			//setSignedIn(true); //wrong
-			// setName("");
-			// setPassword("");
-			//react router putHistory
-		} else if (message === "username already used") {
-			console.log("Please choose another username");
-			return message;
-			// setName("");
-			// setPassword("")
-		}
+		return message;
 	};
 	const login = async (name, email, password) => {
-		if (name === "" || email === "" || password === "") {
-			console.log("mssing some input");
-			return;
-		}
 		name = name.trim();
 		const {
 			data: { message, favorites, models },
 		} = await axios.get("/stockalendar/login", { params: { name, password } });
-		// console.log(message)
-		// const {message, favorites, models} = {message:"",favorites:[],models:[]}
-		if (message === "login success") {
+		if (message === "success") {
 			setSignedIn(true);
 			setUsername(name);
 			setFavorite(favorites);
 			setModel(models);
-
-			//return message
-			// setName("")
-			// setPassword("")
-			//react router putHistory!! redirect to main page
-		} else if (message === "wrong password") {
-			console.log("wrong password");
-			// setPassword("")
-			//material ui snackbar alert顯示登入錯誤
-		} else if (message === "unregistered") {
-			console.log("user not found please register");
-			// setName("")
-			// setPassword("")
 		}
 		return message;
 	};
 	const initialize = async () => {
-		//useEffect?
 		const {
 			data: { message, favorites },
 		} = await axios.get("/stockalendar/userFavorites", {
@@ -151,9 +105,7 @@ const StockProvider = (props) => {
 				params: { username, array },
 			}
 		);
-		if (message === "success") {
-			console.log("add success");
-		}
+		return message;
 	};
 	const delFavorite = async (tag) => {
 		//delete?
@@ -161,9 +113,7 @@ const StockProvider = (props) => {
 			username,
 			tag,
 		});
-		if (message === "success") {
-			return message;
-		} else throw new Error("delete favorite fail");
+		return message;
 	};
 	const userModels = async () => {
 		const {
@@ -183,22 +133,14 @@ const StockProvider = (props) => {
 			username,
 			inequation,
 		});
-		if (message === "success") {
-			console.log("add model success");
-			return message; //notsure
-		}
+		return message;
 	};
 	const delModel = async (inequation) => {
 		const message = await axios.post("/stockalendar/myModels/delModel", {
 			username,
 			inequation,
 		});
-		if (message === "success") {
-			return message;
-		} else {
-			console.log("delete model fail.");
-			return "delete model fail.";
-		}
+		return message;
 	};
 	const runModel = async (model, tags) => {
 		const {
@@ -208,22 +150,14 @@ const StockProvider = (props) => {
 		});
 		if (message === "success") {
 			setPassedCompany(passedCompany);
-			console.log("passed company:", passedCompany);
-			return message;
-		} else {
-			console.log("Model test fail.");
-			return message;
 		}
+		return message;
 	};
 	const marketHeadline = async () => {
 		const {
 			data: { message, headline },
 		} = await axios.get("/stockalendar/Home/headline");
-		if (message === "success" && headline) {
-			return headline;
-		} else {
-			throw new Error("headline fetch fail.");
-		}
+		return { message, headline };
 	};
 	const stockInfo = async (tags) => {
 		const {

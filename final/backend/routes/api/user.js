@@ -6,7 +6,7 @@ exports.login = async (req, res) => {
 	const name = req.query.name;
 	const user = await User.findOne({ "profile.name": name });
 	if (!user) {
-		res.status(404).send({ message: "unregistered" });
+		res.send({ message: "unregistered" });
 		return;
 	}
 	try {
@@ -14,11 +14,17 @@ exports.login = async (req, res) => {
 		const password = user.profile.password;
 		const checked = await bcrypt.compare(inputPassword, password);
 		checked
-			? res.status(200).send({ message: "login success" })
-			: res.status(403).send({ message: "wrong password" });
+			? res
+					.status(200)
+					.send({
+						message: "success",
+						favorites: user.favorites,
+						models: user.models,
+					})
+			: res.send({ message: "wrong password" });
 		return;
 	} catch (e) {
-		res.status(500).send({ message: "login failed" });
+		res.send({ message: "login failed due to server error" });
 	}
 };
 exports.register = async (req, res) => {
@@ -27,7 +33,7 @@ exports.register = async (req, res) => {
 	const email = req.body.email;
 	const existed = await User.findOne({ "profile.email": email });
 	if (existed) {
-		res.status(409).send({ message: "email already used" });
+		res.send({ message: "email already used" });
 		return;
 	}
 	try {
@@ -46,7 +52,7 @@ exports.register = async (req, res) => {
 		newUser.save();
 		res.status(200).send({ message: "success" });
 	} catch (e) {
-		res.status(500).send({ message: "register error" });
 		console.log(e);
+		res.send({ message: "register failed due to server error" });
 	}
 };

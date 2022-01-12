@@ -36,7 +36,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-	const { addUser } = useStock();
+	const { addUser, displayStatus } = useStock();
 	const history = useHistory();
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -47,12 +47,19 @@ export default function SignUp() {
 			data.get("email"),
 			data.get("password")
 		);
-		if (message === "username already used") console.log(message);
-		else history.push("/login");
-		// console.log({
-		//   email: data.get('email'),
-		//   password: data.get('password'),
-		// })
+		if (message === "success") {
+			displayStatus({
+				type: "success",
+				msg: "Register success!",
+			});
+			history.push("/login");
+			return;
+		} else {
+			displayStatus({
+				type: "error",
+				msg: message,
+			});
+		}
 	};
 
 	return (

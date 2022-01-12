@@ -17,11 +17,14 @@ height=0.5px;
 `;
 
 export default function Model_Card() {
-	const { passedcompany } = useStock();
+	const { passedcompany, displayStatus } = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
 	useEffect(() => {
 		if (!passedcompany) {
-			console.log("There's no passed company.");
+			displayStatus({
+				type: "warning",
+				msg: "No comanpy pass your model",
+			});
 		} else {
 			setCards(passedcompany);
 		}
