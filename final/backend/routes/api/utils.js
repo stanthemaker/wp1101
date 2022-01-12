@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");
 const axios = require("axios").default;
 const Parser = require("expr-eval").Parser;
-
+const request = require("request");
 exports.marketHeadline = async (req, res) => {
 	await request("https://www.cnbc.com/stocks/", (err, response, html) => {
 		if (!err && response.statusCode === 200) {
