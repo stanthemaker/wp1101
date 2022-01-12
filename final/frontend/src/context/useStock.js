@@ -26,15 +26,15 @@ const StockContext = createContext({
 	addUser: () => {}, //register
 	login: () => {},
 	initialize: () => {}, //after login
-	userFavorites: ()=>{},
+	userFavorites: () => {},
 	addFavorites: () => {},
-	delFavorite: ()=> {},
-	userModels: ()=>{},
+	delFavorite: () => {},
+	userModels: () => {},
 	addModels: () => {},
-	delModel: ()=> {},
-	runModel: ()=>{},
-	marketHeadline: ()=>{},
-	stockInfo: ()=>{},
+	delModel: () => {},
+	runModel: () => {},
+	marketHeadline: () => {},
+	stockInfo: () => {},
 });
 
 const StockProvider = (props) => {
@@ -45,7 +45,7 @@ const StockProvider = (props) => {
 	const [username, setUsername] = useState("");
 	const [favorite, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
-	const [passedcompany, setPassedCompany] = useState([])
+	const [passedcompany, setPassedCompany] = useState([]);
 
 	const addUser = async (name, email, password) => {
 		//button
@@ -113,113 +113,112 @@ const StockProvider = (props) => {
 			setFavorite(favorites);
 		}
 	};
-	const userFavorites = async()=>{
+	const userFavorites = async () => {
 		const {
-			data:{ message, favorites}
+			data: { message, favorites },
 		} = await axios.get("stockalendar/myFavorites/userFavorites", {
-			params:{username}
-		})
-
-		if (message==="success" && favorites) {
-			return favorites
-		} else {
-			throw new Error("userFavorites fetch fail")
-
-		}
-	}
-	const addFavorites = async (array) => {
-		const message = await axios.post("/stockalendar/addFavorites/addFavorites", {
-			params: { username, array },
+			params: { username },
 		});
+
+		if (message === "success" && favorites) {
+			return favorites;
+		} else {
+			throw new Error("userFavorites fetch fail");
+		}
+	};
+	const addFavorites = async (array) => {
+		const message = await axios.post(
+			"/stockalendar/addFavorites/addFavorites",
+			{
+				params: { username, array },
+			}
+		);
 		if (message === "success") {
 			console.log("add success");
 		}
 	};
-	const delFavorite = async(tag)=>{
+	const delFavorite = async (tag) => {
 		//delete?
 		const message = await axios.post("/stockalendar/myFavorites/delFavorite", {
-			username, tag
-		})
-		if (message==="success") {
+			username,
+			tag,
+		});
+		if (message === "success") {
 			return message;
-		} else throw new Error("delete favorite fail")
-	}
-	const userModels = async()=>{
-		const { 
-			data:{message, models}
+		} else throw new Error("delete favorite fail");
+	};
+	const userModels = async () => {
+		const {
+			data: { message, models },
 		} = await axios.get("/stockalendar/myModels/userModels", {
-			params:{username}
-		})
-		if (message==="success") {
+			params: { username },
+		});
+		if (message === "success") {
 			return models;
 		} else {
 			//throw new Error("userModels fetch fail")
-			console.log("userModels fetch fail.")
+			console.log("userModels fetch fail.");
 		}
-	}
+	};
 	const addModels = async (inequation) => {
-		const message = await axios.post("/stockalendar/myModels/addModel",{
-			username, inequation
-		})
-		if (message==="success") {
-			console.log("add model success")
+		const message = await axios.post("/stockalendar/myModels/addModel", {
+			username,
+			inequation,
+		});
+		if (message === "success") {
+			console.log("add model success");
 			return message; //notsure
 		}
 	};
-	const delModel = async(inequation)=>{
-		const message = await axios.post("/stockalendar/myModels/delModel",{
-			username, inequation
-		})
-		if (message ==="success"){
+	const delModel = async (inequation) => {
+		const message = await axios.post("/stockalendar/myModels/delModel", {
+			username,
+			inequation,
+		});
+		if (message === "success") {
 			return message;
 		} else {
-			console.log("delete model fail.")
-			return "delete model fail."
+			console.log("delete model fail.");
+			return "delete model fail.";
 		}
-	}
-	const runModel = async(models, tags)=>{
+	};
+	const runModel = async (model, tags) => {
 		const {
-			data:{
-				message,
-				passedCompany
-			}
-		} = await axios.get("/stockalendar/myModels/runModel",{
-			params:{tags, model}
-		})
-		if(message==="success" ){
-			setPassedCompany(passedCompany)
-			console.log(`company${passedcompany}`)
+			data: { message, passedCompany },
+		} = await axios.get("/stockalendar/myModels/runModel", {
+			params: { tags, model },
+		});
+		if (message === "success") {
+			setPassedCompany(passedCompany);
+			console.log("passed company:", passedCompany);
 			return message;
 		} else {
-			console.log("Model test fail.")
+			console.log("Model test fail.");
 			return message;
 		}
-	}
-	const marketHeadline = async()=>{
+	};
+	const marketHeadline = async () => {
 		const {
-			data:{message, headline}
-		} = await axios.get("/stockalendar/Home/headline")
-		if (message==="success" && headline){
-			return headline
+			data: { message, headline },
+		} = await axios.get("/stockalendar/Home/headline");
+		if (message === "success" && headline) {
+			return headline;
 		} else {
-			throw new Error("headline fetch fail.")
+			throw new Error("headline fetch fail.");
 		}
-	}
-	const stockInfo = async(tags) =>{
+	};
+	const stockInfo = async (tags) => {
 		const {
-			data:{
-				message , companies
-			}
-		} = await axios.get("/stockalendar/myFavorites/stockInfo",{
-			params:{tags}
-		})
-		if (message==="success" && companies){
-			return companies
+			data: { message, companies },
+		} = await axios.get("/stockalendar/myFavorites/stockInfo", {
+			params: { tags },
+		});
+		if (message === "success" && companies) {
+			return companies;
 		} else {
-			throw new Error("stockInformation fetch fail.")
+			throw new Error("stockInformation fetch fail.");
 		}
-
-	}
+	};
 	return (
 		<StockContext.Provider
 			value={{
@@ -240,7 +239,6 @@ const StockProvider = (props) => {
 				runModel,
 				marketHeadline,
 				stockInfo,
-				
 			}}
 			{...props}
 		/>
