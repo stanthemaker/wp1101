@@ -9,8 +9,8 @@
 #     "name":"stan",
 #     "favorites": "["AAPL","TSLA"]"
 # }
-
-GET  http://localhost:5000/stockalendar/myFavorites/stockInfo
+GET  http://localhost:5000/stockalendar/myModels/Nasdaq100List
+# GET  http://localhost:5000/stockalendar/myFavorites/stockInfo
 # 
 # POST http://localhost:4000/stockalendar/register
 # Content-Type: application/json

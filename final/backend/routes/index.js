@@ -29,6 +29,10 @@ function main(app) {
 	app.post("/stockalendar/myModels/addModel", wrap(modelRouter.addModel));
 	app.post("/stockalendar/myModels/delModel", wrap(modelRouter.delModel));
 	//other utils
+	app.get(
+		"/stockalendar/myModels/Nasdaq100List",
+		wrap(utilRouter.Nasdaq100List)
+	);
 	app.get("/stockalendar/myModels/runModel", wrap(utilRouter.runModel));
 	app.get("/stockalendar/myFavorites/stockInfo", wrap(utilRouter.stockInfo));
 }

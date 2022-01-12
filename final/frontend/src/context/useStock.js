@@ -26,6 +26,7 @@ const StockContext = createContext({
 	marketHeadline: () => {},
 	displayStatus: () => {},
 	stockInfo: () => {},
+	Nasdaq100List: () => {},
 });
 
 const StockProvider = (props) => {
@@ -172,6 +173,12 @@ const StockProvider = (props) => {
 			throw new Error("stockInformation fetch fail.");
 		}
 	};
+	const Nasdaq100List = async () => {
+		const {
+			data: { message, Nasdaq100List },
+		} = await axios.get("/stockalendar/myModels/Nasdaq100List");
+		return { message, Nasdaq100List };
+	};
 	return (
 		<StockContext.Provider
 			value={{
@@ -193,6 +200,7 @@ const StockProvider = (props) => {
 				runModel,
 				marketHeadline,
 				stockInfo,
+				Nasdaq100List,
 			}}
 			{...props}
 		/>

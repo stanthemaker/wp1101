@@ -58,31 +58,6 @@ exports.stockInfo = async (req, res) => {
 				return;
 			});
 	}
-	// for (let i in tags) {
-	// 	console.log(tags[i]);
-	// 	let options = {
-	// 		method: "GET",
-	// 		url: `https://realstonks.p.rapidapi.com/${tags[i]}`,
-	// 		headers: {
-	// 			"x-rapidapi-host": "realstonks.p.rapidapi.com",
-	// 			"x-rapidapi-key": "767b545ad0mshf942c9a40d8b189p100638jsn95d6fb9a3a1b",
-	// 		},
-	// 	};
-	// 	await axios
-	// 		.request(options)
-	// 		.then(function (response) {
-	// 			companies.push({
-	// 				tag: tags[i],
-	// 				lastPrice: response.data.price,
-	// 				changePercentage: response.data.change_percentage,
-	// 			});
-	// 		})
-	// 		.catch(function (error) {
-	// 			res.status(500).send({ message: "error" });
-	// 			console.error("error: ", error);
-	// 			return;
-	// 		});
-	// }
 	res.status(200).send({ message: "success", companies: companies });
 };
 exports.runModel = async (req, res) => {
@@ -130,4 +105,25 @@ exports.runModel = async (req, res) => {
 			});
 	}
 	res.status(200).send({ message: "success", passedCompany: passedCompany });
+};
+exports.Nasdaq100List = async (req, res) => {
+	const options = {
+		method: "GET",
+		url: "https://api.nasdaq.com/api/quote/list-type/nasdaq100",
+	};
+	let Nasdaq100List = [];
+	await axios
+		.request(options)
+		.then((response) => {
+			const data = response.data.data.data.rows;
+			for (let i = 0; i < data.length; i++) {
+				Nasdaq100List.push(data[i].symbol);
+			}
+		})
+		.catch((error) => {
+			res.send({ message: "Server error" });
+			console.error("error: ", error);
+			return;
+		});
+	res.status(200).send({ message: "success", Nasdaq100List: Nasdaq100List });
 };
