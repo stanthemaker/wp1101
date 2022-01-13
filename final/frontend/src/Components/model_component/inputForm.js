@@ -6,6 +6,7 @@ import Input from "@mui/material/Input";
 import Stack from "@mui/material/Stack";
 import styled from "styled-components";
 import { useStock } from "../../context/useStock";
+import SystemUpdateAltIcon from "@mui/icons-material/SystemUpdateAlt";
 
 const SmallCaption_up = styled.section`
 	font-size: 1em;
@@ -13,13 +14,20 @@ const SmallCaption_up = styled.section`
 	color: black;
 	opacity: 0.8;
 `;
+const Space = styled.section`
+	width: 300px;
+	height: 50px;
+`;
+
 const example = "Please remember to press Enter once you finish any input.";
+let last = 0;
 
 export default function InputForm() {
 	const [funct, setFunct] = useState("");
 	const [company, setCompany] = useState([]);
 	const { runModel, displayStatus } = useStock();
 	const [canSubmit, setcanSubmit] = useState(false);
+
 	useEffect(() => {
 		if (funct && company.length) {
 			setcanSubmit(true);
@@ -56,6 +64,8 @@ export default function InputForm() {
 	const handleModelSubmit = async (e) => {
 		e.preventDefault();
 		const message = await runModel(funct, company);
+		setCompany([]);
+		setFunct(" ");
 		if (message === "success") {
 			displayStatus({
 				type: "success",
@@ -81,7 +91,7 @@ export default function InputForm() {
 							fullWidth
 							id="function"
 							label="My function"
-							placeholder="Your model (ex: PE+RoE>5, enter P+R>5)"
+							placeholder="Your model (ex: P+R>5)"
 							autoComplete="function"
 							autoFocus
 							onKeyPress={addFunct}
@@ -107,9 +117,9 @@ export default function InputForm() {
 							autoFocus
 							onKeyPress={addCompany}
 						/>
-						{/* <Button variant="contained" disableElevation>
-              Submit
-            </Button> */}
+						<Button variant="contained" size="small">
+							import NASDAQ 100
+						</Button>
 					</Stack>
 					<SmallCaption_up>company to be analysized :</SmallCaption_up>
 					<Stack spacing={1}>
@@ -125,6 +135,7 @@ export default function InputForm() {
 					>
 						Start
 					</Button>
+					<Space />
 				</Stack>
 			</Box>
 		</>

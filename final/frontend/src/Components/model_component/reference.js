@@ -61,7 +61,7 @@ export default function ModelList() {
             <PieChartIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="C" secondary="Current ratio" />
+        <ListItemText primary="C" secondary="Current Ratio" />
       </ListItem>
     </List>
   )

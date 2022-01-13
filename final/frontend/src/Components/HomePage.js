@@ -92,7 +92,7 @@ const SmallCaption_up = styled.section`
 `;
 
 const SmallCaption_down = styled.section`
-	font-size: 1.5em;
+	font-size: 3em;
 	font-family: "Times New Roman";
 	color: white;
 	opacity: 0.8;
@@ -103,10 +103,13 @@ const SmallCaption_down = styled.section`
 `;
 
 const Date = styled.section`
-	font-size: 5em;
+	font-size: 8em;
 	font-family: "Times New Roman";
 	color: white;
 	opacity: 0.8;
+	animation-name: ${fly_in_down};
+	animation-duration: 4s;
+	animation-iteration-count: 1;
 `;
 
 const Space_horizontal = styled.section`

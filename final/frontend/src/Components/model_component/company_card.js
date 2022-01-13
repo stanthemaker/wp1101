@@ -18,25 +18,34 @@ height=0.5px;
 `;
 
 export default function Model_Card() {
-	const { passedcompany, displayStatus, addFavorites } = useStock();
+	const { passedcompany, displayStatus } = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
+	const [canAdd, setCanAdd] = useState(false);
+	const [favorite, setFavorite] = useState(false);
+	const addFavorite = () => {
+		setFavorite(!favorite);
+	};
+
 	useEffect(() => {
-		if (!passedcompany) {
+		if (!passedcompany.length) {
 			displayStatus({
 				type: "warning",
 				msg: "No comanpy pass your model",
 			});
 		} else {
 			setCards(passedcompany);
+			setCanAdd(true);
 		}
 	}, [passedcompany]);
 
 	return (
 		<Stack spacing={2}>
 			<Typography component="p" variant="h6" color="primary">
-				Passed Companies:
+				Passed Companies
 			</Typography>
-
+			<Button variant="contained" disabled={!canAdd} onClick={addFavorite}>
+				add all to my favorite
+			</Button>
 			{cards.map((card, index) => (
 				<Slide
 					direction="up"
@@ -54,12 +63,14 @@ export default function Model_Card() {
 							align="center"
 						>
 							<Space />
-							<Stack direction="row">
+							<Stack direction="row" spacing={2}>
 								<Space />
 								<Stack>
-									<Button>
-										<FavoriteBorderIcon color="primary" onClick={() => {}} />
-									</Button>
+									{favorite ? (
+										<FavoriteIcon color="primary" />
+									) : (
+										<FavoriteBorderIcon color="primary" />
+									)}
 								</Stack>
 								<Typography color="primary" variant="h7" key={index}>
 									{card}
