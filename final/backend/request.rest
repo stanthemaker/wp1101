@@ -1,0 +1,21 @@
+
+# GET http://localhost:5000/stockalendar/myModels/runModel
+# GET http://localhost:5000/stockalendar/myModels/userModels?name=stan
+# GET http://localhost:5000/stockalendar/Home/headline
+# POST http://localhost:5000/stockalendar/myFavorites/addFavorites
+# Content-Type: application/json
+
+# {
+#     "name":"stan",
+#     "favorites": "["AAPL","TSLA"]"
+# }
+GET  http://localhost:5000/stockalendar/myModels/Nasdaq100List
+# GET  http://localhost:5000/stockalendar/myFavorites/stockInfo
+# 
+# POST http://localhost:4000/stockalendar/register
+# Content-Type: application/json
+
+# {
+#     "name":"stan456789",
+#     "password":"1234456"
+# }

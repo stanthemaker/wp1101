@@ -8,6 +8,8 @@ import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Company from './model_component/company_input'
 import { keyframes } from 'styled-components'
+import InputForm from './model_component/inputForm'
+import { useStock } from '../context/useStock'
 
 const Space = styled.section`
   height=20px;
@@ -30,6 +32,7 @@ const SmallCaption_up = styled.section`
 `
 
 export default function Model() {
+  
   return (
     <main>
       <Box
@@ -68,8 +71,9 @@ export default function Model() {
               <Space />
               <Stack direction="column" spacing={3}>
                 <Space />
-                <Model_Function />
-                <Company />
+                {/* <Model_Function />
+                <Company /> */}
+                <InputForm/>
               </Stack>
               <Space />
             </Stack>

@@ -1,10 +1,14 @@
 import * as React from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 import { keyframes } from 'styled-components'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import Button from '@material-ui/core/Button'
+import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import ReactDOM from 'react-dom'
@@ -21,6 +25,7 @@ import calendar9 from './img/9.jpg'
 import calendar0 from './img/0.jpg'
 import { ContentCutOutlined } from '@mui/icons-material'
 import AppBar from './AppBar'
+import { CardMedia } from '@mui/material'
 
 const number1 = Math.floor(Math.random() * 10)
 const number2 = Math.floor(Math.random() * 10)
@@ -136,14 +141,27 @@ const quote = [
 ]
 
 function Header() {
-  const { favorite } = useStock()
-
+  const { favorite, marketHeadline } = useStock()
+  const [headlines, setHeadline] = useState('')
+  useEffect(() => {
+    const fetchData = async () => {
+      const { message, headline } = await marketHeadline()
+      if (message === 'success') {
+        setHeadline(headline)
+      } else {
+        console.log(message)
+      }
+    }
+    fetchData()
+  }, [])
   return (
     <>
       <Box
         sx={{
           width: `calc(98.7vw )`,
-          height: 700,
+          // height: 700,
+          backgroundAttachment: 'fixed',
+          // backgroundRepeat: 'repeat',
           backgroundImage: `url(${img[date % 9]})`,
           backgroundPosition: -50,
         }}
@@ -178,14 +196,55 @@ function Header() {
             <SmallCaption_down>{quote[date % 5]}</SmallCaption_down>
           </Wrapper_horizontal>
         </Box>
+        <Box
+          sx={{
+            // backgroundColor: "rgba(0,0,0, .8)",
+            width: `calc(60vw)`,
+            margin: 'auto',
+            marginTop: '10%',
+            backgroundPosition: -50,
+            paddingTop: '1%',
+            paddingLeft: '5%',
+            paddingRight: '5%',
+            paddingBottom: '10%',
+            borderRadius: '5px',
+          }}
+        >
+          <Paper
+            sx={{
+              backgroundColor: 'rgba(255,255,255, .3)',
+              padding: '5% 5% 5% 5%',
+              elevation: '24',
+              fontFamily: 'Times New Roman',
+              '&:hover': {
+                // textDecoration: 'underline',
+                backgroundColor: 'rgba(0,0,0, .6)',
+                boxShadow: 10,
+                color: 'black',
+                // borderColor: 'primary',
+              },
+            }}
+            hover
+          >
+            <Typography
+              fontFamily="Times New Roman"
+              color="white"
+              variant="h4"
+              componant="h3"
+            >
+              headline news: {headlines}
+            </Typography>
+          </Paper>
+        </Box>
       </Box>
-      我的最愛
-      <Box
-        sx={{
-          width: `calc(98.7vw )`,
-          backgroundPosition: -50,
-        }}
-      ></Box>
+
+      {/* <Box
+				sx={{
+					width: `calc(100vw )`,
+					backgroundPosition: -50,
+
+				}}
+			></Box> */}
     </>
   )
 }

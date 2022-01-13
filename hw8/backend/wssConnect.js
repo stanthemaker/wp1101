@@ -17,9 +17,5 @@ const initData = (ws) => {
 		});
 	console.log(" initData finished");
 };
-// const defaultUsername = (ws) => {
-// 	console.log(" defaultUsername is called");
-// 	sendData(["defaultUsername",])
-// };
 
 export { initData, sendData, sendStatus };

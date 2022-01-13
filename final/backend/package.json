@@ -4,10 +4,14 @@
 	"main": "index.js",
 	"license": "MIT",
 	"dependencies": {
+		"axios": "^0.24.0",
+		"bcrypt": "^5.0.1",
+		"cheerio": "^1.0.0-rc.10",
+		"cors": "^2.8.5",
+		"expr-eval": "^2.0.2",
 		"express": "^4.17.1",
-		"node-fetch": "^3.1.0",
 		"nodemon": "^2.0.15",
-		"ws": "^8.3.0"
+		"request": "^2.88.2"
 	},
 	"scripts": {
 		"server": "nodemon server.js --ext js --exec babel-node"
@@ -22,6 +26,5 @@
 		"@babel/preset-env": "^7.16.4",
 		"dotenv-defaults": "^3.0.0",
 		"mongoose": "^6.0.14"
-	},
-	"type": "module"
+	}
 }
