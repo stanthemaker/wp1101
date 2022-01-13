@@ -21,6 +21,7 @@ import { keyframes } from "styled-components";
 import Input from "@mui/material/Input";
 import { useStock } from "../context/useStock";
 import { FavoriteTwoTone } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 function Copyright() {
 	return (
@@ -65,12 +66,40 @@ const SmallCaption_up = styled.section`
 `;
 
 export default function Album() {
-	const { displayStatus, favorites } = useStock();
-	const [checked, setChecked] = React.useState(false);
-
+	const { favorites, username, displayStatus, addFavorites, stockInfo } =
+		useStock();
+	const [checked, setChecked] = useState(false);
+	const [tickers, setTickers] = useState([]);
 	const handleChange = () => {
 		setChecked((prev) => !prev);
 	};
+	const handleAddFavorite = async (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			if (!e.target.value) {
+				displayStatus({
+					type: "error",
+					msg: "Missing a ticker.",
+				});
+				return;
+			}
+			const { message, info } = await stockInfo(e.target.value);
+			if (message === "success") {
+				addFavorites(username, e.target.value);
+			} else {
+				displayStatus({
+					type: "error",
+					msg: message,
+				});
+				return;
+			}
+			e.target.value = "";
+		}
+	};
+	// const useEffect(() => {
+	// 	setTickers(...tickers,{})
+	// },[favorites])
+
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
@@ -95,15 +124,16 @@ export default function Album() {
 						<SmallCaption_up>My Favorite Stock</SmallCaption_up>
 					</Container>
 				</Box>
-				<Container maxWidth="sm" align="center">
+				<Container maxWidth="sm" align="center" sx={{ py: 6 }}>
 					<Input
 						required
 						fullWidth
 						id="stock"
 						label="stock"
-						placeholder="add stock"
+						placeholder="add stock (ex:AAPL)"
 						autoComplete="stock"
 						autoFocus
+						onKeyPress={handleAddFavorite}
 					/>
 				</Container>
 				<Container sx={{ py: 8 }}>
@@ -136,9 +166,9 @@ export default function Album() {
 												/>
 												<Space />
 												<Stack>
-													<Typography>{favorite.tag}</Typography>
+													<Typography>{favorite}</Typography>
 													<Typography gutterBottom variant="h5" component="h2">
-														{favorite.changePercentage}
+														favorite.changePercentage
 													</Typography>
 													<Typography>favorite.price</Typography>
 												</Stack>

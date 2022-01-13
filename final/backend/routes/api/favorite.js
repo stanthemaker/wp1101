@@ -11,12 +11,10 @@ exports.userFavorites = async (req, res) => {
 exports.addFavorites = async (req, res) => {
 	console.log("addFavorite request");
 	const name = req.body.name;
-	const tags = req.body.tags;
+	const tag = req.body.tag;
 	try {
-		User.updateOne(
-			{ "profile.name": name },
-			{ $push: { favorites: { $each: tags } } }
-		);
+		User.updateOne({ "profile.name": name }, { $push: { favorites: tag } });
+		res.status(200).send({ message: "success" });
 	} catch (e) {
 		res.status(500).send({ message: "add Favorites error" });
 		console.log(e);

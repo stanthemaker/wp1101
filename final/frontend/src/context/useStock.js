@@ -6,7 +6,6 @@ import { message } from "antd";
 
 const StockContext = createContext({
 	signedIn: "", //感覺後端會動到的state才放到這 eg message
-	name: "",
 	password: "",
 	username: "",
 	model: [],
@@ -100,13 +99,15 @@ const StockProvider = (props) => {
 			throw new Error("userFavorites fetch fail");
 		}
 	};
-	const addFavorites = async (array) => {
+	const addFavorites = async (username, tag) => {
 		const message = await axios.post(
 			"/stockalendar/addFavorites/addFavorites",
 			{
-				params: { username, array },
+				username: username,
+				tag: tag,
 			}
 		);
+
 		return message;
 	};
 	const delFavorite = async (tag) => {
@@ -161,17 +162,13 @@ const StockProvider = (props) => {
 		} = await axios.get("/stockalendar/Home/headline");
 		return { message, headline };
 	};
-	const stockInfo = async (tags) => {
+	const stockInfo = async (tag) => {
 		const {
-			data: { message, companies },
+			data: { message, info },
 		} = await axios.get("/stockalendar/myFavorites/stockInfo", {
-			params: { tags },
+			params: { tag },
 		});
-		if (message === "success" && companies) {
-			return companies;
-		} else {
-			throw new Error("stockInformation fetch fail.");
-		}
+		return { message, info };
 	};
 	const Nasdaq100List = async () => {
 		const {

@@ -224,7 +224,7 @@ function Header() {
 								// borderColor: 'primary',
 							},
 						}}
-						hover
+						// hover
 					>
 						<Typography
 							fontFamily="Times New Roman"

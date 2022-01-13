@@ -14,7 +14,6 @@ const SmallCaption_up = styled.section`
 	opacity: 0.8;
 `;
 const example = "Please remember to press Enter once you finish any input.";
-let last = 0;
 
 export default function InputForm() {
 	const [funct, setFunct] = useState("");

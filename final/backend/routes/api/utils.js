@@ -20,45 +20,42 @@ exports.marketHeadline = async (req, res) => {
 	});
 };
 exports.stockInfo = async (req, res) => {
-	const tags = req.query.tags;
-	let companies = [""];
-	for (let i in tags) {
-		let options = {
-			method: "GET",
-			url: ` https://statementdog.com/api/v2/fundamentals/${tags[i]}/2017/2022/cf?qbu=true&qf=analysis`,
-		};
-		await axios
-			.request(options)
-			.then(function (response) {
-				if (response.data.hasOwnProperty("error")) {
-					res.status(404).send({ message: response.data.error.message });
-				}
-				const currentprice =
-					response.data["common"]["StockInfo"]["data"][
-						"latest_closing_price"
-					].slice(11);
-				const lastMonthavgPrice =
-					response.data["monthly"]["Price"]["data"].slice(-1)[0][1];
-
-				const changePercentage = (
-					(parseFloat(currentprice) - parseFloat(lastMonthavgPrice)) /
-					parseFloat(lastMonthavgPrice)
-				)
-					.toFixed(4)
-					.toString();
-				companies.push({
-					tag: tags[i],
-					lastPrice: currentprice,
-					changePercentage: changePercentage,
-				});
-			})
-			.catch(function (error) {
-				console.error("error: ", error);
-				res.status(500).send({ message: "error" });
+	const tag = req.query.tag;
+	let options = {
+		method: "GET",
+		url: ` https://statementdog.com/api/v2/fundamentals/${tag}/2017/2022/cf?qbu=true&qf=analysis`,
+	};
+	await axios
+		.request(options)
+		.then(function (response) {
+			if (response.data.hasOwnProperty("error")) {
+				res.send({ message: response.data.error.message });
 				return;
-			});
-	}
-	res.status(200).send({ message: "success", companies: companies });
+			}
+			const currentprice =
+				response.data["common"]["StockInfo"]["data"][
+					"latest_closing_price"
+				].slice(11);
+			const lastMonthavgPrice =
+				response.data["monthly"]["Price"]["data"].slice(-1)[0][1];
+
+			const changePercentage = (
+				(parseFloat(currentprice) - parseFloat(lastMonthavgPrice)) /
+				parseFloat(lastMonthavgPrice)
+			)
+				.toFixed(4)
+				.toString();
+			const stockInfo = {
+				tag: tag,
+				lastPrice: currentprice,
+				changePercentage: changePercentage,
+			};
+			res.status(200).send({ message: "success", info: stockInfo });
+		})
+		.catch(function (error) {
+			console.error("error: ", error);
+			res.status(500).send({ message: "error" });
+		});
 };
 exports.runModel = async (req, res) => {
 	//there should be limit on the ineq

@@ -1,3 +1,4 @@
+//note that this component has not been rendered
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
@@ -21,10 +22,10 @@ export default function Analysis() {
 
 	const addCompany = (e) => {
 		if (e.key === "Enter") {
+			e.preventDefault();
 			setCompany([...company, { id: last, content: e.target.value }]);
 			// e.target.value = ''
 			submit = true;
-			e.preventDefault();
 		}
 	};
 	return (

@@ -17,7 +17,7 @@ height=0.5px;
 `;
 
 export default function Model_Card() {
-	const { passedcompany, displayStatus } = useStock();
+	const { passedcompany, displayStatus, addFavorites } = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
 	useEffect(() => {
 		if (!passedcompany) {
