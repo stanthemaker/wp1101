@@ -64,6 +64,8 @@ export default function InputForm() {
   const handleModelSubmit = async (e) => {
     e.preventDefault()
     const message = await runModel(funct, company)
+    setCompany([])
+    setFunct(' ')
     if (message === 'success') {
       displayStatus({
         type: 'success',
@@ -115,9 +117,9 @@ export default function InputForm() {
               autoFocus
               onKeyPress={addCompany}
             />
-            <Button variant="contained" size="small">
+            {/* <Button variant="contained" size="small">
               import NASDAQ 100
-            </Button>
+            </Button> */}
           </Stack>
           <SmallCaption_up>company to be analysized :</SmallCaption_up>
           <Stack spacing={1}>

@@ -10,6 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Link from '@mui/material/Link'
@@ -20,6 +21,7 @@ import { keyframes } from 'styled-components'
 import Input from '@mui/material/Input'
 import { useStock } from '../context/useStock'
 import { FavoriteTwoTone } from '@mui/icons-material'
+import { useEffect, useState } from 'react'
 
 function Copyright() {
   return (
@@ -35,11 +37,11 @@ function Copyright() {
 }
 
 const Space_horizontal = styled.section`
-  width: 300px;
+  width: 50px;
   height: 50px;
 `
 const Space = styled.section`
-  width: 50px;
+ width=10px;
   height=50px;
 `
 const fly_in_down = keyframes`
@@ -64,12 +66,57 @@ const SmallCaption_up = styled.section`
 `
 
 export default function Album() {
-  const { displayStatus, favorites } = useStock()
-  const [checked, setChecked] = React.useState(false)
-
+  const {
+    favorites,
+    username,
+    displayStatus,
+    addFavorites,
+    stockInfo,
+  } = useStock()
+  const [checked, setChecked] = useState(false)
+  const [tickers, setTickers] = useState([])
   const handleChange = () => {
     setChecked((prev) => !prev)
   }
+  const handleAddFavorite = async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (!e.target.value) {
+        displayStatus({
+          type: 'error',
+          msg: 'Missing a ticker.',
+        })
+        return
+      }
+      const { message, info } = await stockInfo(e.target.value)
+      if (message === 'success') {
+        const mes = await addFavorites(username, e.target.value)
+        if (mes === 'success') {
+          displayStatus({
+            type: 'success',
+            msg: 'Company Added!',
+          })
+        } else {
+          displayStatus({
+            type: 'error',
+            msg: mes,
+          })
+        }
+        return
+      } else {
+        displayStatus({
+          type: 'error',
+          msg: message,
+        })
+        return
+      }
+      e.target.value = ''
+    }
+  }
+  // const useEffect(() => {
+  //  setTickers(...tickers,{})
+  // },[favorites])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -78,7 +125,6 @@ export default function Album() {
         <Box
           sx={{
             align: 'center',
-            width: `calc(100vw )`,
             bgcolor: 'background.paper',
             pt: 8,
             pb: 6,
@@ -94,90 +140,58 @@ export default function Album() {
             <SmallCaption_up>My Favorite Stock</SmallCaption_up>
           </Container>
         </Box>
-
         <Container maxWidth="sm" align="center" sx={{ py: 6 }}>
           <Input
             required
             fullWidth
             id="stock"
             label="stock"
-            placeholder="add stock"
+            placeholder="add stock (ex:AAPL)"
             autoComplete="stock"
             autoFocus
+            onKeyPress={handleAddFavorite}
           />
         </Container>
-        <Container sx={{ py: 8 }}>
-          <Box sx={{ display: 'flex' }}>
+        <Container sx={{ py: 8 }} maxWidth="md">
+          {/* End hero unit */}
+          <Grid container spacing={4}>
             {favorites.map((favorite, i) => (
-              <>
-                <Grow
-                  in={true}
-                  style={{ transformOrigin: '0 0 0' }}
-                  {...(true ? { timeout: 1000 } : {})}
+              <Grid item key={i} xs={12} sm={6} md={4}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
                 >
-                  <Card
-                    sx={{
-                      height: '50%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: `calc(100vw )`,
-                    }}
-                    // points="0,50 50,50 100,50"
-                  >
-                    <CardContent sx={{ flexGrow: 1 }} justifycontent="center">
-                      <Stack direction="row">
-                        <CardMedia
-                          component="img"
-                          sx={{
-                            width: '50px',
-                            height: '50px',
-                          }}
-                          image="http://t1.gstatic.com/images?q=tbn:ANd9GcSjoU2lZ2eJX3aCMfiFDt39uRNcDu9W7pTKcyZymE2iKa7IOVaI"
-                        />
-                        <Space />
-                        <Stack>
-                          <Typography>{favorite.tag}</Typography>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {favorite.changePercentage}
-                          </Typography>
-                          <Typography>favorite.price</Typography>
-                        </Stack>
-                      </Stack>
+                  <Stack direction="row" spacing={4}>
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        // 16:9
+                        width: '80px',
+                        height: '80px',
+                      }}
+                      image="http://t1.gstatic.com/images?q=tbn:ANd9GcSjoU2lZ2eJX3aCMfiFDt39uRNcDu9W7pTKcyZymE2iKa7IOVaI"
+                      alt="random"
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        company name
+                      </Typography>
                     </CardContent>
-                    <Stack direction="row" justifycontent="center">
-                      <CardActions>
-                        <Button size="small">remove</Button>
-                      </CardActions>
-                    </Stack>
-                  </Card>
-                </Grow>
-                <Space_horizontal />
-              </>
+                  </Stack>
+                  <CardContent>
+                    <Typography>recent price</Typography>
+                    <Typography>price change</Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small">remove</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
             ))}
-            {/* <Grow
-							in={true}
-							style={{ transformOrigin: "0 0 0" }}
-							{...(true ? { timeout: 1000 } : {})}
-						>
-							{cards}
-						</Grow>
-						<Space_horizontal />
-						<Grow
-							in={true}
-							style={{ transformOrigin: "0 0 0" }}
-							{...(true ? { timeout: 1000 } : {})}
-						>
-							{cards}
-						</Grow>
-						<Space_horizontal />
-						<Grow
-							in={true}
-							style={{ transformOrigin: "0 0 0" }}
-							{...(true ? { timeout: 1000 } : {})}
-						>
-							{cards}
-						</Grow> */}
-          </Box>
+          </Grid>
         </Container>
       </main>
     </ThemeProvider>
