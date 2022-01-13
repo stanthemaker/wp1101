@@ -160,6 +160,11 @@ const StockProvider = (props) => {
 		});
 		if (message === "success") {
 			setPassedCompany(passedCompany);
+		} else {
+			displayStatus({
+				type: "error",
+				msg: message,
+			});
 		}
 		return message;
 	};
@@ -181,7 +186,8 @@ const StockProvider = (props) => {
 		const {
 			data: { message, Nasdaq100List },
 		} = await axios.get("/stockalendar/myModels/Nasdaq100List");
-		return { message, Nasdaq100List };
+
+		return { message, NasdaqList: Nasdaq100List };
 	};
 	return (
 		<StockContext.Provider

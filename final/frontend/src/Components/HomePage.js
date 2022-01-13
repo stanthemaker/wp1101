@@ -196,7 +196,6 @@ function Header() {
 							{month}/{date}
 						</Date>
 						<Space_horizontal />
-						<SmallCaption_down>{quote[date % 5]}</SmallCaption_down>
 					</Wrapper_horizontal>
 				</Box>
 				<Box

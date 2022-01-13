@@ -69,6 +69,10 @@ exports.runModel = async (req, res) => {
 		await axios
 			.request(options)
 			.then(function (response) {
+				if (response.data.hasOwnProperty("error")) {
+					res.send({ message: `stockID ${tags[i]} not found` });
+					return;
+				}
 				const PE = response.data["common"]["LatestValuation"]["data"]["PE"]; //latest PE
 				const ROET4Q =
 					response.data["quarterly"]["ROET4Q"]["data"].slice(-1)[0][1] / 100;
@@ -88,6 +92,9 @@ exports.runModel = async (req, res) => {
 					if (result === true) {
 						passedCompany.push(tags[i]);
 					}
+					res
+						.status(200)
+						.send({ message: "success", passedCompany: passedCompany });
 				} catch (e) {
 					res.status(500).send({ message: "evaluation error" });
 					console.log(e);
@@ -96,10 +103,8 @@ exports.runModel = async (req, res) => {
 			.catch(function (error) {
 				res.status(500).send({ message: "error" });
 				console.error("error: ", error);
-				return;
 			});
 	}
-	res.status(200).send({ message: "success", passedCompany: passedCompany });
 };
 exports.Nasdaq100List = async (req, res) => {
 	const options = {

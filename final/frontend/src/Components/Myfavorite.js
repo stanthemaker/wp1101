@@ -159,7 +159,7 @@ export default function Album() {
 						fullWidth
 						id="stock"
 						label="stock"
-						placeholder="add stock (ex:AAPL)"
+						placeholder="add stock (ex:AAPL),remeber to press Enter"
 						autoComplete="stock"
 						autoFocus
 						onKeyPress={handleAddFavorite}

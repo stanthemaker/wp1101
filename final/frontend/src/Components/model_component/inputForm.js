@@ -25,14 +25,9 @@ let last = 0;
 export default function InputForm() {
 	const [funct, setFunct] = useState("");
 	const [company, setCompany] = useState([]);
-	const { runModel, displayStatus } = useStock();
-	const [canSubmit, setcanSubmit] = useState(false);
+	const { runModel, displayStatus, Nasdaq100List } = useStock();
+	const [canImport, setCanImport] = useState(true);
 
-	useEffect(() => {
-		if (funct && company.length) {
-			setcanSubmit(true);
-		}
-	}, [funct, company]);
 	const addFunct = (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
@@ -61,17 +56,19 @@ export default function InputForm() {
 			e.target.value = "";
 		}
 	};
-	const handleModelSubmit = async (e) => {
-		e.preventDefault();
-		const message = await runModel(funct, company);
-		setCompany([]);
-		setFunct(" ");
-		if (message === "success") {
+	const handleModelSubmit = async () => {
+		if (!company.length || funct == "") {
 			displayStatus({
-				type: "success",
-				msg: "run model success",
+				type: "error",
+				msg: "Please make sure you have pressed Enter for both input forms.",
 			});
-		} else {
+			return;
+		}
+		const message = await runModel(funct, company);
+		//initialize modelPage
+		setCompany([]);
+		setCanImport(true);
+		if (message !== "success") {
 			displayStatus({
 				type: "error",
 				msg: message,
@@ -79,7 +76,23 @@ export default function InputForm() {
 		}
 		return;
 	};
-
+	const handleImportNas = async () => {
+		setCanImport(false);
+		const { message, NasdaqList } = await Nasdaq100List();
+		if (message == "success") {
+			displayStatus({
+				type: "success",
+				msg: "import Nasdaq100 success!",
+			});
+			setCompany([...company, ...NasdaqList]);
+		} else {
+			displayStatus({
+				type: "error",
+				msg: message,
+			});
+			setCanImport(true);
+		}
+	};
 	return (
 		<>
 			<Box component="form" noValidate sx={{ mt: 1 }}>
@@ -117,7 +130,12 @@ export default function InputForm() {
 							autoFocus
 							onKeyPress={addCompany}
 						/>
-						<Button variant="contained" size="small">
+						<Button
+							variant="contained"
+							size="small"
+							disabled={!canImport}
+							onClick={handleImportNas}
+						>
 							import NASDAQ 100
 						</Button>
 					</Stack>
@@ -128,11 +146,7 @@ export default function InputForm() {
 						))}
 					</Stack>
 
-					<Button
-						variant="contained"
-						disabled={!canSubmit}
-						onClick={handleModelSubmit}
-					>
+					<Button variant="contained" onClick={handleModelSubmit}>
 						Start
 					</Button>
 					<Space />
