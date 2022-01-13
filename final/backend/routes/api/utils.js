@@ -40,13 +40,12 @@ exports.stockInfo = async (req, res) => {
 			const changePercentage = (
 				(parseFloat(currentprice) - parseFloat(lastMonthavgPrice)) /
 				parseFloat(lastMonthavgPrice)
-			)
-				.toFixed(4)
-				.toString();
+			).toFixed(4);
+			const change = `${Number(changePercentage) * 100}%`;
 			const stockInfo = {
-				tag: tag,
+				ticker: tag,
 				lastPrice: currentprice,
-				changePercentage: changePercentage,
+				changePercentage: change,
 			};
 			res.status(200).send({ message: "success", info: stockInfo });
 		})

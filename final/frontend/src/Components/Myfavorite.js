@@ -74,11 +74,7 @@ export default function Album() {
 		stockInfo,
 		delFavorite,
 	} = useStock();
-	const [checked, setChecked] = useState(false);
-	const [tickers, setTickers] = useState([]);
-	const handleChange = () => {
-		setChecked((prev) => !prev);
-	};
+	const [companies, setCompanies] = useState([]);
 	const handleAddFavorite = async (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
@@ -130,6 +126,14 @@ export default function Album() {
 		}
 		return;
 	};
+	useEffect(async () => {
+		let companyList = [];
+		for (let i = 0; i < favorites.length; i++) {
+			const { message, info } = await stockInfo(favorites[i]);
+			companyList.push(info);
+		}
+		setCompanies(companyList);
+	}, []);
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
@@ -168,7 +172,7 @@ export default function Album() {
 				<Container sx={{ py: 8 }} maxWidth="md">
 					{/* End hero unit */}
 					<Grid container spacing={4}>
-						{favorites.map((favorite, i) => (
+						{companies.map((company, i) => (
 							<Grid item key={i} xs={12} sm={6} md={4}>
 								<Card
 									sx={{
@@ -185,18 +189,18 @@ export default function Album() {
 												width: "80px",
 												height: "80px",
 											}}
-											image={`https://etoro-cdn.etorostatic.com/market-avatars/${favorite.toLowerCase()}/90x90.png`}
+											image={`https://etoro-cdn.etorostatic.com/market-avatars/${company.ticker.toLowerCase()}/90x90.png`}
 											alt="picture not found"
 										/>
 										<CardContent sx={{ flexGrow: 1 }}>
 											<Typography gutterBottom variant="h5" component="h2">
-												{favorite}
+												{company.ticker}
 											</Typography>
 										</CardContent>
 									</Stack>
 									<CardContent>
-										<Typography>recent price</Typography>
-										<Typography>price change</Typography>
+										<Typography>{company.lastPrice}</Typography>
+										<Typography>{company.changePercentage}</Typography>
 									</CardContent>
 									<CardActions>
 										<Button
