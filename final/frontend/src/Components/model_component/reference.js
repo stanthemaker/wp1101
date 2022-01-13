@@ -27,7 +27,7 @@ export default function ModelList() {
       <Wrapper_horizontal>
         <Space_horizontal />
         <Typography component="p" variant="h6" color="primary">
-          input reference
+          Input Reference
         </Typography>
       </Wrapper_horizontal>
 
@@ -45,7 +45,7 @@ export default function ModelList() {
             <PeopleIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="R" secondary="RoE" />
+        <ListItemText primary="R" secondary="RoET4Q" />
       </ListItem>
       <ListItem>
         <ListItemAvatar>
@@ -53,7 +53,7 @@ export default function ModelList() {
             <AddchartIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="E" secondary="EPS" />
+        <ListItemText primary="G" secondary="Gross Margin" />
       </ListItem>
       <ListItem>
         <ListItemAvatar>
@@ -61,7 +61,7 @@ export default function ModelList() {
             <PieChartIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="D" secondary="Dividend yeild" />
+        <ListItemText primary="C" secondary="Current ratio" />
       </ListItem>
     </List>
   )
