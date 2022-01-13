@@ -30,8 +30,7 @@ exports.addFavorites = async (req, res) => {
 	}
 };
 exports.delFavorite = async (req, res) => {
-	console.log(req.body);
-	const name = req.body.username;
+	const name = req.body.name;
 	const tag = req.body.tag;
 	try {
 		await User.updateOne(

@@ -3,21 +3,19 @@ const axios = require("axios").default;
 const Parser = require("expr-eval").Parser;
 const request = require("request");
 exports.marketHeadline = async (req, res) => {
-	await request("https://www.cnbc.com/stocks/", (err, response, html) => {
-		if (!err && response.statusCode === 200) {
-			// console.log(html);
-			const cssSelector =
-				"#SectionWithoutNativeTVE-TwoColumnImageDense-stocks-4 > div > div:nth-child(1) > div.Column-imageDenseModRight > div > div > div > div:nth-child(1) > div > a > div";
-			const $ = cheerio.load(html);
-			$(cssSelector).each((i, element) => {
-				const headline = $(element).text();
-				res.status(200).send({ message: "success", headline: headline });
-			});
-		} else {
-			console.log("err:", err);
-			res.status(500).send({ message: "error" });
-		}
-	});
+	const options = {
+		method: "GET",
+		url: "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=db439a85c8bf45e3bdd28a5619fdbfd6",
+	};
+	await axios
+		.request(options)
+		.then(function (response) {
+			const title = response.data.articles[0].title;
+			res.status(200).send({ message: "success", headline: title });
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };
 exports.stockInfo = async (req, res) => {
 	const tag = req.query.tag;
