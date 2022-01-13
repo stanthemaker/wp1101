@@ -9,7 +9,6 @@ exports.userFavorites = async (req, res) => {
 	res.status(200).send({ message: "success", favorites: user.favorites });
 };
 exports.addFavorites = async (req, res) => {
-	console.log("request:", req.body);
 	const name = req.body.name;
 	const tag = req.body.tag;
 	try {
@@ -31,7 +30,8 @@ exports.addFavorites = async (req, res) => {
 	}
 };
 exports.delFavorite = async (req, res) => {
-	const name = req.body.name;
+	console.log(req.body);
+	const name = req.body.username;
 	const tag = req.body.tag;
 	try {
 		await User.updateOne(

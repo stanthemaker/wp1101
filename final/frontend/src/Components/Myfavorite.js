@@ -66,8 +66,14 @@ const SmallCaption_up = styled.section`
 `;
 
 export default function Album() {
-	const { favorites, username, displayStatus, addFavorites, stockInfo } =
-		useStock();
+	const {
+		favorites,
+		username,
+		displayStatus,
+		addFavorites,
+		stockInfo,
+		delFavorite,
+	} = useStock();
 	const [checked, setChecked] = useState(false);
 	const [tickers, setTickers] = useState([]);
 	const handleChange = () => {
@@ -85,6 +91,7 @@ export default function Album() {
 			}
 			const { message, info } = await stockInfo(e.target.value);
 			if (message === "success") {
+				//if the ticker exists
 				const mes = await addFavorites(username, e.target.value);
 				if (mes === "success") {
 					displayStatus({
@@ -97,21 +104,32 @@ export default function Album() {
 						msg: mes,
 					});
 				}
+				e.target.value = "";
 				return;
 			} else {
 				displayStatus({
 					type: "error",
 					msg: message,
 				});
-				return;
 			}
-			e.target.value = "";
 		}
 	};
-	// const useEffect(() => {
-	// 	setTickers(...tickers,{})
-	// },[favorites])
-
+	const handleRemoveFavorites = async (index) => {
+		// console.log("remove :", favorites[index]);
+		const message = await delFavorite(username, favorites[index]);
+		if (message === "success") {
+			displayStatus({
+				type: "success",
+				msg: "Company removed!",
+			});
+		} else {
+			displayStatus({
+				type: "error",
+				msg: message,
+			});
+		}
+		return;
+	};
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
@@ -147,86 +165,51 @@ export default function Album() {
 						onKeyPress={handleAddFavorite}
 					/>
 				</Container>
-				<Container sx={{ py: 8, p: 1, m: 1 }}>
-					<Stack
-						container
-						spacing={4}
-						direction="row"
-						display="flex"
-						flexWrap="wrap"
-						justifyContent="center"
-					>
-						{favorites.map((favorite, index) => (
-							<>
-								<Grow
-									in={true}
-									style={{ transformOrigin: "0 0 0" }}
-									{...(true ? { timeout: 1000 } : {})}
+				<Container sx={{ py: 8 }} maxWidth="md">
+					{/* End hero unit */}
+					<Grid container spacing={4}>
+						{favorites.map((favorite, i) => (
+							<Grid item key={i} xs={12} sm={6} md={4}>
+								<Card
+									sx={{
+										height: "100%",
+										display: "flex",
+										flexDirection: "column",
+									}}
 								>
-									<Card
-										sx={{
-											height: "50%",
-											display: "flex",
-											flexDirection: "column",
-											width: `calc(20vw )`,
-										}}
-										key={index}
-										// points="0,50 50,50 100,50"
-									>
-										<CardContent sx={{ flexGrow: 1 }} justifycontent="center">
-											<Stack direction="row">
-												<CardMedia
-													component="img"
-													sx={{
-														width: "50px",
-														height: "50px",
-													}}
-													image="http://t1.gstatic.com/images?q=tbn:ANd9GcSjoU2lZ2eJX3aCMfiFDt39uRNcDu9W7pTKcyZymE2iKa7IOVaI"
-												/>
-												<Space />
-												<Stack>
-													<Typography>{favorite}</Typography>
-													<Typography gutterBottom variant="h5" component="h2">
-														favorite.changePercentage
-													</Typography>
-													<Typography>favorite.price</Typography>
-												</Stack>
-											</Stack>
+									<Stack direction="row" spacing={4}>
+										<CardMedia
+											component="img"
+											sx={{
+												// 16:9
+												width: "80px",
+												height: "80px",
+											}}
+											image={`https://etoro-cdn.etorostatic.com/market-avatars/${favorite.toLowerCase()}/90x90.png`}
+											alt="picture not found"
+										/>
+										<CardContent sx={{ flexGrow: 1 }}>
+											<Typography gutterBottom variant="h5" component="h2">
+												{favorite}
+											</Typography>
 										</CardContent>
-										<Stack direction="row" justifycontent="center">
-											<CardActions>
-												<Button size="small">remove</Button>
-											</CardActions>
-										</Stack>
-									</Card>
-								</Grow>
-								{/* <Space_horizontal /> */}
-							</>
+									</Stack>
+									<CardContent>
+										<Typography>recent price</Typography>
+										<Typography>price change</Typography>
+									</CardContent>
+									<CardActions>
+										<Button
+											size="small"
+											onClick={() => handleRemoveFavorites(i)}
+										>
+											remove
+										</Button>
+									</CardActions>
+								</Card>
+							</Grid>
 						))}
-						{/* <Grow
-							in={true}
-							style={{ transformOrigin: "0 0 0" }}
-							{...(true ? { timeout: 1000 } : {})}
-						>
-							{cards}
-						</Grow>
-						<Space_horizontal />
-						<Grow
-							in={true}
-							style={{ transformOrigin: "0 0 0" }}
-							{...(true ? { timeout: 1000 } : {})}
-						>
-							{cards}
-						</Grow>
-						<Space_horizontal />
-						<Grow
-							in={true}
-							style={{ transformOrigin: "0 0 0" }}
-							{...(true ? { timeout: 1000 } : {})}
-						>
-							{cards}
-						</Grow> */}
-					</Stack>
+					</Grid>
 				</Container>
 			</main>
 		</ThemeProvider>

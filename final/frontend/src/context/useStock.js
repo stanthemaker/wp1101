@@ -39,7 +39,7 @@ const StockProvider = (props) => {
 			const { type, msg } = payload;
 			const content = {
 				content: msg,
-				duration: 0.5,
+				duration: 0.75,
 			};
 			switch (type) {
 				case "success":
@@ -100,22 +100,29 @@ const StockProvider = (props) => {
 		}
 	};
 	const addFavorites = async (username, tag) => {
-		const { message } = await axios.post(
-			"/stockalendar/myFavorites/addFavorites",
-			{
-				name: username,
-				tag: tag,
-			}
-		);
-
+		const {
+			data: { message },
+		} = await axios.post("/stockalendar/myFavorites/addFavorites", {
+			name: username,
+			tag: tag,
+		});
+		if (message === "success") {
+			setFavorite([...favorites, tag]);
+		}
 		return message;
 	};
-	const delFavorite = async (tag) => {
+	const delFavorite = async (username, tag) => {
 		//delete?
-		const message = await axios.post("/stockalendar/myFavorites/delFavorite", {
-			username,
-			tag,
+		const {
+			data: { message },
+		} = await axios.post("/stockalendar/myFavorites/delFavorite", {
+			name: username,
+			tag: tag,
 		});
+		if (message === "success") {
+			const newFavorites = favorites.filter((favorite) => favorite !== tag);
+			setFavorite(newFavorites);
+		}
 		return message;
 	};
 	const userModels = async () => {
