@@ -37,11 +37,11 @@ function Copyright() {
 }
 
 const Space_horizontal = styled.section`
-	width: 300px;
+	width: 50px;
 	height: 50px;
 `;
 const Space = styled.section`
-  width: 50px;
+	width=10px;
   height=50px;
 `;
 const fly_in_down = keyframes`
@@ -85,7 +85,7 @@ export default function Album() {
 			}
 			const { message, info } = await stockInfo(e.target.value);
 			if (message === "success") {
-				const { mes } = await addFavorites(username, e.target.value);
+				const mes = await addFavorites(username, e.target.value);
 				if (mes === "success") {
 					displayStatus({
 						type: "success",
@@ -120,7 +120,6 @@ export default function Album() {
 				<Box
 					sx={{
 						align: "center",
-						width: `calc(100vw )`,
 						bgcolor: "background.paper",
 						pt: 8,
 						pb: 6,
@@ -148,8 +147,15 @@ export default function Album() {
 						onKeyPress={handleAddFavorite}
 					/>
 				</Container>
-				<Container sx={{ py: 8 }}>
-					<Box sx={{ display: "flex" }}>
+				<Container sx={{ py: 8, p: 1, m: 1 }}>
+					<Stack
+						container
+						spacing={4}
+						direction="row"
+						display="flex"
+						flexWrap="wrap"
+						justifyContent="center"
+					>
 						{favorites.map((favorite, index) => (
 							<>
 								<Grow
@@ -162,7 +168,7 @@ export default function Album() {
 											height: "50%",
 											display: "flex",
 											flexDirection: "column",
-											width: `calc(100vw )`,
+											width: `calc(20vw )`,
 										}}
 										key={index}
 										// points="0,50 50,50 100,50"
@@ -194,7 +200,7 @@ export default function Album() {
 										</Stack>
 									</Card>
 								</Grow>
-								<Space_horizontal />
+								{/* <Space_horizontal /> */}
 							</>
 						))}
 						{/* <Grow
@@ -220,7 +226,7 @@ export default function Album() {
 						>
 							{cards}
 						</Grow> */}
-					</Box>
+					</Stack>
 				</Container>
 			</main>
 		</ThemeProvider>

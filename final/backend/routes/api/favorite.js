@@ -13,6 +13,13 @@ exports.addFavorites = async (req, res) => {
 	const name = req.body.name;
 	const tag = req.body.tag;
 	try {
+		const user = await User.findOne({ "profile.name": name });
+		const existed = user.favorites.includes(tag);
+		if (existed) {
+			res.send({ message: "Already exist" });
+			return;
+		}
+
 		await User.updateOne(
 			{ "profile.name": name },
 			{ $push: { favorites: tag } }

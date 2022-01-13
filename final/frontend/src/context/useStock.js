@@ -100,12 +100,15 @@ const StockProvider = (props) => {
 		}
 	};
 	const addFavorites = async (username, tag) => {
-		const mes = await axios.post("/stockalendar/myFavorites/addFavorites", {
-			name: username,
-			tag: tag,
-		});
+		const { message } = await axios.post(
+			"/stockalendar/myFavorites/addFavorites",
+			{
+				name: username,
+				tag: tag,
+			}
+		);
 
-		return mes;
+		return message;
 	};
 	const delFavorite = async (tag) => {
 		//delete?
