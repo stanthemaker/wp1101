@@ -10,7 +10,6 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Link from '@mui/material/Link'
@@ -95,7 +94,8 @@ export default function Album() {
             <SmallCaption_up>My Favorite Stock</SmallCaption_up>
           </Container>
         </Box>
-        <Container maxWidth="sm" align="center">
+
+        <Container maxWidth="sm" align="center" sx={{ py: 6 }}>
           <Input
             required
             fullWidth
