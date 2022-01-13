@@ -11,6 +11,7 @@ import Grow from "@mui/material/Grow";
 import Slide from "@mui/material/Slide";
 import styled from "styled-components";
 import { useStock } from "../../context/useStock";
+import Button from "@mui/material/Button";
 
 const Space = styled.section`
 height=0.5px;
@@ -32,7 +33,7 @@ export default function Model_Card() {
 
 	return (
 		<Stack spacing={2}>
-			<Typography component="p" variant="h7" color="primary">
+			<Typography component="p" variant="h6" color="primary">
 				Passed Companies:
 			</Typography>
 
@@ -53,10 +54,12 @@ export default function Model_Card() {
 							align="center"
 						>
 							<Space />
-							<Stack direction="row" spacing={1}>
+							<Stack direction="row">
 								<Space />
-								<Stack justifycontent="flex-end">
-									<FavoriteBorderIcon color="primary" onClick={() => {}} />
+								<Stack>
+									<Button>
+										<FavoriteBorderIcon color="primary" onClick={() => {}} />
+									</Button>
 								</Stack>
 								<Typography color="primary" variant="h7" key={index}>
 									{card}
