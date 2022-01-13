@@ -9,11 +9,14 @@ exports.userFavorites = async (req, res) => {
 	res.status(200).send({ message: "success", favorites: user.favorites });
 };
 exports.addFavorites = async (req, res) => {
-	console.log("addFavorite request");
+	console.log("request:", req.body);
 	const name = req.body.name;
 	const tag = req.body.tag;
 	try {
-		User.updateOne({ "profile.name": name }, { $push: { favorites: tag } });
+		await User.updateOne(
+			{ "profile.name": name },
+			{ $push: { favorites: tag } }
+		);
 		res.status(200).send({ message: "success" });
 	} catch (e) {
 		res.status(500).send({ message: "add Favorites error" });

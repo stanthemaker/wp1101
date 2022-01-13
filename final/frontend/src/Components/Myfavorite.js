@@ -85,7 +85,19 @@ export default function Album() {
 			}
 			const { message, info } = await stockInfo(e.target.value);
 			if (message === "success") {
-				addFavorites(username, e.target.value);
+				const { mes } = await addFavorites(username, e.target.value);
+				if (mes === "success") {
+					displayStatus({
+						type: "success",
+						msg: "Company Added!",
+					});
+				} else {
+					displayStatus({
+						type: "error",
+						msg: mes,
+					});
+				}
+				return;
 			} else {
 				displayStatus({
 					type: "error",
@@ -138,7 +150,7 @@ export default function Album() {
 				</Container>
 				<Container sx={{ py: 8 }}>
 					<Box sx={{ display: "flex" }}>
-						{favorites.map((favorite, i) => (
+						{favorites.map((favorite, index) => (
 							<>
 								<Grow
 									in={true}
@@ -152,6 +164,7 @@ export default function Album() {
 											flexDirection: "column",
 											width: `calc(100vw )`,
 										}}
+										key={index}
 										// points="0,50 50,50 100,50"
 									>
 										<CardContent sx={{ flexGrow: 1 }} justifycontent="center">
