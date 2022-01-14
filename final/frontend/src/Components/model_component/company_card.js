@@ -21,8 +21,9 @@ export default function Model_Card() {
 	const { passedcompany, username, displayStatus, addFavorites } = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
 	const [canAddALL, setCanAddALL] = useState(false);
+	const [isdone, setIsDone] = useState(true);
 	// const [favorite, setFavorite] = useState(false);
-	const addAlltomyFavorites = async () => {
+	const addAlltoFavorites = async () => {
 		for (let i = 0; i < cards.length; i++) {
 			await addFavorites(username, cards[i]);
 		}
@@ -33,6 +34,7 @@ export default function Model_Card() {
 		});
 	};
 	useEffect(() => {
+		console.log("triggered");
 		setCards(passedcompany);
 		setCanAddALL(false);
 		if (passedcompany.length) {
@@ -47,12 +49,12 @@ export default function Model_Card() {
 	return (
 		<Stack spacing={2}>
 			<Typography component="p" variant="h6" color="primary">
-				Passed Companies: {passedcompany.length}
+				Passed Companies: {isdone ? passedcompany.length : "analizing..."}
 			</Typography>
 			<Button
 				variant="contained"
 				disabled={!canAddALL}
-				onClick={addAlltomyFavorites}
+				onClick={addAlltoFavorites}
 			>
 				add all to my favorite
 			</Button>

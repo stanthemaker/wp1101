@@ -78,49 +78,42 @@ export default function Album() {
 	const handleAddFavorite = async (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
-			if (!e.target.value) {
+			const newTicker = e.target.value;
+			if (!newTicker) {
 				displayStatus({
 					type: "error",
 					msg: "Missing a ticker.",
 				});
 				return;
 			}
-			const { message, info } = await stockInfo(e.target.value);
-			if (message === "success") {
-				//if the ticker exists
-				const mes = await addFavorites(username, e.target.value);
-				if (mes === "success") {
-					displayStatus({
-						type: "success",
-						msg: "Company Added!",
-					});
-					setCompanies([...companies, info]);
-				} else {
-					displayStatus({
-						type: "error",
-						msg: mes,
-					});
-				}
-				e.target.value = "";
-				return;
+			//if the ticker exists
+			const { mes, info } = await addFavorites(username, newTicker);
+			if (mes === "success") {
+				displayStatus({
+					type: "success",
+					msg: "Company Added!",
+				});
+				setCompanies([...companies, info]);
 			} else {
 				displayStatus({
 					type: "error",
-					msg: message,
+					msg: mes,
 				});
 			}
+			e.target.value = "";
+			return;
 		}
 	};
 	const handleRemoveFavorites = async (index) => {
 		// console.log("remove :", favorites[index]);
-		const message = await delFavorite(username, favorites[index]);
+		const message = await delFavorite(username, favorites[index].ticker);
 		if (message === "success") {
 			displayStatus({
 				type: "success",
 				msg: "Company removed!",
 			});
 			const newCompanyList = companies.filter(
-				(company) => company.ticker !== favorites[index]
+				(company) => company.ticker !== favorites[index].ticker
 			);
 			setCompanies(newCompanyList);
 		} else {
@@ -132,12 +125,7 @@ export default function Album() {
 		return;
 	};
 	useEffect(async () => {
-		let companyList = [];
-		for (let i = 0; i < favorites.length; i++) {
-			const { info } = await stockInfo(favorites[i]);
-			companyList.push(info);
-		}
-		setCompanies(companyList);
+		setCompanies(favorites);
 	}, []);
 	return (
 		<ThemeProvider theme={theme}>

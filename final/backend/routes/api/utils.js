@@ -37,11 +37,10 @@ exports.stockInfo = async (req, res) => {
 			const lastMonthavgPrice =
 				response.data["monthly"]["Price"]["data"].slice(-1)[0][1];
 
-			const changePercentage = (
+			const changePercentage =
 				(parseFloat(currentprice) - parseFloat(lastMonthavgPrice)) /
-				parseFloat(lastMonthavgPrice)
-			).toFixed(4);
-			const change = `${Number(changePercentage) * 100}%`;
+				parseFloat(lastMonthavgPrice);
+			const change = `${Math.round(changePercentage * 10000) / 100}%`;
 			const stockInfo = {
 				ticker: tag,
 				lastPrice: currentprice,
