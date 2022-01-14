@@ -18,6 +18,7 @@ import LoginRoute from './routes/loginRoute'
 import Album from './Components/Myfavorite'
 import SignUp from './Components/Register'
 import Model from './Components/Model'
+
 // import Main from "./Containers/main"
 // import Login from "./Containers/login"
 // import CustomAppBar from "./Containers/customAppBar";
@@ -25,10 +26,15 @@ import Model from './Components/Model'
 const Routes = () => {
   // let navigate = useNavigate();
   // const navigation = useRef(useNavigate());
-  const { SignedIn } = useStock()
+  const { SignedIn , verifyToken} = useStock()
   const history = useHistory()
   useEffect(() => {
-    SignedIn ? history.push('/') : history.push('/login')
+    const fetchData = async ()=>{
+      await verifyToken();
+      console.log("verifytoken")
+      SignedIn ? history.push('/') : history.push('/login')
+    }    
+    fetchData()
   }, [SignedIn])
 
   return (

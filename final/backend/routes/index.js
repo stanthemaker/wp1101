@@ -2,12 +2,15 @@ const userRouter = require("./api/user");
 const utilRouter = require("./api/utils");
 const modelRouter = require("./api/model");
 const favoriteRouter = require("./api/favorite");
+const auth = userRouter.verifyToken
 const wrap =
 	(fn) =>
 	(...args) =>
 		fn(...args).catch(args[2]);
 
 function main(app) {
+	// app.use(auth)
+	app.get("/stockalendar/verifytoken", wrap(userRouter.verifyToken));
 	app.post("/stockalendar/register", wrap(userRouter.register));
 	app.get("/stockalendar/login", wrap(userRouter.login));
 	app.get("/stockalendar/Home/headline", wrap(utilRouter.marketHeadline));

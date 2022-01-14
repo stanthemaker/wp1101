@@ -11,6 +11,7 @@ const StockContext = createContext({
 	model: [],
 	favorites: [],
 	passedcompany: [],
+	jwt: [],
 	displayStatus: () => {},
 	addUser: () => {}, //register
 	login: () => {},
@@ -26,6 +27,7 @@ const StockContext = createContext({
 	displayStatus: () => {},
 	stockInfo: () => {},
 	Nasdaq100List: () => {},
+	verifyToken: ()=> {}
 });
 
 const StockProvider = (props) => {
@@ -34,6 +36,7 @@ const StockProvider = (props) => {
 	const [favorites, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
+	const [jwt, setJwt] = useState('')
 	const displayStatus = (payload) => {
 		if (payload.msg) {
 			const { type, msg } = payload;
@@ -66,16 +69,31 @@ const StockProvider = (props) => {
 	const login = async (name, email, password) => {
 		name = name.trim();
 		const {
-			data: { message, favorites, models },
+			data: { message, favorites, models, token},
 		} = await axios.get("/stockalendar/login", { params: { name, password } });
 		if (message === "success") {
 			setSignedIn(true);
 			setUsername(name);
 			setFavorite(favorites);
 			setModel(models);
+			setJwt(token);
+			localStorage.setItem('token',token)
 		}
 		return message;
 	};
+	const verifyToken = async ()=>{
+		const savedtoken = localStorage.getItem('token')
+		console.log(`savedtoken${savedtoken}`)
+		const {data:{message}} = await axios.get("/stockalendar/verifytoken",{
+			headers: {
+				authorization: `Bearer ${savedtoken}`
+			}
+		})
+		console.log(`message${message}`)
+		if(message==='Valid Token'){
+			setSignedIn(true)
+		}
+	}
 	const initialize = async () => {
 		const {
 			data: { message, favorites },
@@ -211,6 +229,7 @@ const StockProvider = (props) => {
 				marketHeadline,
 				stockInfo,
 				Nasdaq100List,
+				verifyToken,
 			}}
 			{...props}
 		/>

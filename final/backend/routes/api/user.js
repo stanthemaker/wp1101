@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 const saltRounds = 10;
 const User = require("../../models/user.js");
 
@@ -13,15 +14,35 @@ exports.login = async (req, res) => {
 		const inputPassword = req.query.password;
 		const password = user.profile.password;
 		const checked = await bcrypt.compare(inputPassword, password);
-		checked
-			? res
-					.status(200)
-					.send({
+		if(checked){
+			const token = jwt.sign(
+				{user_id: user._id, name},
+				process.env.TOKEN_KEY,
+				{
+					expiresIn: "2h",
+				} 
+			)
+			user.token = token;
+			console.log(token)
+			res.cookie('token', token, {httpOnly: true});
+			res
+					.status(200) 
+					.send({ 
 						message: "success",
 						favorites: user.favorites,
 						models: user.models,
+						token: user.token,
 					})
-			: res.send({ message: "wrong password" });
+		} else res.send({ message: "wrong password" });
+		// checked
+		// 	? res
+		// 			.status(200)
+		// 			.send({
+		// 				message: "success",
+		// 				favorites: user.favorites,
+		// 				models: user.models,
+		// 			})
+		// 	: res.send({ message: "wrong password" });
 		return;
 	} catch (e) {
 		res.send({ message: "login failed due to server error" });
@@ -47,12 +68,40 @@ exports.register = async (req, res) => {
 			favorites: [],
 			models: [],
 		};
+		
 		const newUser = new User(user);
 		console.log("new User: " + newUser);
 		newUser.save();
+		console.log(newUser)
+		const token = jwt.sign(
+			{user_id: newUser._id, name},
+			process.env.TOKEN_KEY,
+			{
+				expiresIn: "2h",
+			}
+		)
+		newUser.token = token
 		res.status(200).send({ message: "success" });
 	} catch (e) {
 		console.log(e);
 		res.send({ message: "register failed due to server error" });
 	}
 };
+
+exports.verifyToken = async (req, res)=>{
+	console.log(req.headers)
+	const token = req.headers['authorization'].split(' ')[1];
+    // req.body.token || req.query.token || req.headers["x-access-token"];
+
+	if (!token) {
+		return res.status(403).send("A token is required for authentication");
+	}
+	try {
+		const decoded =await jwt.verify(token, process.env.TOKEN_KEY);
+		req.user = decoded;//unsure
+		console.log(req.user)
+		res.status(200).send({message: "Valid Token"})
+	} catch (err) {
+		return res.status(401).send("Invalid Token");
+	}
+}
