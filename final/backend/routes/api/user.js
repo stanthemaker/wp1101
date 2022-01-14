@@ -99,6 +99,7 @@ exports.verifyToken = async (req, res) => {
 			res.status(200).send({ message: "Valid Token", user: req.user });
 		else res.status(200).send({ message: "not log in" });
 	} catch (err) {
-		return res.status(401).send("Invalid Token");
+		console.log(err);
+		return res.send({ message: "Invalid Token" });
 	}
 };
