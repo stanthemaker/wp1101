@@ -1,6 +1,6 @@
 const User = require("../../models/user.js");
 exports.userFavorites = async (req, res) => {
-	const name = req.query.name;
+	const name = req.query.username;
 	const user = await User.findOne({ "profile.name": name });
 	if (!user) {
 		res.status(404).send({ message: "user not found" });

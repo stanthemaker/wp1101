@@ -28,7 +28,7 @@ const StockContext = createContext({
 	displayStatus: () => {},
 	stockInfo: () => {},
 	Nasdaq100List: () => {},
-	verifyToken: ()=> {}
+	verifyToken: () => {},
 });
 
 const StockProvider = (props) => {
@@ -37,7 +37,7 @@ const StockProvider = (props) => {
 	const [favorites, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
-	const [jwt, setJwt] = useState('')
+	const [jwt, setJwt] = useState("");
 	const displayStatus = (payload) => {
 		if (payload.msg) {
 			const { type, msg } = payload;
@@ -70,70 +70,50 @@ const StockProvider = (props) => {
 	const login = async (name, email, password) => {
 		name = name.trim();
 		const {
-			data: { message, favorites, models, token},
+			data: { message, token },
 		} = await axios.get("/stockalendar/login", { params: { name, password } });
 		if (message === "success") {
-			setSignedIn(true);
-			setUsername(name);
-			console.log("triggered");
-			let companyList = [];
-			for (let i = 0; i < favorites.length; i++) {
-				const { info } = await stockInfo(favorites[i]);
-				companyList.push(info);
-			}
-			setFavorite(companyList);
-			setModel(models);
 			setJwt(token);
-			localStorage.setItem('token',token)
+			localStorage.setItem("token", token);
+			initialize(name);
 		}
 		return message;
 	};
-	const verifyToken = async ()=>{
-		const savedtoken = localStorage.getItem('token')
-		console.log(`savedtoken${savedtoken}`)
-		const {data:{message, user}} = await axios.get("/stockalendar/verifytoken",{
+	const verifyToken = async () => {
+		const savedtoken = localStorage.getItem("token");
+		if (!savedtoken) {
+			return;
+		}
+		const {
+			data: { message, user },
+		} = await axios.get("/stockalendar/verifytoken", {
 			headers: {
-				authorization: `Bearer ${savedtoken}`
-			}
-		})
-		
-		console.log(`message${message}`)
-		if(message==='Valid Token'){
-			setSignedIn(true)
-			setUsername(user.name);
-			const favorites = userFavorites()
+				authorization: `Bearer ${savedtoken}`,
+			},
+		});
+
+		if (message === "Valid Token") {
+			initialize(user.name);
+		}
+	};
+	const initialize = async (username) => {
+		const {
+			data: { message, favorites },
+		} = await axios.get("/stockalendar/myFavorites/userFavorites", {
+			params: { username },
+		});
+		if (message === "success") {
 			let companyList = [];
 			for (let i = 0; i < favorites.length; i++) {
 				const { info } = await stockInfo(favorites[i]);
 				companyList.push(info);
 			}
+			setSignedIn(true);
+			setUsername(username);
 			setFavorite(companyList);
-			// setModel(models);
-		}
-	}
-	const initialize = async () => {
-		const {
-			data: { message, favorites },
-		} = await axios.get("/stockalendar/userFavorites", {
-			params: { username },
-		});
-		if (message === "success") {
-			setFavorite(favorites);
 		}
 	};
-	const userFavorites = async () => {
-		const {
-			data: { message, favorites },
-		} = await axios.get("stockalendar/myFavorites/userFavorites", {
-			params: { username },
-		});
-
-		if (message === "success" && favorites) {
-			return favorites;
-		} else {
-			throw new Error("userFavorites fetch fail");
-		}
-	};
+	const userFavorites = async () => {};
 	const addFavorites = async (username, tag) => {
 		const { mes, info } = await stockInfo(tag);
 		if (mes === "success") {
@@ -143,7 +123,7 @@ const StockProvider = (props) => {
 				name: username,
 				tag: tag,
 			});
-			setFavorite([...favorites, info]);
+			if (message === "success") setFavorite([...favorites, info]);
 		}
 		return { mes, info };
 	};
@@ -261,7 +241,6 @@ const StockProvider = (props) => {
 	);
 };
 function useStock() {
-	// console.log("THIS IS general useContext")
 	return useContext(StockContext);
 }
 

@@ -34,7 +34,7 @@ export default function Model_Card() {
 		});
 	};
 	useEffect(() => {
-		console.log("triggered");
+		console.log("passed companies triggered");
 		setCards(passedcompany);
 		setCanAddALL(false);
 		if (passedcompany.length) {

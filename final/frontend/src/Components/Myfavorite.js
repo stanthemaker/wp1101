@@ -105,7 +105,6 @@ export default function Album() {
 		}
 	};
 	const handleRemoveFavorites = async (index) => {
-		// console.log("remove :", favorites[index]);
 		const message = await delFavorite(username, favorites[index].ticker);
 		if (message === "success") {
 			displayStatus({
