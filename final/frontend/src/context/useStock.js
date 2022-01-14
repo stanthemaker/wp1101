@@ -91,14 +91,16 @@ const StockProvider = (props) => {
 	const verifyToken = async ()=>{
 		const savedtoken = localStorage.getItem('token')
 		console.log(`savedtoken${savedtoken}`)
-		const {data:{message}} = await axios.get("/stockalendar/verifytoken",{
+		const {data:{message, user}} = await axios.get("/stockalendar/verifytoken",{
 			headers: {
 				authorization: `Bearer ${savedtoken}`
 			}
 		})
+		
 		console.log(`message${message}`)
 		if(message==='Valid Token'){
 			setSignedIn(true)
+			setUsername(user.name);
 		}
 	}
 	const initialize = async () => {

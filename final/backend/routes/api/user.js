@@ -100,7 +100,10 @@ exports.verifyToken = async (req, res)=>{
 		const decoded =await jwt.verify(token, process.env.TOKEN_KEY);
 		req.user = decoded;//unsure
 		console.log(req.user)
-		res.status(200).send({message: "Valid Token"})
+		if(req.user)
+			res.status(200).send({message: "Valid Token", user: req.user})
+		else
+			res.status(200).send({message: "not log in"})
 	} catch (err) {
 		return res.status(401).send("Invalid Token");
 	}
