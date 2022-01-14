@@ -21,6 +21,7 @@ const StockContext = createContext({
 	userModels: () => {},
 	addModels: () => {},
 	delModel: () => {},
+	checkModel: () => {},
 	runModel: () => {},
 	marketHeadline: () => {},
 	displayStatus: () => {},
@@ -152,6 +153,14 @@ const StockProvider = (props) => {
 		});
 		return message;
 	};
+	const checkModel = async (model) => {
+		const {
+			data: { message },
+		} = await axios.get("/stockalendar/myModels/checkModel", {
+			params: { model },
+		});
+		return message;
+	};
 	const runModel = async (model, tags) => {
 		const {
 			data: { message, passedCompany },
@@ -202,6 +211,7 @@ const StockProvider = (props) => {
 				userModels,
 				addModels,
 				delModel,
+				checkModel,
 				runModel,
 				marketHeadline,
 				stockInfo,

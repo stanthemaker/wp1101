@@ -19,7 +19,7 @@ exports.marketHeadline = async (req, res) => {
 };
 exports.stockInfo = async (req, res) => {
 	const tag = req.query.tag;
-	let options = {
+	const options = {
 		method: "GET",
 		url: ` https://statementdog.com/api/v2/fundamentals/${tag}/2017/2022/cf?qbu=true&qf=analysis`,
 	};
@@ -54,6 +54,20 @@ exports.stockInfo = async (req, res) => {
 			res.status(500).send({ message: "error" });
 		});
 };
+exports.checkModel = async (req, res) => {
+	try {
+		const inequation = Parser.parse(req.query.model);
+		const result = inequation.evaluate({
+			P: 1,
+			R: 1,
+			G: 1,
+			C: 1,
+		});
+		res.status(200).send({ message: "valid" });
+	} catch (e) {
+		res.send({ message: "invalid" });
+	}
+};
 exports.runModel = async (req, res) => {
 	//there should be limit on the ineq
 	const tags = req.query.tags;
@@ -73,6 +87,7 @@ exports.runModel = async (req, res) => {
 					return;
 				}
 				const PE = response.data["common"]["LatestValuation"]["data"]["PE"]; //latest PE
+				if (typeof PE === "string") return;
 				const ROET4Q =
 					response.data["quarterly"]["ROET4Q"]["data"].slice(-1)[0][1] / 100;
 				const currentRatio =
