@@ -76,6 +76,7 @@ const StockProvider = (props) => {
 			data: { message, token },
 		} = await axios.get("/stockalendar/login", { params: { name, password } });
 		if (message === "success") {
+			setInitialized(false);
 			setJwt(token);
 			localStorage.setItem("token", token);
 			initialize(name);
@@ -83,8 +84,11 @@ const StockProvider = (props) => {
 		return message;
 	};
 	const verifyToken = async () => {
+		console.log("Verifying token...");
 		const savedtoken = localStorage.getItem("token");
 		if (!savedtoken) {
+			setInitialized(true);
+			console.log("token not found, set init to true");
 			return;
 		}
 		const {
@@ -94,9 +98,11 @@ const StockProvider = (props) => {
 				authorization: `Bearer ${savedtoken}`,
 			},
 		});
-
 		if (message === "Valid Token") {
 			initialize(user.name);
+		} else {
+			setInitialized(true);
+			return;
 		}
 	};
 	const initialize = async (username) => {

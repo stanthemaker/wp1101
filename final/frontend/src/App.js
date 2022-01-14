@@ -14,15 +14,15 @@ import SignUp from "./Components/Register";
 import Model from "./Components/Model";
 import Loading from "./Components/Loading";
 const Routes = () => {
-	const { SignedIn, initialized, verifyToken } = useStock();
+	const { signedIn, initialized, verifyToken } = useStock();
 	const history = useHistory();
 	useEffect(() => {
 		const fetchData = async () => {
 			await verifyToken();
-			SignedIn ? history.push("/") : history.push("/login");
+			signedIn ? history.push("/") : history.push("/login");
 		};
 		fetchData();
-	}, [SignedIn]);
+	}, []);
 
 	return !initialized ? (
 		<Loading />
