@@ -18,31 +18,46 @@ height=0.5px;
 `;
 
 export default function Model_Card() {
-	const { passedcompany, displayStatus } = useStock();
+	const { passedcompany, username, displayStatus, addFavorites } = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
-	const [canAdd, setCanAdd] = useState(false);
-	const [favorite, setFavorite] = useState(false);
-
+	const [canAddALL, setCanAddALL] = useState(false);
+	const [isdone, setIsDone] = useState(true);
+	// const [favorite, setFavorite] = useState(false);
+	const addAlltoFavorites = async () => {
+		for (let i = 0; i < cards.length; i++) {
+			await addFavorites(username, cards[i]);
+		}
+		setCanAddALL(false);
+		displayStatus({
+			type: "success",
+			msg: "Add all companies successfully",
+		});
+	};
 	useEffect(() => {
+		console.log("triggered");
 		setCards(passedcompany);
-
+		setCanAddALL(false);
 		if (passedcompany.length) {
 			displayStatus({
 				type: "success",
 				msg: "run model successfully",
 			});
-			setCanAdd(true);
+			setCanAddALL(true);
 		}
 	}, [passedcompany]);
 
 	return (
 		<Stack spacing={2}>
 			<Typography component="p" variant="h6" color="primary">
-				Passed Companies: {passedcompany.length}
+				Passed Companies: {isdone ? passedcompany.length : "analizing..."}
 			</Typography>
-			{/* <Button variant="contained" disabled={!canAdd} onClick={addFavorite}>
+			<Button
+				variant="contained"
+				disabled={!canAddALL}
+				onClick={addAlltoFavorites}
+			>
 				add all to my favorite
-			</Button> */}
+			</Button>
 			{cards.map((card, index) => (
 				<Slide
 					direction="up"
@@ -63,7 +78,7 @@ export default function Model_Card() {
 							<Stack direction="row" spacing={2}>
 								<Space />
 								<Stack>
-									{favorite ? (
+									{!canAddALL ? (
 										<FavoriteIcon color="primary" />
 									) : (
 										<FavoriteBorderIcon color="primary" />

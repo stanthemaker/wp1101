@@ -22,6 +22,7 @@ const StockContext = createContext({
 	userModels: () => {},
 	addModels: () => {},
 	delModel: () => {},
+	checkModel: () => {},
 	runModel: () => {},
 	marketHeadline: () => {},
 	displayStatus: () => {},
@@ -74,7 +75,13 @@ const StockProvider = (props) => {
 		if (message === "success") {
 			setSignedIn(true);
 			setUsername(name);
-			setFavorite(favorites);
+			console.log("triggered");
+			let companyList = [];
+			for (let i = 0; i < favorites.length; i++) {
+				const { info } = await stockInfo(favorites[i]);
+				companyList.push(info);
+			}
+			setFavorite(companyList);
 			setModel(models);
 			setJwt(token);
 			localStorage.setItem('token',token)
@@ -118,16 +125,17 @@ const StockProvider = (props) => {
 		}
 	};
 	const addFavorites = async (username, tag) => {
-		const {
-			data: { message },
-		} = await axios.post("/stockalendar/myFavorites/addFavorites", {
-			name: username,
-			tag: tag,
-		});
-		if (message === "success") {
-			setFavorite([...favorites, tag]);
+		const { mes, info } = await stockInfo(tag);
+		if (mes === "success") {
+			const {
+				data: { message },
+			} = await axios.post("/stockalendar/myFavorites/addFavorites", {
+				name: username,
+				tag: tag,
+			});
+			setFavorite([...favorites, info]);
 		}
-		return message;
+		return { mes, info };
 	};
 	const delFavorite = async (username, tag) => {
 		//delete?
@@ -138,7 +146,9 @@ const StockProvider = (props) => {
 			tag: tag,
 		});
 		if (message === "success") {
-			const newFavorites = favorites.filter((favorite) => favorite !== tag);
+			const newFavorites = favorites.filter(
+				(favorite) => favorite.ticker !== tag
+			);
 			setFavorite(newFavorites);
 		}
 		return message;
@@ -170,6 +180,14 @@ const StockProvider = (props) => {
 		});
 		return message;
 	};
+	const checkModel = async (model) => {
+		const {
+			data: { message },
+		} = await axios.get("/stockalendar/myModels/checkModel", {
+			params: { model },
+		});
+		return message;
+	};
 	const runModel = async (model, tags) => {
 		const {
 			data: { message, passedCompany },
@@ -178,11 +196,6 @@ const StockProvider = (props) => {
 		});
 		if (message === "success") {
 			setPassedCompany(passedCompany);
-		} else {
-			displayStatus({
-				type: "error",
-				msg: message,
-			});
 		}
 		return message;
 	};
@@ -198,7 +211,8 @@ const StockProvider = (props) => {
 		} = await axios.get("/stockalendar/myFavorites/stockInfo", {
 			params: { tag },
 		});
-		return { message, info };
+		const mes = message;
+		return { mes, info };
 	};
 	const Nasdaq100List = async () => {
 		const {
@@ -225,6 +239,7 @@ const StockProvider = (props) => {
 				userModels,
 				addModels,
 				delModel,
+				checkModel,
 				runModel,
 				marketHeadline,
 				stockInfo,

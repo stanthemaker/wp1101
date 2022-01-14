@@ -20,7 +20,7 @@ import { useStock } from "../context/useStock";
 
 const ResponsiveAppBar = ({ children }) => {
 	let history = useHistory();
-	const { signedIn } = useStock();
+	const { signedIn, username } = useStock();
 	// const history = useHistory();
 	// const [anchorElNav, setAnchorElNav] = React.useState(null);
 	// const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -142,7 +142,7 @@ const ResponsiveAppBar = ({ children }) => {
 							>
 								MODEL
 							</Button>
-							<Button
+							{/* <Button
 								key="MAIN"
 								component={Link}
 								to="/"
@@ -150,8 +150,11 @@ const ResponsiveAppBar = ({ children }) => {
 								sx={{ my: 2, color: "white", display: "flex" }}
 							>
 								MAIN
-							</Button>
+							</Button> */}
 						</Box>
+						<Typography variant="h6" style={{ color: "white" }}>
+							hi, {username}
+						</Typography>
 					</Toolbar>
 				</Container>
 			</AppBar>

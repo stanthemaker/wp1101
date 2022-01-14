@@ -32,6 +32,7 @@ function main(app) {
 	app.post("/stockalendar/myModels/addModel", wrap(modelRouter.addModel));
 	app.post("/stockalendar/myModels/delModel", wrap(modelRouter.delModel));
 	//other utils
+	app.get("/stockalendar/myModels/checkModel", wrap(utilRouter.checkModel));
 	app.get(
 		"/stockalendar/myModels/Nasdaq100List",
 		wrap(utilRouter.Nasdaq100List)

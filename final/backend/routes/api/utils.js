@@ -19,7 +19,7 @@ exports.marketHeadline = async (req, res) => {
 };
 exports.stockInfo = async (req, res) => {
 	const tag = req.query.tag;
-	let options = {
+	const options = {
 		method: "GET",
 		url: ` https://statementdog.com/api/v2/fundamentals/${tag}/2017/2022/cf?qbu=true&qf=analysis`,
 	};
@@ -37,11 +37,10 @@ exports.stockInfo = async (req, res) => {
 			const lastMonthavgPrice =
 				response.data["monthly"]["Price"]["data"].slice(-1)[0][1];
 
-			const changePercentage = (
+			const changePercentage =
 				(parseFloat(currentprice) - parseFloat(lastMonthavgPrice)) /
-				parseFloat(lastMonthavgPrice)
-			).toFixed(4);
-			const change = `${Number(changePercentage) * 100}%`;
+				parseFloat(lastMonthavgPrice);
+			const change = `${Math.round(changePercentage * 10000) / 100}%`;
 			const stockInfo = {
 				ticker: tag,
 				lastPrice: currentprice,
@@ -53,6 +52,20 @@ exports.stockInfo = async (req, res) => {
 			console.error("error: ", error);
 			res.status(500).send({ message: "error" });
 		});
+};
+exports.checkModel = async (req, res) => {
+	try {
+		const inequation = Parser.parse(req.query.model);
+		const result = inequation.evaluate({
+			P: 1,
+			R: 1,
+			G: 1,
+			C: 1,
+		});
+		res.status(200).send({ message: "valid" });
+	} catch (e) {
+		res.send({ message: "invalid" });
+	}
 };
 exports.runModel = async (req, res) => {
 	//there should be limit on the ineq
@@ -73,6 +86,7 @@ exports.runModel = async (req, res) => {
 					return;
 				}
 				const PE = response.data["common"]["LatestValuation"]["data"]["PE"]; //latest PE
+				if (PE === "無") return;
 				const ROET4Q =
 					response.data["quarterly"]["ROET4Q"]["data"].slice(-1)[0][1] / 100;
 				const currentRatio =
@@ -80,8 +94,8 @@ exports.runModel = async (req, res) => {
 					100;
 				const GrossMargin =
 					response.data["quarterly"]["GrossMargin"]["data"].slice(-1)[0][1];
-				const inequation = Parser.parse(model);
 				try {
+					const inequation = Parser.parse(model);
 					const result = inequation.evaluate({
 						P: PE,
 						R: ROET4Q,
@@ -91,19 +105,19 @@ exports.runModel = async (req, res) => {
 					if (result === true) {
 						passedCompany.push(tags[i]);
 					}
-					res
-						.status(200)
-						.send({ message: "success", passedCompany: passedCompany });
 				} catch (e) {
 					res.status(500).send({ message: "evaluation error" });
-					console.log(e);
+					console.log("backend error: ", e);
+					return;
 				}
 			})
 			.catch(function (error) {
 				res.status(500).send({ message: "error" });
-				console.error("error: ", error);
+				console.error("backend error: ", error);
+				return;
 			});
 	}
+	res.status(200).send({ message: "success", passedCompany: passedCompany });
 };
 exports.Nasdaq100List = async (req, res) => {
 	const options = {
