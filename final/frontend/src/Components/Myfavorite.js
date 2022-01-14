@@ -69,7 +69,6 @@ export default function Album() {
 	const {
 		favorites,
 		username,
-		signedIn,
 		displayStatus,
 		addFavorites,
 		stockInfo,
@@ -135,7 +134,7 @@ export default function Album() {
 	useEffect(async () => {
 		let companyList = [];
 		for (let i = 0; i < favorites.length; i++) {
-			const { message, info } = await stockInfo(favorites[i]);
+			const { info } = await stockInfo(favorites[i]);
 			companyList.push(info);
 		}
 		setCompanies(companyList);

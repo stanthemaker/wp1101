@@ -101,6 +101,7 @@ const StockProvider = (props) => {
 		}
 	};
 	const addFavorites = async (username, tag) => {
+		console.log(username, tag);
 		const {
 			data: { message },
 		} = await axios.post("/stockalendar/myFavorites/addFavorites", {

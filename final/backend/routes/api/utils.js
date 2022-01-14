@@ -87,7 +87,7 @@ exports.runModel = async (req, res) => {
 					return;
 				}
 				const PE = response.data["common"]["LatestValuation"]["data"]["PE"]; //latest PE
-				if (typeof PE === "string") return;
+				if (PE === "無") return;
 				const ROET4Q =
 					response.data["quarterly"]["ROET4Q"]["data"].slice(-1)[0][1] / 100;
 				const currentRatio =
@@ -95,8 +95,8 @@ exports.runModel = async (req, res) => {
 					100;
 				const GrossMargin =
 					response.data["quarterly"]["GrossMargin"]["data"].slice(-1)[0][1];
-				const inequation = Parser.parse(model);
 				try {
+					const inequation = Parser.parse(model);
 					const result = inequation.evaluate({
 						P: PE,
 						R: ROET4Q,

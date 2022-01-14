@@ -85,16 +85,16 @@ export default function InputForm() {
 			return;
 		}
 		const message = await runModel(funct, company);
-		//initialize modelPage
-		setCompany([]);
-		setCanImport(true);
 		if (message !== "success") {
 			displayStatus({
 				type: "error",
 				msg: message,
 			});
+			return;
 		}
-		return;
+		//initialize modelPage
+		setCompany([]);
+		setCanImport(true);
 	};
 	const handleImportNas = async () => {
 		setCanImport(false);
