@@ -130,19 +130,6 @@ const img = [
 	calendar9,
 ];
 
-const quote = [
-	"宜休息",
-	"宜選擇",
-	"在失去中獲得",
-	"宜深思",
-	"宜放下重新開始",
-	"宜打起精神",
-	"宜開始",
-	"宜面對",
-	"宜堅持",
-	"宜充實自己",
-];
-
 function Header() {
 	const { favorite, marketHeadline } = useStock();
 	const [headlines, setHeadline] = useState("");
@@ -161,11 +148,13 @@ function Header() {
 		<>
 			<Box
 				sx={{
-					width: `calc(98.7vw )`,
+					//width: `calc(98.7vw )`,
 					// height: 700,
-					backgroundAttachment: "fixed",
+					// backgroundAttachment: "fixed",
 					// backgroundRepeat: 'repeat',
 					backgroundImage: `url(${img[date % 9]})`,
+					backgroundSize: "cover",
+					backgroundRepeat: "no-repeat",
 					backgroundPosition: -50,
 				}}
 			>
@@ -187,15 +176,15 @@ function Header() {
 				<Space_horizontal />
 				<Box
 					sx={{
-						width: `calc(98.7vw )`,
+						//width: `calc(98.7vw )`,
 						backgroundPosition: -50,
+						backgroundSize: "cover",
 					}}
 				>
 					<Wrapper_horizontal>
 						<Date>
 							{month}/{date}
 						</Date>
-						<Space_horizontal />
 					</Wrapper_horizontal>
 				</Box>
 				<Box

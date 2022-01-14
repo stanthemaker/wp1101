@@ -69,6 +69,7 @@ export default function Album() {
 	const {
 		favorites,
 		username,
+		signedIn,
 		displayStatus,
 		addFavorites,
 		stockInfo,
@@ -94,6 +95,7 @@ export default function Album() {
 						type: "success",
 						msg: "Company Added!",
 					});
+					setCompanies([...companies, info]);
 				} else {
 					displayStatus({
 						type: "error",
@@ -118,6 +120,10 @@ export default function Album() {
 				type: "success",
 				msg: "Company removed!",
 			});
+			const newCompanyList = companies.filter(
+				(company) => company.ticker !== favorites[index]
+			);
+			setCompanies(newCompanyList);
 		} else {
 			displayStatus({
 				type: "error",
@@ -199,8 +205,18 @@ export default function Album() {
 										</CardContent>
 									</Stack>
 									<CardContent>
-										<Typography>{company.lastPrice}</Typography>
-										<Typography>{company.changePercentage}</Typography>
+										<Typography>{company.lastPrice} (Last closed)</Typography>
+										<Typography
+											style={{
+												color:
+													parseFloat(company.changePercentage) > 0
+														? "green"
+														: "red",
+											}}
+											sx={{ fontWeight: "bold", fontSize: "h6.fontSize" }}
+										>
+											{company.changePercentage}
+										</Typography>
 									</CardContent>
 									<CardActions>
 										<Button

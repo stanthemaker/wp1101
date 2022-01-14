@@ -160,11 +160,6 @@ const StockProvider = (props) => {
 		});
 		if (message === "success") {
 			setPassedCompany(passedCompany);
-		} else {
-			displayStatus({
-				type: "error",
-				msg: message,
-			});
 		}
 		return message;
 	};

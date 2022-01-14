@@ -91,19 +91,19 @@ exports.runModel = async (req, res) => {
 					if (result === true) {
 						passedCompany.push(tags[i]);
 					}
-					res
-						.status(200)
-						.send({ message: "success", passedCompany: passedCompany });
 				} catch (e) {
 					res.status(500).send({ message: "evaluation error" });
-					console.log(e);
+					console.log("backend error: ", e);
+					return;
 				}
 			})
 			.catch(function (error) {
 				res.status(500).send({ message: "error" });
-				console.error("error: ", error);
+				console.error("backend error: ", error);
+				return;
 			});
 	}
+	res.status(200).send({ message: "success", passedCompany: passedCompany });
 };
 exports.Nasdaq100List = async (req, res) => {
 	const options = {

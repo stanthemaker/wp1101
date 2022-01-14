@@ -2,7 +2,7 @@ const yahooFinance = require("yahoo-finance");
 
 yahooFinance.quote(
 	{
-		symbol: "2330",
+		symbol: "AAPL",
 		modules: ["price"], // see the docs for the full list
 	},
 	function (err, quotes) {
