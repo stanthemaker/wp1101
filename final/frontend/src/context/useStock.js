@@ -101,6 +101,14 @@ const StockProvider = (props) => {
 		if(message==='Valid Token'){
 			setSignedIn(true)
 			setUsername(user.name);
+			const favorites = userFavorites()
+			let companyList = [];
+			for (let i = 0; i < favorites.length; i++) {
+				const { info } = await stockInfo(favorites[i]);
+				companyList.push(info);
+			}
+			setFavorite(companyList);
+			// setModel(models);
 		}
 	}
 	const initialize = async () => {
