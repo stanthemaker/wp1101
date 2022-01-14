@@ -1,6 +1,4 @@
-// import React from 'react';
 import { createContext, useContext, useState } from "react";
-// import axios from 'axios';
 import axios from "../api/index";
 import { message } from "antd";
 
@@ -8,6 +6,9 @@ const StockContext = createContext({
 	signedIn: "", //感覺後端會動到的state才放到這 eg message
 	password: "",
 	username: "",
+	initialized: "",
+	modelisRunning: "",
+	headline: "",
 	model: [],
 	favorites: [],
 	passedcompany: [],
@@ -24,7 +25,6 @@ const StockContext = createContext({
 	delModel: () => {},
 	checkModel: () => {},
 	runModel: () => {},
-	marketHeadline: () => {},
 	displayStatus: () => {},
 	stockInfo: () => {},
 	Nasdaq100List: () => {},
@@ -33,17 +33,20 @@ const StockContext = createContext({
 
 const StockProvider = (props) => {
 	const [signedIn, setSignedIn] = useState(false);
+	const [initialized, setInitialized] = useState(false);
+	const [modelisRunning, setModelIsRunning] = useState(false);
 	const [username, setUsername] = useState("");
+	const [headline, setHeadline] = useState("");
+	const [jwt, setJwt] = useState("");
 	const [favorites, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
-	const [jwt, setJwt] = useState("");
 	const displayStatus = (payload) => {
 		if (payload.msg) {
 			const { type, msg } = payload;
 			const content = {
 				content: msg,
-				duration: 0.75,
+				duration: 1,
 			};
 			switch (type) {
 				case "success":
@@ -111,6 +114,13 @@ const StockProvider = (props) => {
 			setSignedIn(true);
 			setUsername(username);
 			setFavorite(companyList);
+			const {
+				data: { message, headline },
+			} = await axios.get("/stockalendar/Home/headline");
+			if (message === "success") {
+				setHeadline(headline);
+			}
+			setInitialized(true);
 		}
 	};
 	const userFavorites = async () => {};
@@ -128,7 +138,6 @@ const StockProvider = (props) => {
 		return { mes, info };
 	};
 	const delFavorite = async (username, tag) => {
-		//delete?
 		const {
 			data: { message },
 		} = await axios.post("/stockalendar/myFavorites/delFavorite", {
@@ -143,33 +152,9 @@ const StockProvider = (props) => {
 		}
 		return message;
 	};
-	const userModels = async () => {
-		const {
-			data: { message, models },
-		} = await axios.get("/stockalendar/myModels/userModels", {
-			params: { username },
-		});
-		if (message === "success") {
-			return models;
-		} else {
-			//throw new Error("userModels fetch fail")
-			console.log("userModels fetch fail.");
-		}
-	};
-	const addModels = async (inequation) => {
-		const message = await axios.post("/stockalendar/myModels/addModel", {
-			username,
-			inequation,
-		});
-		return message;
-	};
-	const delModel = async (inequation) => {
-		const message = await axios.post("/stockalendar/myModels/delModel", {
-			username,
-			inequation,
-		});
-		return message;
-	};
+	const userModels = async () => {};
+	const addModels = async (inequation) => {};
+	const delModel = async (inequation) => {};
 	const checkModel = async (model) => {
 		const {
 			data: { message },
@@ -179,6 +164,7 @@ const StockProvider = (props) => {
 		return message;
 	};
 	const runModel = async (model, tags) => {
+		setModelIsRunning(true);
 		const {
 			data: { message, passedCompany },
 		} = await axios.get("/stockalendar/myModels/runModel", {
@@ -187,13 +173,8 @@ const StockProvider = (props) => {
 		if (message === "success") {
 			setPassedCompany(passedCompany);
 		}
+		setModelIsRunning(false);
 		return message;
-	};
-	const marketHeadline = async () => {
-		const {
-			data: { message, headline },
-		} = await axios.get("/stockalendar/Home/headline");
-		return { message, headline };
 	};
 	const stockInfo = async (tag) => {
 		const {
@@ -219,6 +200,9 @@ const StockProvider = (props) => {
 				favorites,
 				model,
 				passedcompany,
+				initialized,
+				modelisRunning,
+				headline,
 				displayStatus,
 				addUser,
 				login,
@@ -231,7 +215,6 @@ const StockProvider = (props) => {
 				delModel,
 				checkModel,
 				runModel,
-				marketHeadline,
 				stockInfo,
 				Nasdaq100List,
 				verifyToken,

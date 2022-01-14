@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-	Switch,
-	BrowserRouter as Router,
-	Route,
-	Navigate,
-	useNavigate,
-} from "react-router-dom";
+import { Switch, BrowserRouter as Router } from "react-router-dom";
 import { Redirect, useHistory } from "react-router";
 
 import "./App.css";
@@ -18,15 +12,9 @@ import LoginRoute from "./routes/loginRoute";
 import Album from "./Components/Myfavorite";
 import SignUp from "./Components/Register";
 import Model from "./Components/Model";
-
-// import Main from "./Containers/main"
-// import Login from "./Containers/login"
-// import CustomAppBar from "./Containers/customAppBar";
-
+import Loading from "./Components/Loading";
 const Routes = () => {
-	// let navigate = useNavigate();
-	// const navigation = useRef(useNavigate());
-	const { SignedIn, verifyToken } = useStock();
+	const { SignedIn, initialized, verifyToken } = useStock();
 	const history = useHistory();
 	useEffect(() => {
 		const fetchData = async () => {
@@ -36,9 +24,9 @@ const Routes = () => {
 		fetchData();
 	}, [SignedIn]);
 
-	return (
-		// SignedIn? <Route exact path="/login" element={<SignInSide/>}>
-		// </Route>:
+	return !initialized ? (
+		<Loading />
+	) : (
 		<Switch>
 			<MainRoute exact path="/">
 				<Header />
@@ -55,13 +43,6 @@ const Routes = () => {
 			<LoginRoute exact path="/signup">
 				<SignUp />
 			</LoginRoute>
-			{/* <Route exact path="/" element={<MainRoute/>}>
-      </Route>
-      <Route exact path="/login" element={<SignInSide/>}>
-      </Route>
-      <Route exact path="/myfavorite" element={<Album/>}></Route>
-      <Route exact path="/model" element={<Album/>}></Route> */}
-			{/* <Route path="*" element={<Navigate replace to="/login"/>}></Route> */}
 			<Redirect to="/login" />
 		</Switch>
 	);

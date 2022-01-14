@@ -131,27 +131,15 @@ const img = [
 ];
 
 function Header() {
-	const { favorite, marketHeadline } = useStock();
+	const { headline } = useStock();
 	const [headlines, setHeadline] = useState("");
 	useEffect(() => {
-		const fetchData = async () => {
-			const { message, headline } = await marketHeadline();
-			if (message === "success") {
-				setHeadline(headline);
-			} else {
-				console.log(message);
-			}
-		};
-		fetchData();
+		setHeadline(headline);
 	}, []);
 	return (
 		<>
 			<Box
 				sx={{
-					//width: `calc(98.7vw )`,
-					// height: 700,
-					// backgroundAttachment: "fixed",
-					// backgroundRepeat: 'repeat',
 					backgroundImage: `url(${img[date % 9]})`,
 					backgroundSize: "cover",
 					backgroundRepeat: "no-repeat",

@@ -12,17 +12,22 @@ import Slide from "@mui/material/Slide";
 import styled from "styled-components";
 import { useStock } from "../../context/useStock";
 import Button from "@mui/material/Button";
+import Loading from "../Loading";
 
 const Space = styled.section`
 height=0.5px;
 `;
 
 export default function Model_Card() {
-	const { passedcompany, username, displayStatus, addFavorites } = useStock();
+	const {
+		passedcompany,
+		username,
+		modelisRunning,
+		displayStatus,
+		addFavorites,
+	} = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
 	const [canAddALL, setCanAddALL] = useState(false);
-	const [isdone, setIsDone] = useState(true);
-	// const [favorite, setFavorite] = useState(false);
 	const addAlltoFavorites = async () => {
 		for (let i = 0; i < cards.length; i++) {
 			await addFavorites(username, cards[i]);
@@ -49,7 +54,7 @@ export default function Model_Card() {
 	return (
 		<Stack spacing={2}>
 			<Typography component="p" variant="h6" color="primary">
-				Passed Companies: {isdone ? passedcompany.length : "analizing..."}
+				Passed Companies: {passedcompany.length}
 			</Typography>
 			<Button
 				variant="contained"
@@ -58,43 +63,48 @@ export default function Model_Card() {
 			>
 				add all to my favorite
 			</Button>
-			{cards.map((card, index) => (
-				<Slide
-					direction="up"
-					key={index}
-					in={true}
-					style={{ transformOrigin: "0 0 0" }}
-					{...(true ? { timeout: 1000 } : {})}
-					justifycontent="center"
-				>
-					<Card>
-						<Stack
-							spacing={1.5}
-							justifycontent="center"
-							direction="column"
-							align="center"
-						>
-							<Space />
-							<Stack direction="row" spacing={2}>
+
+			{modelisRunning ? (
+				<Loading />
+			) : (
+				cards.map((card, index) => (
+					<Slide
+						direction="up"
+						key={index}
+						in={true}
+						style={{ transformOrigin: "0 0 0" }}
+						{...(true ? { timeout: 1000 } : {})}
+						justifycontent="center"
+					>
+						<Card>
+							<Stack
+								spacing={1.5}
+								justifycontent="center"
+								direction="column"
+								align="center"
+							>
 								<Space />
-								<Stack>
-									{!canAddALL ? (
-										<FavoriteIcon color="primary" />
-									) : (
-										<FavoriteBorderIcon color="primary" />
-									)}
+								<Stack direction="row" spacing={2}>
+									<Space />
+									<Stack>
+										{!canAddALL ? (
+											<FavoriteIcon color="primary" />
+										) : (
+											<FavoriteBorderIcon color="primary" />
+										)}
+									</Stack>
+									<Typography color="primary" variant="h7" key={index}>
+										{card}
+									</Typography>
 								</Stack>
-								<Typography color="primary" variant="h7" key={index}>
-									{card}
-								</Typography>
+								<div>
+									<Link color="primary" href="#"></Link>
+								</div>
 							</Stack>
-							<div>
-								<Link color="primary" href="#"></Link>
-							</div>
-						</Stack>
-					</Card>
-				</Slide>
-			))}
+						</Card>
+					</Slide>
+				))
+			)}
 		</Stack>
 	);
 }

@@ -1,15 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Model_List from "./model_component/reference";
-import Model_Function from "./model_component/function";
 import styled from "styled-components";
 import Card from "./model_component/company_card";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import Company from "./model_component/company_input";
 import { keyframes } from "styled-components";
 import InputForm from "./model_component/inputForm";
-import { useStock } from "../context/useStock";
 
 const Space = styled.section`
   height=20px;
