@@ -148,7 +148,6 @@ const StockProvider = (props) => {
 			});
 			if (message === "success") {
 				await setFavorite([...favorites, info]);
-				console.log("current favorites: ", favorites);
 			}
 
 			return { message, info };

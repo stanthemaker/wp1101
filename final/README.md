@@ -73,12 +73,13 @@
         1. (備註) 目前**只支援美股與台股的個股，不支援基金**
         2. 可以輸入invalid ticker測試防呆(按下”start”之後會有error message), ex:KJHGFDFHJKHFD
     3. 按 “import Nasdaq100”可以匯入real-time的那斯達克指數所涵蓋的100個company tickers
+        - 因為Heroku平台能力不足，容易超載，此功能在deploy的版本暫不能work。
         
         ![https://i.imgur.com/ixPS3NE.png](https://i.imgur.com/ixPS3NE.png)
         
     4. 按最底下的”Start button”開始跑你所輸入的模型與ticker
         1. 如果一次要跑很多company tickers，需要花一點時間
-    5. 跑完模型後，可以在右側按”Add all to my favorite”，來加入所有通過模型的公司到我的最愛
+    5. 跑完模型後，可以在右側按愛心icon，把通過模型的ticker加到我的最愛
         
         ![https://i.imgur.com/2JIZsnP.png](https://i.imgur.com/2JIZsnP.png)
         

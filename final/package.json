@@ -4,11 +4,8 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "cd backend && yarn && yarn server",
-		"heroku-postbuild": "cd frontend && yarn && yarn build",
-		"server": "cd backend && yarn && yarn server",
-		"frontend": "cd frontend && yarn start",
-		"backend": "cd backend && yarn server"
+		"start": "cd frontend && yarn start",
+		"server": "cd backend && yarn server"
 	},
 	"dependencies": {
 		"axios": "^0.24.0"
