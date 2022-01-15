@@ -17,7 +17,7 @@ const userSchema = new Schema({
 			type: String,
 		},
 	],
-	token: { type: String},
+	token: { type: String },
 });
 // Creating a table within database with the defined schema
 const User = mongoose.model("user", userSchema);

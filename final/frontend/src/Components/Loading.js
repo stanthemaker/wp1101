@@ -1,17 +1,17 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Container from "@material-ui/core/Container";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+import CircularProgress from "@mui/material/CircularProgress";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
 	root: {
 		justifyContent: "center",
-		minHeight: "100vh",
+		// minHeight: "100vh",
 	},
 	progress: {
-		marginTop: "30vh",
+		marginTop: "15vh",
 	},
 });
 const Loading = () => {

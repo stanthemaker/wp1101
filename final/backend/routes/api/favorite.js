@@ -11,6 +11,7 @@ exports.userFavorites = async (req, res) => {
 exports.addFavorites = async (req, res) => {
 	const name = req.body.name;
 	const tag = req.body.tag;
+	console.log("requsted to add", tag);
 	try {
 		const user = await User.findOne({ "profile.name": name });
 		const existed = user.favorites.includes(tag);

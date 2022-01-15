@@ -1,5 +1,7 @@
+const cheerio = require("cheerio");
 const axios = require("axios").default;
 const Parser = require("expr-eval").Parser;
+const request = require("request");
 exports.marketHeadline = async (req, res) => {
 	const options = {
 		method: "GET",

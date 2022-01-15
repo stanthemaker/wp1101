@@ -4,7 +4,7 @@
 
 ---
 
-股票是許多人離不開的日常，也正因如此，投資人的心情或多或少也受到股市波動影響。因此我們想到用日曆的形式，結合股市app，創造一個美觀的投資環境，讓投資人忘卻股票虧損的痛苦，並且加上更多客製化功能，彌補市面上股市app的不足處。
+股票是許多人離不開的日常，股市的波動也影響著投資人一整天的心情。然而，既有的Web都只有枯燥的數字與線圖。Stockalendar希望帶給用戶更生活化、更輕鬆的投資體驗，再加上客製化的數學模型，讓投資人可以更自在的探索股市。
 
 # **如何在 localhost 安裝**
 
@@ -13,10 +13,10 @@
 1. git clone [git@github.com](mailto:git@github.com):stanthemaker/wp1101.git
 2. cd wp1101/final/backend 
 3. yarn 
-4. 新增一個 .env 檔
+4. 在/backend 底下新增一個 .env 檔
     
     ```jsx
-    MONGO_URL = mongodb+srv://stanwpfinal:ihatehackathon@cluster0.wyg8z.mongodb.net/final?retryWrites=true&w=majority
+    MONGO_URL = <your mongodb url>
     TOKEN_KEY = tokenkeyforfinalproject
     ```
     
@@ -83,10 +83,17 @@
         ![https://i.imgur.com/2JIZsnP.png](https://i.imgur.com/2JIZsnP.png)
         
 
-# 分工
+# 使用到的套件與模組
 
 ---
 
-- 翁瑋杉 B09901104 :backend、爬蟲(發各種API requests 去其他server抓資料)
+- frontend:Material-UI, axios,React.js,moment.js,antd,styled-components,react-router
+- backend:bcrypt, axios, mongoose,cookie-parser,expr-eval,jsonwebtoken,express
+
+# Contributors
+
+---
+
+- 翁瑋杉 B09901104 :backend、web crawling
 - 黃筱穎 B09901046 :api connect、 JWT、router、structure
 - 楊倢綺 B09901055 :UI/UX design 、structure

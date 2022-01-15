@@ -10,8 +10,9 @@ const StockContext = createContext({
 	modelisRunning: "",
 	headline: "",
 	model: [],
-	favorites: [],
+	favorites: [], // an array of object => stock info
 	passedcompany: [],
+	Nasdaq100List: [],
 	jwt: [],
 	displayStatus: () => {},
 	addUser: () => {}, //register
@@ -26,8 +27,7 @@ const StockContext = createContext({
 	checkModel: () => {},
 	runModel: () => {},
 	displayStatus: () => {},
-	stockInfo: () => {},
-	Nasdaq100List: () => {},
+	// Nasdaq100List: () => {},
 	verifyToken: () => {},
 });
 
@@ -38,6 +38,7 @@ const StockProvider = (props) => {
 	const [username, setUsername] = useState("");
 	const [headline, setHeadline] = useState("");
 	const [jwt, setJwt] = useState("");
+	const [Nasdaq100List, setNasdaq100List] = useState([]);
 	const [favorites, setFavorite] = useState([]);
 	const [model, setModel] = useState([]);
 	const [passedcompany, setPassedCompany] = useState([]);
@@ -84,7 +85,6 @@ const StockProvider = (props) => {
 		return message;
 	};
 	const verifyToken = async () => {
-		console.log("Verifying token...");
 		const savedtoken = localStorage.getItem("token");
 		if (!savedtoken) {
 			setInitialized(true);
@@ -120,6 +120,12 @@ const StockProvider = (props) => {
 			setSignedIn(true);
 			setUsername(username);
 			setFavorite(companyList);
+
+			const {
+				data: { Nasdaq100List },
+			} = await axios.get("/stockalendar/myModels/Nasdaq100List");
+			setNasdaq100List(Nasdaq100List);
+
 			const {
 				data: { message, headline },
 			} = await axios.get("/stockalendar/Home/headline");
@@ -131,17 +137,31 @@ const StockProvider = (props) => {
 	};
 	const userFavorites = async () => {};
 	const addFavorites = async (username, tag) => {
-		const { mes, info } = await stockInfo(tag);
-		if (mes === "success") {
+		const { stockquerymsg, info } = await stockInfo(tag);
+		if (stockquerymsg === "success") {
+			//the stock exists
 			const {
 				data: { message },
 			} = await axios.post("/stockalendar/myFavorites/addFavorites", {
 				name: username,
 				tag: tag,
 			});
-			if (message === "success") setFavorite([...favorites, info]);
+			if (message === "success") {
+				await setFavorite([...favorites, info]);
+				console.log("current favorites: ", favorites);
+			}
+
+			return { message, info };
 		}
-		return { mes, info };
+		return { message: stockquerymsg, info };
+	};
+	const stockInfo = async (tag) => {
+		const {
+			data: { message, info },
+		} = await axios.get("/stockalendar/myFavorites/stockInfo", {
+			params: { tag },
+		});
+		return { stockquerymsg: message, info };
 	};
 	const delFavorite = async (username, tag) => {
 		const {
@@ -182,22 +202,14 @@ const StockProvider = (props) => {
 		setModelIsRunning(false);
 		return message;
 	};
-	const stockInfo = async (tag) => {
-		const {
-			data: { message, info },
-		} = await axios.get("/stockalendar/myFavorites/stockInfo", {
-			params: { tag },
-		});
-		const mes = message;
-		return { mes, info };
-	};
-	const Nasdaq100List = async () => {
-		const {
-			data: { message, Nasdaq100List },
-		} = await axios.get("/stockalendar/myModels/Nasdaq100List");
 
-		return { message, NasdaqList: Nasdaq100List };
-	};
+	// const Nasdaq100List = async () => {
+	// 	const {
+	// 		data: { message, Nasdaq100List },
+	// 	} = await axios.get("/stockalendar/myModels/Nasdaq100List");
+
+	// 	return { message, NasdaqList: Nasdaq100List };
+	// };
 	return (
 		<StockContext.Provider
 			value={{
@@ -209,6 +221,7 @@ const StockProvider = (props) => {
 				initialized,
 				modelisRunning,
 				headline,
+				Nasdaq100List,
 				displayStatus,
 				addUser,
 				login,
@@ -221,8 +234,6 @@ const StockProvider = (props) => {
 				delModel,
 				checkModel,
 				runModel,
-				stockInfo,
-				Nasdaq100List,
 				verifyToken,
 			}}
 			{...props}

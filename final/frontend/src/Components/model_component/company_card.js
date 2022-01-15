@@ -7,12 +7,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useState } from "react";
 import Card from "@mui/material/Card";
-import Grow from "@mui/material/Grow";
 import Slide from "@mui/material/Slide";
 import styled from "styled-components";
 import { useStock } from "../../context/useStock";
-import Button from "@mui/material/Button";
-import Loading from "../Loading";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Space = styled.section`
 height=0.5px;
@@ -27,28 +25,27 @@ export default function Model_Card() {
 		addFavorites,
 	} = useStock();
 	const [cards, setCards] = useState([]); //card.map(()=><Cards>)?
-	const [canAddALL, setCanAddALL] = useState(false);
-	const addAlltoFavorites = async () => {
-		for (let i = 0; i < cards.length; i++) {
-			await addFavorites(username, cards[i]);
-		}
-		setCanAddALL(false);
-		displayStatus({
-			type: "success",
-			msg: "Add all companies successfully",
-		});
-	};
-	useEffect(() => {
-		console.log("passed companies triggered");
-		setCards(passedcompany);
-		setCanAddALL(false);
-		if (passedcompany.length) {
+	const [isAdd, setisAdd] = useState([]);
+	const handleAddAllToFavorites = async (company, index) => {
+		if (isAdd[index]) return;
+
+		const { message } = await addFavorites(username, company);
+		if (message === "success") {
 			displayStatus({
 				type: "success",
-				msg: "run model successfully",
+				msg: "Add company successfully",
 			});
-			setCanAddALL(true);
 		}
+		const newIsAdd = isAdd.map((e, i) => {
+			if (i === index) return true;
+			return e;
+		});
+		setisAdd(newIsAdd);
+	};
+	useEffect(() => {
+		setCards(passedcompany);
+		const tmp = new Array(passedcompany.length).fill(false);
+		setisAdd([...tmp]);
 	}, [passedcompany]);
 
 	return (
@@ -56,17 +53,11 @@ export default function Model_Card() {
 			<Typography component="p" variant="h6" color="primary">
 				Passed Companies: {passedcompany.length}
 			</Typography>
-			<Button
-				variant="contained"
-				disabled={!canAddALL}
-				onClick={addAlltoFavorites}
-			>
-				add all to my favorite
-			</Button>
 
 			{modelisRunning ? (
-				<Loading />
+				<CircularProgress />
 			) : (
+				// <></>
 				cards.map((card, index) => (
 					<Slide
 						direction="up"
@@ -86,8 +77,12 @@ export default function Model_Card() {
 								<Space />
 								<Stack direction="row" spacing={2}>
 									<Space />
-									<Stack>
-										{!canAddALL ? (
+									<Stack
+										onClick={() => {
+											handleAddAllToFavorites(card, index);
+										}}
+									>
+										{isAdd[index] ? (
 											<FavoriteIcon color="primary" />
 										) : (
 											<FavoriteBorderIcon color="primary" />

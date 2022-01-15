@@ -19,13 +19,13 @@ const Space = styled.section`
 	height: 50px;
 `;
 
-const example = "Please remember to press Enter once you finish any input.";
-let last = 0;
+const example =
+	"The input model will filter the input tickers.Press Enter after typing";
 
 export default function InputForm() {
 	const [funct, setFunct] = useState("");
 	const [company, setCompany] = useState([]);
-	const { runModel, displayStatus, Nasdaq100List, checkModel } = useStock();
+	const { Nasdaq100List, runModel, displayStatus, checkModel } = useStock();
 	const [canImport, setCanImport] = useState(true);
 
 	const addFunct = async (e) => {
@@ -98,20 +98,12 @@ export default function InputForm() {
 	};
 	const handleImportNas = async () => {
 		setCanImport(false);
-		const { message, NasdaqList } = await Nasdaq100List();
-		if (message == "success") {
-			displayStatus({
-				type: "success",
-				msg: "import Nasdaq100 success!",
-			});
-			setCompany([...company, ...NasdaqList]);
-		} else {
-			displayStatus({
-				type: "error",
-				msg: message,
-			});
-			setCanImport(true);
-		}
+
+		displayStatus({
+			type: "success",
+			msg: "import Nasdaq100 success!",
+		});
+		setCompany([...company, ...Nasdaq100List]);
 	};
 	return (
 		<>
@@ -124,7 +116,7 @@ export default function InputForm() {
 							fullWidth
 							id="function"
 							label="My function"
-							placeholder="Your model (ex: P+R>5)"
+							placeholder="if you want PE + ROET4Q > 5,type P+R>5"
 							autoComplete="function"
 							autoFocus
 							onKeyPress={addFunct}

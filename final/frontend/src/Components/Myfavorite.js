@@ -66,14 +66,8 @@ const SmallCaption_up = styled.section`
 `;
 
 export default function Album() {
-	const {
-		favorites,
-		username,
-		displayStatus,
-		addFavorites,
-		stockInfo,
-		delFavorite,
-	} = useStock();
+	const { favorites, username, displayStatus, addFavorites, delFavorite } =
+		useStock();
 	const [companies, setCompanies] = useState([]);
 	const handleAddFavorite = async (e) => {
 		if (e.key === "Enter") {
@@ -87,8 +81,8 @@ export default function Album() {
 				return;
 			}
 			//if the ticker exists
-			const { mes, info } = await addFavorites(username, newTicker);
-			if (mes === "success") {
+			const { message, info } = await addFavorites(username, newTicker);
+			if (message === "success") {
 				displayStatus({
 					type: "success",
 					msg: "Company Added!",
@@ -97,7 +91,7 @@ export default function Album() {
 			} else {
 				displayStatus({
 					type: "error",
-					msg: mes,
+					msg: message,
 				});
 			}
 			e.target.value = "";
@@ -125,7 +119,7 @@ export default function Album() {
 	};
 	useEffect(async () => {
 		setCompanies(favorites);
-	}, []);
+	}, [favorites]);
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
