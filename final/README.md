@@ -22,14 +22,24 @@
     
 5. cd ../frontend
 6. yarn 
-7. cd ..
-8. 分別開兩個terminal，在wp1101/final/底下 yarn server , yarn start
+7. 在/frontend底下新增一個 .env檔
+    
+    ```jsx
+    REACT_APP_BASE_URL = http://localhost:5000
+    ```
+    
+8. cd ..
+9. 分別開兩個terminal，在wp1101/final/底下 yarn server , yarn start
 
 # 可以在localhost測試的項目(即整個Web的功能)
 
 ---
 
-1. 註冊一個新的帳戶(個資只會存在DB不會外流)d
+- 如果瀏覽器有存東西的話，請先把他清掉，因為如果是invalid token，App一直loading
+    
+    ![https://i.imgur.com/eRb7p7y.jpg](https://i.imgur.com/eRb7p7y.jpg)
+    
+1. 註冊一個新的帳戶(個資只會存在DB不會外流)
     
     ![https://i.imgur.com/vNKzhWc.png](https://i.imgur.com/vNKzhWc.png)
     
@@ -67,8 +77,9 @@
     提供價值投資人(value investing investor)友善的平台。
     
     1. 在model欄位輸入不等式(記得輸入完按”Enter”)
-        1. model支援變數: **P**代表**本益比、R**代表**股東權益報酬率、G**代表**毛利率、C**代表**流動比率**
-        2. 可以測試輸入各種奇怪的公式測試防呆(按下”Enter”之後會有error message)
+        1. model支援變數:(這些變數都是公司的財務數字，基本面投資人常常需要這類資訊幫助他們選股) **P**代表**本益比、R**代表**股東權益報酬率、G**代表**毛利率、C**代表**流動比率**
+        2. 如果不懂那些變數代表甚麼也沒關係，就當作未知的x y z 隨便輸入也沒關係
+        3. 可以測試輸入各種奇怪的公式測試防呆(按下”Enter”之後會有error message)
     2. 在company欄位輸入你想要跑model的公司ticker(每輸入完一個ticker要按”**Enter**”)
         1. (備註) 目前**只支援美股與台股的個股，不支援基金**
         2. 可以輸入invalid ticker測試防呆(按下”start”之後會有error message), ex:KJHGFDFHJKHFD
